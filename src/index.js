@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-function calcFibbonaciSpherePoints(samples, radius = 1) {
+function calcFibonacciSpherePoints(samples, radius = 1) {
   let points = [];
   let phi = Math.PI * (3 - Math.sqrt(5));
   for (let i = 0; i < samples; i++) {
@@ -25,7 +25,7 @@ function createNodeMesh() {
 
 function createCloud(nodes, radius = 5) {
   const group = new THREE.Group();
-  for (const point of calcFibbonaciSpherePoints(nodes, radius)) {
+  for (const point of calcFibonacciSpherePoints(nodes, radius)) {
     // const geometry = new THREE.SphereGeometry(0.6, 40, 40);
     // const material = new THREE.MeshLambertMaterial({ color: 0x5555ff });
     // const mesh = new THREE.Mesh(geometry, material);
