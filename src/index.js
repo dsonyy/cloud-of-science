@@ -1,5 +1,7 @@
 import * as THREE from "three";
 
+const NODE_PALETTE = [0x5fb250, 0xe47e71, 0xcccc00, 0x00a3b4];
+
 function calcFibonacciSpherePoints(samples, radius = 1) {
   let points = [];
   let phi = Math.PI * (3 - Math.sqrt(5));
@@ -16,9 +18,10 @@ function calcFibonacciSpherePoints(samples, radius = 1) {
   return points;
 }
 
-function createNodeMesh() {
-  const geometry = new THREE.SphereGeometry(0.6, 40, 40);
-  const material = new THREE.MeshLambertMaterial({ color: 0x5555ff });
+function createNodeMesh(palette) {
+  const color = palette[Math.floor(Math.random() * palette.length)];
+  const geometry = new THREE.SphereGeometry(0.5, 40, 40);
+  const material = new THREE.MeshPhongMaterial({ color: color });
   const mesh = new THREE.Mesh(geometry, material);
   return mesh;
 }
@@ -26,15 +29,27 @@ function createNodeMesh() {
 function createCloud(nodes, radius = 5) {
   const group = new THREE.Group();
   for (const point of calcFibonacciSpherePoints(nodes, radius)) {
-    // const geometry = new THREE.SphereGeometry(0.6, 40, 40);
-    // const material = new THREE.MeshLambertMaterial({ color: 0x5555ff });
-    // const mesh = new THREE.Mesh(geometry, material);
-    const nodeMesh = createNodeMesh();
+    const nodeMesh = createNodeMesh(NODE_PALETTE);
     nodeMesh.position.set(point[0], point[1], point[2]);
     group.add(nodeMesh);
   }
   group.rotation.z = Math.PI / 2;
   return group;
+}
+
+let cloudRotating = false;
+let cloudRotatingVelocityX = 0.0;
+let cloudRotatingVelocityY = 0.0;
+function updateCloudRotation(cloud) {
+  //   if (cloudRotating) {
+  //     cloud.rotation.x = cloudRotatingVelocityX;
+  //     cloud.rotation.y = cloudRotatingVelocityY;
+  //   }
+  //   cloud.rotation.x += cloudRotatingVelocityX;
+  //   cloud.rotation.y += cloudRotatingVelocityY;
+  //   if (cloudRotatingVelocityX > 0.01) cloudRotatingVelocityX -= 0.001;
+  //   else if (cloudRotatingVelocityX < -0.01) cloudRotatingVelocityX += 0.001;
+  //   else cloudRotatingVelocityX = 0;
 }
 
 let width = window.innerWidth;
@@ -48,38 +63,30 @@ renderer.setSize(width, height);
 document.body.appendChild(renderer.domElement);
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
 scene.add(ambientLight);
-const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-dirLight.position.set(1, 1, 3);
-scene.add(dirLight);
+const dirLight = new THREE.DirectionalLight(0xffffff, 0.2);
+dirLight.position.set(1, 1, 1);
 
 const cloud = createCloud(20);
+cloud.add(dirLight);
 scene.add(cloud);
-
-let mouseX = 0;
-let mouseY = 0;
-
-let targetRotation = 0;
-let targetRotationOnPointerDown = 0;
-let pointerX = 0;
-let pointerXOnPointerDown = 0;
 
 function init() {
   window.addEventListener("resize", onWindowResize);
-  window.addEventListener("mousemove", onMouseMove);
+  window.addEventListener("mousemove", onPointerMove);
   window.addEventListener("pointerdown", onPointerDown);
+  window.addEventListener("pointerup", onPointerUp);
 }
 
 function animate() {
   requestAnimationFrame(animate);
+
+  updateCloudRotation(cloud);
+
   render();
 }
 
 function render() {
-  cloud.rotation.y += (targetRotation - cloud.rotation.y) * 0.01;
   camera.lookAt(scene.position);
-
-  dirLight.position.x = 0 + mouseX * 0.002;
-  dirLight.position.y = 0 + mouseY * 0.002;
 
   renderer.render(scene, camera);
 }
@@ -97,33 +104,27 @@ function onWindowResize() {
   renderer.setSize(width, height);
 }
 
-function onMouseMove(event) {
-  mouseX = event.clientX - width / 2;
-  mouseY = event.clientY - height / 2;
-}
-
 function onPointerDown(event) {
-  if (event.isPrimary === false) return;
-
-  pointerXOnPointerDown = event.clientX - width / 2;
-  targetRotationOnPointerDown = targetRotation;
-
-  document.addEventListener("pointermove", onPointerMove);
-  document.addEventListener("pointerup", onPointerUp);
+  cloudRotatingVelocityX = cloud.rotation.x;
+  cloudRotatingVelocityY = cloud.rotation.y;
+  cloudRotating = true;
 }
 
 function onPointerMove(event) {
-  if (event.isPrimary === false) return;
+  if (cloudRotating) {
+    cloud.rotation.x += ((event.offsetY / height) * 2 - 1) * 0.01;
+    cloud.rotation.y += ((event.offsetX / width) * 2 - 1) * 0.01;
+    console.log(cloudRotatingVelocityX, cloudRotatingVelocityY);
+  }
 
-  pointerX = event.clientX - width / 2;
-
-  targetRotation =
-    targetRotationOnPointerDown + (pointerX - pointerXOnPointerDown) * 0.02;
+  //   if (Math.abs(cloudRotatingVelocityX) < 0.05)
+  //     cloudRotatingVelocityX += event.movementY * 0.001;
+  //   if (Math.abs(cloudRotatingVelocityY) < 0.05)
+  //     cloudRotatingVelocityY += event.movementX * 0.001;
 }
 
 function onPointerUp(event) {
-  if (event.isPrimary === false) return;
-
-  document.removeEventListener("pointermove", onPointerMove);
-  document.removeEventListener("pointerup", onPointerUp);
+  cloudRotating = false;
+  cloudRotatingVelocityX = 0;
+  cloudRotatingVelocityY = 0;
 }
