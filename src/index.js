@@ -1,67 +1,59 @@
 import * as THREE from "three";
 
-let width = window.innerWidth;
-let height = window.innerHeight;
+function calcFibbonaciSpherePoints(samples, radius = 1) {
+  let points = [];
+  let phi = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < samples; i++) {
+    let y = 1 - (i / (samples - 1)) * 2;
+    let r = Math.sqrt(1 - y * y);
+    let theta = phi * i;
 
-const scene = new THREE.Scene();
-scene.background = new THREE.Color("#ffffff");
-// const camera = new THREE.OrthographicCamera(
-//   -width / 128,
-//   width / 128,
-//   -height / 128,
-//   height / 128,
-//   0.1,
-//   1000
-// );
-const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
-camera.position.z = 16;
+    let x = Math.cos(theta) * r;
+    let z = Math.sin(theta) * r;
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(width, height);
-document.body.appendChild(renderer.domElement);
+    points.push([x * radius, y * radius, z * radius]);
+  }
+  return points;
+}
 
-const group = new THREE.Group();
-scene.add(group);
-
-const n = 15;
-for (let i = 0; i < n; i++) {
+function createNodeMesh() {
   const geometry = new THREE.SphereGeometry(0.6, 40, 40);
   const material = new THREE.MeshLambertMaterial({ color: 0x5555ff });
   const mesh = new THREE.Mesh(geometry, material);
-  mesh.position.setFromSpherical(
-    new THREE.Spherical(
-      5,
-      2 * Math.PI * Math.random(),
-      2 * Math.PI * Math.random()
-    )
-  );
-  group.add(mesh);
-}
-for (let i = 0; i < n; i++) {
-  const geometry = new THREE.SphereGeometry(0.4, 40, 40);
-  const material = new THREE.MeshBasicMaterial({ color: 0x2222aa });
-  const mesh = new THREE.Mesh(geometry, material);
-  mesh.position.setFromSpherical(
-    new THREE.Spherical(
-      5,
-      2 * Math.PI * Math.random(),
-      2 * Math.PI * Math.random()
-    )
-  );
-  mesh.rotation.set(
-    2 * Math.PI * Math.random(),
-    2 * Math.PI * Math.random(),
-    2 * Math.PI * Math.random()
-  );
-  group.add(mesh);
+  return mesh;
 }
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+function createCloud(nodes, radius = 5) {
+  const group = new THREE.Group();
+  for (const point of calcFibbonaciSpherePoints(nodes, radius)) {
+    // const geometry = new THREE.SphereGeometry(0.6, 40, 40);
+    // const material = new THREE.MeshLambertMaterial({ color: 0x5555ff });
+    // const mesh = new THREE.Mesh(geometry, material);
+    const nodeMesh = createNodeMesh();
+    nodeMesh.position.set(point[0], point[1], point[2]);
+    group.add(nodeMesh);
+  }
+  group.rotation.z = Math.PI / 2;
+  return group;
+}
+
+let width = window.innerWidth;
+let height = window.innerHeight;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color("#ffffff");
+const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
+camera.position.z = 16;
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(width, height);
+document.body.appendChild(renderer.domElement);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
 scene.add(ambientLight);
-
 const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
 dirLight.position.set(1, 1, 3);
 scene.add(dirLight);
+
+const cloud = createCloud(20);
+scene.add(cloud);
 
 let mouseX = 0;
 let mouseY = 0;
@@ -83,7 +75,7 @@ function animate() {
 }
 
 function render() {
-  group.rotation.y += (targetRotation - group.rotation.y) * 0.01;
+  cloud.rotation.y += (targetRotation - cloud.rotation.y) * 0.01;
   camera.lookAt(scene.position);
 
   dirLight.position.x = 0 + mouseX * 0.002;
