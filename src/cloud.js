@@ -151,9 +151,11 @@ class MouseRotation {
   }
 
   onPointerDown(e) {
-    this.vectorY = 0;
-    this.vectorX = 0;
-    this.pointerHolding = true;
+    if (this.element.contains(e.target)) {
+      this.vectorY = 0;
+      this.vectorX = 0;
+      this.pointerHolding = true;
+    }
   }
 
   onPointerUp(e) {
