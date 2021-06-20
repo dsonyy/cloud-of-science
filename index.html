@@ -9,40 +9,27 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Cloud of Science</title>
     <link rel="icon" type="image/png" href="static/favicon.png" />
-    <style>
-      body {
-        margin: 0;
-        background-color: #777;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        font-size: small;
-      }
-      #cloud {
-        background-color: #000;
-        height: 100vh;
-        width: 100vw;
-      }
-      #test {
-        background-color: darkgray;
-        opacity: 0.5;
-        position: fixed;
-        left: 50px;
-        top: 50px;
-        width: 100px;
-        height: 80px;
-      }
-      footer {
-        font-size: x-small;
-        position: fixed;
-        right: 5px;
-        bottom: 10px;
-      }
-    </style>
+    <link rel="stylesheet" href="static/css/global.css" />
+    <link rel="stylesheet" href="static/css/article.css" />
+    <style></style>
   </head>
   <body>
+    <header class="noselect">Cloud of Science (work in progress)</header>
+    <div id="article" class="right">
+      <script>
+        fetch("static/cloud/articles/dummy.html")
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("article").innerHTML = data;
+          });
+      </script>
+    </div>
     <div id="cloud">
       <script src="public/bundle.js"></script>
     </div>
-    <div id="test">text text text</div>
-    <footer>Łukasz Lamża, Szymon Bednorz, 2021</footer>
+    <footer class="noselect">
+      <a href="http://lukaszlamza.pl/">Łukasz Lamża</a>,
+      <a href="https://szymonbednorz.com/">Szymon Bednorz</a>, 2021
+    </footer>
   </body>
 </html>

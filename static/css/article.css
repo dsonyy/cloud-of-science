@@ -1,0 +1,23 @@
+#article {
+  color: white;
+  text-align: justify;
+
+  position: fixed;
+  min-width: 300px;
+  width: 30vw;
+  height: 130vh;
+
+  margin: 2vh;
+  padding: 1vh;
+
+  background-color: #0d1622d9;
+  border-radius: 7px;
+}
+
+.left {
+  left: 0;
+}
+
+.right {
+  right: 0;
+}
