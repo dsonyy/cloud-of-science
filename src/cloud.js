@@ -43,6 +43,13 @@ export default class Cloud {
     this.scene.add(this.nodesGroup);
     this.scene.add(this.nodeIconsGroup);
 
+    // Fog
+    this.scene.fog = new THREE.Fog(
+      this.scene.background,
+      this.camera.position.z,
+      this.camera.position.z + this.radius * 2
+    );
+
     this.mouseRotation = new MouseRotation(this.element, this.nodesGroup);
   }
 
@@ -80,7 +87,7 @@ export default class Cloud {
       this.nodes.push(
         new Node(point[0], point[1], point[2], {
           color: Node.randomColor,
-          icon: "static/icons/observatory.svg",
+          // icon: "static/sprite0.png",
         })
       );
       this.nodesGroup.add(this.nodes[this.nodes.length - 1].mesh);

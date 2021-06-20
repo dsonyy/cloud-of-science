@@ -8,6 +8,7 @@ export default class Node {
     this.geometry = new THREE.SphereGeometry(0.5, 40, 40);
     this.material = new THREE.MeshBasicMaterial({
       color: this.content.color,
+      fog: true,
     });
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.position.set(x, y, z);
@@ -27,17 +28,16 @@ export default class Node {
   }
 
   updateColorWithDistance(cloudRadius = 1) {
-    const dist = this.calcDistance(cloudRadius);
-    if (dist >= 0) {
-      this.material.color.setHex(this.content.color);
-    } else {
-      const color = new THREE.Color(this.content.color);
-      let l = this.colorLightnessFactor * -dist;
-      if (l > this.colorMaxLightness) l = this.colorMaxLightness;
-
-      color.offsetHSL(0, 0, l);
-      this.material.color = color;
-    }
+    // const dist = this.calcDistance(cloudRadius);
+    // if (dist >= 0) {
+    //   this.material.color.setHex(this.content.color);
+    // } else {
+    //   const color = new THREE.Color(this.content.color);
+    //   let l = this.colorLightnessFactor * -dist;
+    //   if (l > this.colorMaxLightness) l = this.colorMaxLightness;
+    //   color.offsetHSL(0, 0, l);
+    //   this.material.color = color;
+    // }
   }
 
   calcDistance(cloudRadius = 1) {
