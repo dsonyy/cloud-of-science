@@ -59,6 +59,11 @@ export default class Cloud {
       this.radius * 4,
       this.radius * 3
     );
+    this.mouseRaycaster = new MouseRaycaster(
+      this.element,
+      this.camera,
+      this.nodes
+    );
   }
 
   update() {
@@ -87,9 +92,11 @@ export default class Cloud {
   }
 
   constructEmptyNodes(n, radius) {
+    let id = 0;
     for (const point of Cloud.calcFibonacciSpherePoints(n, radius)) {
       this.nodes.push(
         new Node(point[0], point[1], point[2], {
+          id: id++,
           color: Node.randomColor,
           // icon: "static/sprite0.png",
         })
@@ -107,7 +114,8 @@ class MouseLightMovement {
     this.object = object;
     this.width = areaWidth;
     this.height = areaHeight;
-    document.addEventListener("pointermove", (e) => this.onPointerMove(e));
+
+    this.element.addEventListener("pointermove", (e) => this.onPointerMove(e));
   }
 
   onPointerMove(e) {
@@ -196,5 +204,40 @@ class MouseRotation {
   onPointerUp(e) {
     this.pointerHolding = false;
     this.slowingDown = true;
+  }
+}
+
+class MouseRaycaster {
+  constructor(element, camera, nodes) {
+    this.raycaster = new THREE.Raycaster();
+    this.mouse = new THREE.Vector2();
+    this.camera = camera;
+    this.nodes = nodes;
+
+    this.meshes = [];
+    for (const node of nodes) {
+      this.meshes.push(node.mesh);
+    }
+
+    element.addEventListener("pointermove", (e) => this.onPointerMove(e));
+  }
+
+  onPointerMove(e) {
+    this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+    this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+
+    const intersections = this.raycaster.intersectObjects(this.meshes);
+    if (intersections.length != 0) {
+      const intersection = intersections.pop();
+      for (const node of this.nodes) {
+        node.hover(node.mesh.id == intersection.object.id);
+      }
+    } else {
+      for (const node of this.nodes) {
+        node.hover(false);
+      }
+    }
   }
 }
