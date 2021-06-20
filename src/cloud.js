@@ -230,7 +230,7 @@ class MouseRaycaster {
 
     const intersections = this.raycaster.intersectObjects(this.meshes);
     if (intersections.length != 0) {
-      const intersection = intersections.pop();
+      const intersection = intersections[0];
       for (const node of this.nodes) {
         node.hover(node.mesh.id == intersection.object.id);
       }
