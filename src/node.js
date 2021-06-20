@@ -1,24 +1,30 @@
 import * as THREE from "three";
 
 const NodeGeometry = new THREE.SphereGeometry(0.5, 40, 40);
+const NodeOutlineGeometry = new THREE.SphereGeometry(0.515, 40, 40);
+const NodeOutlineMaterial = new THREE.MeshBasicMaterial({
+  color: 0x111111,
+  side: THREE.BackSide,
+});
 
 export default class Node {
   constructor(x, y, z, content) {
     this.content = content;
+    this.group = new THREE.Group();
 
-    // Ball
-    this.material = createGradientMaterial(
-      5,
-      this.content.color
-    ); /*new THREE.MeshLambertMaterial({
-      color: this.content.color,
-      fog: true,
-    });*/
+    // Bubble
+    this.material = createGradientMaterial(5, this.content.color);
     this.mesh = new THREE.Mesh(NodeGeometry, this.material);
     this.mesh.position.set(x, y, z);
+    this.group.add(this.mesh);
 
     this.colorLightnessFactor = 0.5;
     this.colorMaxLightness = 0.2;
+
+    // Outline
+    this.meshOutline = new THREE.Mesh(NodeOutlineGeometry, NodeOutlineMaterial);
+    this.meshOutline.position.set(x, y, z);
+    this.group.add(this.meshOutline);
 
     // Icon
     this.map = new THREE.TextureLoader().load(content.icon);
@@ -32,16 +38,16 @@ export default class Node {
   }
 
   updateColorWithDistance(cloudRadius = 1) {
-    // const dist = this.calcDistance(cloudRadius);
-    // if (dist >= 0) {
-    //   this.material.color.setHex(this.content.color);
-    // } else {
-    //   const color = new THREE.Color(this.content.color);
-    //   let l = this.colorLightnessFactor * -dist;
-    //   if (l > this.colorMaxLightness) l = this.colorMaxLightness;
-    //   color.offsetHSL(0, 0, l);
-    //   this.material.color = color;
-    // }
+    const dist = this.calcDistance(cloudRadius);
+    if (dist >= 0) {
+      this.material.color.setHex(this.content.color);
+    } else {
+      const color = new THREE.Color(this.content.color);
+      let l = this.colorLightnessFactor * -dist;
+      if (l > this.colorMaxLightness) l = this.colorMaxLightness;
+      color.offsetHSL(0, 0, l);
+      this.material.color = color;
+    }
   }
 
   calcDistance(cloudRadius = 1) {

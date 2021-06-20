@@ -63,16 +63,11 @@ export default class Cloud {
 
   update() {
     this.mouseRotation.update();
-
-    for (const node of this.nodes) {
-      node.updateColorWithDistance(this.radius);
-    }
   }
 
   render() {
     this.camera.lookAt(this.scene.position);
     this.renderer.render(this.scene, this.camera);
-    // this.effectOutline.render(this.scene, this.camera);
   }
 
   static calcFibonacciSpherePoints(samples, radius) {
@@ -99,7 +94,7 @@ export default class Cloud {
           // icon: "static/sprite0.png",
         })
       );
-      this.nodesGroup.add(this.nodes[this.nodes.length - 1].mesh);
+      this.nodesGroup.add(this.nodes[this.nodes.length - 1].group);
       this.nodeIconsGroup.add(this.nodes[this.nodes.length - 1].icon);
     }
     this.nodesGroup.rotation.z = Math.PI / 2;
