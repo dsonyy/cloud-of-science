@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import Node from "./node";
 
 export default class Cloud {
   constructor(element) {
@@ -34,10 +35,12 @@ export default class Cloud {
     this.lights.dir.position.set(1, 1, 1);
 
     // Nodes
-    this.nodes = Cloud.createNodes(20);
-    this.scene.add(this.nodes);
+    this.nodes = [];
+    this.nodesGroup = new THREE.Group();
+    this.constructEmptyNodes(20);
+    this.scene.add(this.nodesGroup);
 
-    this.mouseRotation = new MouseRotation(this.element, this.nodes);
+    this.mouseRotation = new MouseRotation(this.element, this.nodesGroup);
   }
 
   update() {
@@ -65,24 +68,22 @@ export default class Cloud {
     return points;
   }
 
-  static createNodeMesh(palette) {
-    const color = palette[Math.floor(Math.random() * palette.length)];
-    const geometry = new THREE.SphereGeometry(0.5, 40, 40);
-    const material = new THREE.MeshPhongMaterial({ color: color });
-    const mesh = new THREE.Mesh(geometry, material);
-    return mesh;
-  }
+  // static createNodeMesh(palette) {
+  //   const color = palette[Math.floor(Math.random() * palette.length)];
+  //   const geometry = new THREE.SphereGeometry(0.5, 40, 40);
+  //   const material = new THREE.MeshBasicMaterial({ color: color });
+  //   const mesh = new THREE.Mesh(geometry, material);
+  //   return mesh;
+  // }
 
-  static createNodes(nodes, radius = 5) {
-    const group = new THREE.Group();
-    const palette = [0x5fb250, 0xe47e71, 0xcccc00, 0x00a3b4];
-    for (const point of this.calcFibonacciSpherePoints(nodes, radius)) {
-      const nodeMesh = this.createNodeMesh(palette);
-      nodeMesh.position.set(point[0], point[1], point[2]);
-      group.add(nodeMesh);
+  constructEmptyNodes(n, radius = 5) {
+    for (const point of Cloud.calcFibonacciSpherePoints(n, radius)) {
+      this.nodes.push(
+        new Node(point[0], point[1], point[2], { color: Node.getRandomColor() })
+      );
+      this.nodesGroup.add(this.nodes[this.nodes.length - 1].mesh);
     }
-    group.rotation.z = Math.PI / 2;
-    return group;
+    this.nodesGroup.rotation.z = Math.PI / 2;
   }
 }
 
@@ -100,7 +101,7 @@ class MouseRotation {
     this.moveSpeedMin = 3;
 
     this.vectorX = 0;
-    this.vectorY = 0.7;
+    this.vectorY = 10;
 
     document.addEventListener("pointermove", (e) => this.onPointerMove(e));
     document.addEventListener("pointerdown", (e) => this.onPointerDown(e));
