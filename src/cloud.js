@@ -25,15 +25,6 @@ export default class Cloud {
     this.renderer.setSize(this.width, this.height);
     element.appendChild(this.renderer.domElement);
 
-    // Lights
-    this.lights = {
-      ambient: new THREE.AmbientLight(0xffffff, 0.8),
-      dir: new THREE.DirectionalLight(0xffffff, 0.2),
-    };
-    this.scene.add(this.lights.ambient);
-    this.scene.add(this.lights.dir);
-    this.lights.dir.position.set(0, 0, 1);
-
     // Nodes
     this.radius = 5;
     this.nodes = [];
@@ -43,6 +34,17 @@ export default class Cloud {
     this.scene.add(this.nodesGroup);
     this.scene.add(this.nodeIconsGroup);
 
+    // Lights
+    this.lights = {
+      ambient: new THREE.AmbientLight(0xffffff, 0.6),
+      //dir: new THREE.DirectionalLight(0xffffff, 0.3),
+      point: new THREE.PointLight(0xffffff, 0.4),
+    };
+    this.scene.add(this.lights.ambient);
+    this.scene.add(this.lights.point);
+    // this.scene.add(this.lights.dir);
+    this.lights.point.position.set(0, 0, 2 * this.radius);
+
     // Fog
     this.scene.fog = new THREE.Fog(
       this.scene.background,
@@ -51,6 +53,12 @@ export default class Cloud {
     );
 
     this.mouseRotation = new MouseRotation(this.element, this.nodesGroup);
+    this.mouseLightMovement = new MouseLightMovement(
+      this.element,
+      this.lights.point,
+      this.radius * 4,
+      this.radius * 3
+    );
   }
 
   update() {
@@ -64,6 +72,7 @@ export default class Cloud {
   render() {
     this.camera.lookAt(this.scene.position);
     this.renderer.render(this.scene, this.camera);
+    // this.effectOutline.render(this.scene, this.camera);
   }
 
   static calcFibonacciSpherePoints(samples, radius) {
@@ -94,6 +103,26 @@ export default class Cloud {
       this.nodeIconsGroup.add(this.nodes[this.nodes.length - 1].icon);
     }
     this.nodesGroup.rotation.z = Math.PI / 2;
+  }
+}
+
+class MouseLightMovement {
+  constructor(element, object, areaWidth, areaHeight) {
+    this.element = element;
+    this.object = object;
+    this.width = areaWidth;
+    this.height = areaHeight;
+    document.addEventListener("pointermove", (e) => this.onPointerMove(e));
+  }
+
+  onPointerMove(e) {
+    if (this.element.contains(e.target)) {
+      const rect = this.element.getBoundingClientRect();
+      this.object.position.x =
+        ((e.offsetX - rect.width / 2) / rect.width) * this.width;
+      this.object.position.y =
+        (-(e.offsetY - rect.height / 2) / rect.height) * this.height;
+    }
   }
 }
 

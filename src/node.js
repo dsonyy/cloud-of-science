@@ -1,16 +1,20 @@
 import * as THREE from "three";
 
+const NodeGeometry = new THREE.SphereGeometry(0.5, 40, 40);
+
 export default class Node {
   constructor(x, y, z, content) {
     this.content = content;
 
     // Ball
-    this.geometry = new THREE.SphereGeometry(0.5, 40, 40);
-    this.material = new THREE.MeshBasicMaterial({
+    this.material = createGradientMaterial(
+      5,
+      this.content.color
+    ); /*new THREE.MeshLambertMaterial({
       color: this.content.color,
       fog: true,
-    });
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    });*/
+    this.mesh = new THREE.Mesh(NodeGeometry, this.material);
     this.mesh.position.set(x, y, z);
 
     this.colorLightnessFactor = 0.5;
@@ -45,4 +49,26 @@ export default class Node {
     this.mesh.getWorldPosition(pos);
     return pos.z / cloudRadius;
   }
+}
+
+function createGradientMaterial(n, color) {
+  const colors = new Uint8Array(n);
+  for (let c = 0; c <= colors.length; c++) {
+    colors[c] = (c / colors.length) * 256;
+  }
+
+  const gradientMap = new THREE.DataTexture(
+    colors,
+    colors.length,
+    1,
+    THREE.LuminanceFormat
+  );
+  gradientMap.minFilter = THREE.NearestFilter;
+  gradientMap.magFilter = THREE.NearestFilter;
+  gradientMap.generateMipmaps = false;
+
+  return new THREE.MeshToonMaterial({
+    color: color,
+    gradientMap: gradientMap,
+  });
 }
