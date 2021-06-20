@@ -16,9 +16,9 @@ export default class Node {
     this.colorMaxLightness = 0.2;
 
     // Icon
-    // this.map = new THREE.TextureLoader().load(content.icon);
-    // const material = new THREE.SpriteMaterial({ map: this.map });
-    // this.icon = new THREE.Sprite(material);
+    this.map = new THREE.TextureLoader().load(content.icon);
+    const material = new THREE.SpriteMaterial({ map: this.map });
+    this.icon = new THREE.Sprite(material);
   }
 
   static get randomColor() {

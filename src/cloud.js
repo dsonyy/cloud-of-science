@@ -80,7 +80,7 @@ export default class Cloud {
       this.nodes.push(
         new Node(point[0], point[1], point[2], {
           color: Node.randomColor,
-          icon: "icons/observatory.png",
+          icon: "static/icons/observatory.svg",
         })
       );
       this.nodesGroup.add(this.nodes[this.nodes.length - 1].mesh);
