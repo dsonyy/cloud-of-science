@@ -38,8 +38,10 @@ export default class Cloud {
     this.radius = 5;
     this.nodes = [];
     this.nodesGroup = new THREE.Group();
+    this.nodeIconsGroup = new THREE.Group();
     this.constructEmptyNodes(20, this.radius);
     this.scene.add(this.nodesGroup);
+    this.scene.add(this.nodeIconsGroup);
 
     this.mouseRotation = new MouseRotation(this.element, this.nodesGroup);
   }
@@ -76,9 +78,13 @@ export default class Cloud {
   constructEmptyNodes(n, radius) {
     for (const point of Cloud.calcFibonacciSpherePoints(n, radius)) {
       this.nodes.push(
-        new Node(point[0], point[1], point[2], { color: Node.randomColor })
+        new Node(point[0], point[1], point[2], {
+          color: Node.randomColor,
+          icon: "icons/observatory.png",
+        })
       );
       this.nodesGroup.add(this.nodes[this.nodes.length - 1].mesh);
+      this.nodeIconsGroup.add(this.nodes[this.nodes.length - 1].icon);
     }
     this.nodesGroup.rotation.z = Math.PI / 2;
   }

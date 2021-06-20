@@ -4,6 +4,7 @@ export default class Node {
   constructor(x, y, z, content) {
     this.content = content;
 
+    // Ball
     this.geometry = new THREE.SphereGeometry(0.5, 40, 40);
     this.material = new THREE.MeshBasicMaterial({
       color: this.content.color,
@@ -13,6 +14,11 @@ export default class Node {
 
     this.colorLightnessFactor = 0.5;
     this.colorMaxLightness = 0.2;
+
+    // Icon
+    this.map = new THREE.TextureLoader().load(content.icon);
+    const material = new THREE.SpriteMaterial({ map: this.map });
+    this.icon = new THREE.Sprite(material);
   }
 
   static get randomColor() {
