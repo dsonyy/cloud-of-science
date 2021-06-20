@@ -52,6 +52,8 @@ export default class Cloud {
       this.camera.position.z + this.radius * 2
     );
 
+    // Events
+    window.addEventListener("resize", () => this.onWindowResize());
     this.mouseRotation = new MouseRotation(this.element, this.nodesGroup);
     this.mouseLightMovement = new MouseLightMovement(
       this.element,
@@ -105,6 +107,15 @@ export default class Cloud {
       this.nodeIconsGroup.add(this.nodes[this.nodes.length - 1].icon);
     }
     this.nodesGroup.rotation.z = Math.PI / 2;
+  }
+
+  onWindowResize() {
+    this.width = this.element.clientWidth;
+    this.height = this.element.clientHeight;
+
+    this.renderer.setSize(this.width, this.height);
+    this.camera.aspect = this.width / this.height;
+    this.camera.updateProjectionMatrix();
   }
 }
 
@@ -213,6 +224,7 @@ class MouseRaycaster {
     this.mouse = new THREE.Vector2();
     this.camera = camera;
     this.nodes = nodes;
+    this.intersectionNode = null;
 
     this.meshes = [];
     for (const node of nodes) {
@@ -220,6 +232,7 @@ class MouseRaycaster {
     }
 
     element.addEventListener("pointermove", (e) => this.onPointerMove(e));
+    element.addEventListener("pointerdown", (e) => this.onPointerDown(e));
   }
 
   onPointerMove(e) {
@@ -233,10 +246,24 @@ class MouseRaycaster {
       const intersection = intersections[0];
       for (const node of this.nodes) {
         node.hover(node.mesh.id == intersection.object.id);
+        this.intersectionNode = node;
       }
     } else {
+      this.intersectionNode = null;
       for (const node of this.nodes) {
         node.hover(false);
+      }
+    }
+  }
+
+  onPointerDown(e) {
+    if (e.button == 0) {
+      if (this.intersectionNode != null) {
+        this.intersectionNode.click(true);
+      } else {
+        for (const node of this.nodes) {
+          node.click(false);
+        }
       }
     }
   }
