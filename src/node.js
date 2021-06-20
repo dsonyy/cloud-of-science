@@ -9,12 +9,15 @@ const NodeOutlineMaterial = new THREE.MeshBasicMaterial({
 
 export default class Node {
   constructor(x, y, z, content) {
+    this.id = content.id;
     this.content = content;
     this.group = new THREE.Group();
+    this.hovered = false;
 
     // Bubble
     this.material = createGradientMaterial(5, this.content.color);
-    this.mesh = new THREE.Mesh(NodeGeometry, this.material);
+    this.geometry = NodeGeometry;
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.position.set(x, y, z);
     this.group.add(this.mesh);
 
@@ -47,6 +50,17 @@ export default class Node {
       if (l > this.colorMaxLightness) l = this.colorMaxLightness;
       color.offsetHSL(0, 0, l);
       this.material.color = color;
+    }
+  }
+
+  hover(hovered) {
+    if (this.hovered == hovered) return;
+
+    this.hovered = hovered;
+    if (this.hovered) {
+      this.material.color.offsetHSL(0, 0, 0.3);
+    } else {
+      this.material.color.setHex(this.content.color);
     }
   }
 
