@@ -32,12 +32,13 @@ export default class Cloud {
     };
     this.scene.add(this.lights.ambient);
     this.scene.add(this.lights.dir);
-    this.lights.dir.position.set(1, 1, 1);
+    this.lights.dir.position.set(0, 0, 1);
 
     // Nodes
+    this.radius = 5;
     this.nodes = [];
     this.nodesGroup = new THREE.Group();
-    this.constructEmptyNodes(20);
+    this.constructEmptyNodes(20, this.radius);
     this.scene.add(this.nodesGroup);
 
     this.mouseRotation = new MouseRotation(this.element, this.nodesGroup);
@@ -45,6 +46,10 @@ export default class Cloud {
 
   update() {
     this.mouseRotation.update();
+
+    for (const node of this.nodes) {
+      node.updateColorWithDistance(this.radius);
+    }
   }
 
   render() {
@@ -52,7 +57,7 @@ export default class Cloud {
     this.renderer.render(this.scene, this.camera);
   }
 
-  static calcFibonacciSpherePoints(samples, radius = 1) {
+  static calcFibonacciSpherePoints(samples, radius) {
     let points = [];
     let phi = Math.PI * (3 - Math.sqrt(5));
     for (let i = 0; i < samples; i++) {
@@ -68,18 +73,10 @@ export default class Cloud {
     return points;
   }
 
-  // static createNodeMesh(palette) {
-  //   const color = palette[Math.floor(Math.random() * palette.length)];
-  //   const geometry = new THREE.SphereGeometry(0.5, 40, 40);
-  //   const material = new THREE.MeshBasicMaterial({ color: color });
-  //   const mesh = new THREE.Mesh(geometry, material);
-  //   return mesh;
-  // }
-
-  constructEmptyNodes(n, radius = 5) {
+  constructEmptyNodes(n, radius) {
     for (const point of Cloud.calcFibonacciSpherePoints(n, radius)) {
       this.nodes.push(
-        new Node(point[0], point[1], point[2], { color: Node.getRandomColor() })
+        new Node(point[0], point[1], point[2], { color: Node.randomColor })
       );
       this.nodesGroup.add(this.nodes[this.nodes.length - 1].mesh);
     }
