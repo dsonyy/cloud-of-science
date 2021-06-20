@@ -13,6 +13,7 @@ export default class Node {
     this.content = content;
     this.group = new THREE.Group();
     this.hovered = false;
+    this.clicked = false;
 
     // Bubble
     this.material = createGradientMaterial(5, this.content.color);
@@ -55,12 +56,25 @@ export default class Node {
 
   hover(hovered) {
     if (this.hovered == hovered) return;
-
     this.hovered = hovered;
+
     if (this.hovered) {
       this.material.color.offsetHSL(0, 0, 0.3);
+      document.body.style.cursor = "pointer";
     } else {
       this.material.color.setHex(this.content.color);
+      document.body.style.cursor = "auto";
+    }
+  }
+
+  click(clicked) {
+    if (this.clicked == clicked) return;
+    this.clicked = clicked;
+
+    if (this.clicked) {
+      document.getElementById("article").style.display = "initial";
+    } else {
+      document.getElementById("article").style.display = "none";
     }
   }
 
