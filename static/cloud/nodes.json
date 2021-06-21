@@ -1,0 +1,31 @@
+{
+    "nodes": [
+        {
+            "title": "Dummy Article #0",
+            "description": "A very brief description of this bubble.",
+            "category": "Big Data",
+
+            "tags": [ "big data", "blockchain", "IoT", "cryptocurrencies"],
+            "iconSrc": "dummy-icon0.png",
+            "articleSrc": "dummy-article0.html"
+        },
+        {
+            "title": "Dummy Article #1",
+            "description": "A very brief description of this bubble.",
+            "category": "Physics",
+
+            "tags": [ "quantum computing", "qubit", "quark"],
+            "iconSrc": "dummy-icon1.png",
+            "articleSrc": "dummy-article1.html"
+        },
+        {
+            "title": "Dummy Article #3",
+            "description": "A very brief description of this bubble.",
+            "category": "Databases",
+            
+            "tags": [ "big data", "graph databases"],
+            "iconSrc": "dummy-icon2.png",
+            "articleSrc": "dummy-article2.html"
+        }
+    ]
+}
