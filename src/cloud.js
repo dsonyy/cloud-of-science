@@ -37,19 +37,17 @@ export default class Cloud {
     // Lights
     this.lights = {
       ambient: new THREE.AmbientLight(0xffffff, 0.6),
-      //dir: new THREE.DirectionalLight(0xffffff, 0.3),
       point: new THREE.PointLight(0xffffff, 0.4),
     };
     this.scene.add(this.lights.ambient);
     this.scene.add(this.lights.point);
-    // this.scene.add(this.lights.dir);
     this.lights.point.position.set(0, 0, 2 * this.radius);
 
     // Fog
     this.scene.fog = new THREE.Fog(
       this.scene.background,
       this.camera.position.z,
-      this.camera.position.z + this.radius * 2
+      this.camera.position.z + this.radius * 1.25
     );
 
     // Events
@@ -148,7 +146,7 @@ class MouseRotation {
     this.pointerHolding = false;
     this.slowingDown = false;
 
-    this.slowDownFactor = 0.97;
+    this.slowDownFactor = 0.92;
     this.moveSpeedFactor = 0.0001;
     this.moveSpeedMax = 400;
     this.moveSpeedMin = 3;
