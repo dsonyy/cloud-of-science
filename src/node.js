@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { cameraPosition } from "./cloud";
 
 const NodeGeometry = new THREE.SphereGeometry(0.5, 40, 40);
 const NodeOutlineGeometry = new THREE.SphereGeometry(0.515, 40, 40);
@@ -31,9 +32,28 @@ export default class Node {
     this.group.add(this.meshOutline);
 
     // Icon
-    this.map = new THREE.TextureLoader().load(content.icon);
-    const material = new THREE.SpriteMaterial({ map: this.map });
-    this.icon = new THREE.Sprite(material);
+    this.icon = new THREE.Mesh(
+      new THREE.PlaneGeometry(1, 1),
+      new THREE.MeshBasicMaterial({
+        color: 0x0,
+      })
+    );
+    this.icon.position.set(
+      this.mesh.position.x,
+      this.mesh.position.y,
+      this.mesh.position.z
+    );
+    // this.group.add(this.icon);
+
+    // this.map = new THREE.TextureLoader().load(content.icon);
+    // const material = new THREE.SpriteMaterial({ map: this.map });
+    // this.icon = new THREE.Sprite(material);
+    // this.icon.scale.set(1, 1, 1);
+    //   this.icon.position.set(
+    //     this.mesh.position.x,
+    //     this.mesh.position.y,
+    //     this.mesh.position.z
+    //   );
   }
 
   static get randomColor() {
@@ -52,6 +72,15 @@ export default class Node {
       color.offsetHSL(0, 0, l);
       this.material.color = color;
     }
+  }
+
+  update() {
+    this.icon.lookAt(cameraPosition);
+    //  const v = this.icon.getWorldPosition();
+
+    // this.icon.position.x += v.x;
+    // this.icon.position.y += v.y;
+    // this.icon.position.z += v.z;
   }
 
   hover(hovered) {

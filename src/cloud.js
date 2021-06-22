@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import Node from "./node";
 
+export const cameraPosition = new THREE.Vector3(0, 0, 16);
+
 export default class Cloud {
   constructor(element) {
     this.element = element;
@@ -18,7 +20,11 @@ export default class Cloud {
       0.1,
       1000
     );
-    this.camera.position.z = 16;
+    this.camera.position.set(
+      cameraPosition.x,
+      cameraPosition.y,
+      cameraPosition.z
+    );
 
     // Renderer
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -28,6 +34,7 @@ export default class Cloud {
     // Nodes
     this.radius = 5;
     this.nodes = [];
+    this.nodeIcons = [];
     this.nodesGroup = new THREE.Group();
     this.nodeIconsGroup = new THREE.Group();
     this.constructEmptyNodes(20, this.radius);
@@ -51,7 +58,10 @@ export default class Cloud {
     );
 
     // Events
-    this.mouseRotation = new MouseRotation(this.element, this.nodesGroup);
+    this.mouseRotation = new MouseRotation(this.element, [
+      this.nodesGroup,
+      this.nodeIconsGroup,
+    ]);
     this.mouseLightMovement = new MouseLightMovement(
       this.element,
       this.lights.point,
@@ -63,10 +73,29 @@ export default class Cloud {
       this.camera,
       this.nodes
     );
+
+    // Icon test
+    // this.map = new THREE.TextureLoader().load("static/icons/observatory.png");
+    // let material = new THREE.SpriteMaterial({
+    //   map: this.map,
+    //   sizeAttenuation: false,
+    // });
+    // this.icon = new THREE.Sprite(material);
+    // this.icon.scale.set(0.05, 0.05, 1);
+    // this.scene.add(this.icon);
+
+    // this.map = new THREE.TextureLoader().load("static/icons/observatory2.png");
+    // this.icon = new THREE.Sprite(material);
+    // this.icon.scale.set(1, 1, 1);
+    // this.icon.position.set(2, 0, 0);
+    // this.scene.add(this.icon);
   }
 
   update() {
     this.mouseRotation.update();
+    for (const node of this.nodes) {
+      node.update();
+    }
   }
 
   render() {
@@ -97,13 +126,14 @@ export default class Cloud {
         new Node(point[0], point[1], point[2], {
           id: id++,
           color: Node.randomColor,
-          // icon: "static/sprite0.png",
+          icon: "static/observatory.png",
         })
       );
       this.nodesGroup.add(this.nodes[this.nodes.length - 1].group);
       this.nodeIconsGroup.add(this.nodes[this.nodes.length - 1].icon);
     }
     this.nodesGroup.rotation.z = Math.PI / 2;
+    this.nodeIconsGroup.rotation.z = Math.PI / 2;
   }
 
   onWindowResize() {
@@ -136,9 +166,9 @@ class MouseLightMovement {
 }
 
 class MouseRotation {
-  constructor(element, object) {
+  constructor(element, objects) {
     this.element = element;
-    this.object = object;
+    this.objects = objects;
 
     this.pointerHolding = false;
     this.slowingDown = false;
@@ -149,7 +179,7 @@ class MouseRotation {
     this.moveSpeedMin = 3;
 
     this.vectorX = 0;
-    this.vectorY = 10;
+    this.vectorY = 0; //10;
   }
 
   update() {
@@ -158,33 +188,35 @@ class MouseRotation {
     if (Math.abs(this.vectorX) > this.moveSpeedMax)
       this.vectorX = Math.sign(this.vectorX) * this.moveSpeedMax;
 
-    if (this.pointerHolding) {
-      this.object.rotateOnWorldAxis(
-        new THREE.Vector3(0, 1, 0),
-        this.vectorY * this.moveSpeedFactor
-      );
-      this.object.rotateOnWorldAxis(
-        new THREE.Vector3(1, 0, 0),
-        this.vectorX * this.moveSpeedFactor
-      );
-    } else {
-      this.object.rotateOnWorldAxis(
-        new THREE.Vector3(0, 1, 0),
-        this.vectorY * this.moveSpeedFactor
-      );
-      this.object.rotateOnWorldAxis(
-        new THREE.Vector3(1, 0, 0),
-        this.vectorX * this.moveSpeedFactor
-      );
-
-      // Slowing down
-      if (this.slowingDown) {
-        this.vectorY *= this.slowDownFactor;
-        if (Math.abs(this.vectorY) < this.moveSpeedMin) this.vectorY = 0;
-
-        this.vectorX *= this.slowDownFactor;
-        if (Math.abs(this.vectorX) < this.moveSpeedMin) this.vectorX = 0;
+    for (const object of this.objects) {
+      if (this.pointerHolding) {
+        object.rotateOnWorldAxis(
+          new THREE.Vector3(0, 1, 0),
+          this.vectorY * this.moveSpeedFactor
+        );
+        object.rotateOnWorldAxis(
+          new THREE.Vector3(1, 0, 0),
+          this.vectorX * this.moveSpeedFactor
+        );
+      } else {
+        object.rotateOnWorldAxis(
+          new THREE.Vector3(0, 1, 0),
+          this.vectorY * this.moveSpeedFactor
+        );
+        object.rotateOnWorldAxis(
+          new THREE.Vector3(1, 0, 0),
+          this.vectorX * this.moveSpeedFactor
+        );
       }
+    }
+
+    // Slowing down
+    if (this.slowingDown) {
+      this.vectorY *= this.slowDownFactor;
+      if (Math.abs(this.vectorY) < this.moveSpeedMin) this.vectorY = 0;
+
+      this.vectorX *= this.slowDownFactor;
+      if (Math.abs(this.vectorX) < this.moveSpeedMin) this.vectorX = 0;
     }
   }
 
