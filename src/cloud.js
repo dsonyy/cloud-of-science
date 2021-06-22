@@ -51,7 +51,6 @@ export default class Cloud {
     );
 
     // Events
-    window.addEventListener("resize", () => this.onWindowResize());
     this.mouseRotation = new MouseRotation(this.element, this.nodesGroup);
     this.mouseLightMovement = new MouseLightMovement(
       this.element,
@@ -123,8 +122,6 @@ class MouseLightMovement {
     this.object = object;
     this.width = areaWidth;
     this.height = areaHeight;
-
-    this.element.addEventListener("pointermove", (e) => this.onPointerMove(e));
   }
 
   onPointerMove(e) {
@@ -153,10 +150,6 @@ class MouseRotation {
 
     this.vectorX = 0;
     this.vectorY = 10;
-
-    document.addEventListener("pointermove", (e) => this.onPointerMove(e));
-    document.addEventListener("pointerdown", (e) => this.onPointerDown(e));
-    document.addEventListener("pointerup", (e) => this.onPointerUp(e));
   }
 
   update() {
@@ -228,9 +221,6 @@ class MouseRaycaster {
     for (const node of nodes) {
       this.meshes.push(node.mesh);
     }
-
-    element.addEventListener("pointermove", (e) => this.onPointerMove(e));
-    element.addEventListener("pointerdown", (e) => this.onPointerDown(e));
   }
 
   onPointerMove(e) {
