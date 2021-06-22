@@ -1,9 +1,8 @@
-import Cloud from "./cloud";
+import App from "./app";
 
-const cloud = new Cloud(document.getElementById("cloud"));
+const app = new App(document.getElementById("cloud"));
 function animate() {
   requestAnimationFrame(animate);
-  cloud.update();
-  cloud.render();
+  app.update();
 }
 animate();
