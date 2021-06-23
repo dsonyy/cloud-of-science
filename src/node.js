@@ -32,18 +32,30 @@ export default class Node {
     this.group.add(this.meshOutline);
 
     // Icon
-    this.icon = new THREE.Mesh(
-      new THREE.PlaneGeometry(1, 1),
-      new THREE.MeshBasicMaterial({
-        color: 0x0,
-      })
-    );
-    this.icon.position.set(
-      this.mesh.position.x,
-      this.mesh.position.y,
-      this.mesh.position.z
-    );
+    // this.icon = new THREE.Mesh(
+    //   new THREE.PlaneGeometry(1, 1),
+    //   new THREE.MeshBasicMaterial({
+    //     color: 0x0,
+    //   })
+    // );
+    // this.icon.position.set(
+    //   this.mesh.position.x,
+    //   this.mesh.position.y,
+    //   this.mesh.position.z
+    // );
     // this.group.add(this.icon);
+
+    this.icon = new THREE.ArrowHelper(
+      new THREE.Vector3(
+        this.mesh.position.x,
+        this.mesh.position.y,
+        this.mesh.position.z
+      ),
+      this.mesh.position,
+      2,
+      0x0
+    );
+    this.group.add(this.icon);
 
     // this.map = new THREE.TextureLoader().load(content.icon);
     // const material = new THREE.SpriteMaterial({ map: this.map });
@@ -75,12 +87,23 @@ export default class Node {
   }
 
   update() {
-    this.icon.lookAt(cameraPosition);
-    //  const v = this.icon.getWorldPosition();
-
-    // this.icon.position.x += v.x;
-    // this.icon.position.y += v.y;
-    // this.icon.position.z += v.z;
+    const camera = this.mesh.worldToLocal(cameraPosition).normalize();
+    this.icon.setDirection(camera);
+    // let globalPos = new THREE.Vector3();
+    // this.mesh.getWorldPosition(globalPos);
+    // let offset = new THREE.Vector3();
+    // offset.subVectors(globalPos, cameraPosition).normalize();
+    // offset.multiplyScalar(0.0000005);
+    // this.mesh.worldToLocal(offset);
+    // this.icon.position.set(
+    //   this.mesh.position.x - offset.x,
+    //   this.mesh.position.y - offset.y,
+    //   this.mesh.position.z - offset.z
+    // );
+    // console.log(offset);
+    // this.icon.position.x = this.mesh.position.x + offset.x;
+    // this.icon.position.y = this.mesh.position.y + offset.y;
+    // this.icon.position.z = this.mesh.position.z + offset.z;
   }
 
   hover(hovered) {

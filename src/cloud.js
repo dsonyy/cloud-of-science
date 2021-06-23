@@ -37,7 +37,7 @@ export default class Cloud {
     this.nodeIcons = [];
     this.nodesGroup = new THREE.Group();
     this.nodeIconsGroup = new THREE.Group();
-    this.constructEmptyNodes(20, this.radius);
+    this.constructEmptyNodes(2, this.radius);
     this.scene.add(this.nodesGroup);
     this.scene.add(this.nodeIconsGroup);
 
@@ -130,10 +130,10 @@ export default class Cloud {
         })
       );
       this.nodesGroup.add(this.nodes[this.nodes.length - 1].group);
-      this.nodeIconsGroup.add(this.nodes[this.nodes.length - 1].icon);
+      // this.nodeIconsGroup.add(this.nodes[this.nodes.length - 1].icon);
     }
     this.nodesGroup.rotation.z = Math.PI / 2;
-    this.nodeIconsGroup.rotation.z = Math.PI / 2;
+    // this.nodeIconsGroup.rotation.z = Math.PI / 2;
   }
 
   onWindowResize() {
