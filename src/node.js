@@ -87,31 +87,6 @@ export default class Node {
     }
   }
 
-  update(group) {
-    this.icon.lookAt(cameraPosition);
-
-    // let rotation = new THREE.Quaternion();
-    // this.group.getWorldQuaternion(rotation);
-    // rotation.set(-rotation.x, -rotation.y, -rotation.z, -rotation.w);
-    // this.icon.setRotationFromQuaternion(rotation);
-    // this.icon.setDirection(camera);
-    // let globalPos = new THREE.Vector3();
-    // this.mesh.getWorldPosition(globalPos);
-    // let offset = new THREE.Vector3();
-    // offset.subVectors(globalPos, cameraPosition).normalize();
-    // offset.multiplyScalar(0.0000005);
-    // this.mesh.worldToLocal(offset);
-    // this.icon.position.set(
-    //   this.mesh.position.x - offset.x,
-    //   this.mesh.position.y - offset.y,
-    //   this.mesh.position.z - offset.z
-    // );
-    // console.log(offset);
-    // this.icon.position.x = this.mesh.position.x + offset.x;
-    // this.icon.position.y = this.mesh.position.y + offset.y;
-    // this.icon.position.z = this.mesh.position.z + offset.z;
-  }
-
   hover(hovered) {
     if (this.hovered == hovered) return;
     this.hovered = hovered;

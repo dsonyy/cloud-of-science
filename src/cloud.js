@@ -34,9 +34,7 @@ export default class Cloud {
     // Nodes
     this.radius = 5;
     this.nodes = [];
-    this.nodeIcons = [];
     this.nodesGroup = new THREE.Group();
-    this.nodeIconsGroup = new THREE.Group();
     this.constructEmptyNodes(20, this.radius);
     this.scene.add(this.nodesGroup);
     this.scene.add(this.nodeIconsGroup);
@@ -58,10 +56,7 @@ export default class Cloud {
     );
 
     // Events
-    this.mouseRotation = new MouseRotation(this.element, [
-      this.nodesGroup,
-      this.nodeIconsGroup,
-    ]);
+    this.mouseRotation = new MouseRotation(this.element, this.nodesGroup);
     this.mouseLightMovement = new MouseLightMovement(
       this.element,
       this.lights.point,
@@ -93,9 +88,6 @@ export default class Cloud {
 
   update() {
     this.mouseRotation.update();
-    for (const node of this.nodes) {
-      node.update(this.nodesGroup);
-    }
   }
 
   render() {
@@ -130,10 +122,8 @@ export default class Cloud {
         })
       );
       this.nodesGroup.add(this.nodes[this.nodes.length - 1].group);
-      // this.nodeIconsGroup.add(this.nodes[this.nodes.length - 1].icon);
     }
     this.nodesGroup.rotation.z = Math.PI / 2;
-    // this.nodeIconsGroup.rotation.z = Math.PI / 2;
   }
 
   onWindowResize() {
@@ -166,9 +156,9 @@ class MouseLightMovement {
 }
 
 class MouseRotation {
-  constructor(element, objects) {
+  constructor(element, object) {
     this.element = element;
-    this.objects = objects;
+    this.object = object;
 
     this.pointerHolding = false;
     this.slowingDown = false;
@@ -179,7 +169,7 @@ class MouseRotation {
     this.moveSpeedMin = 3;
 
     this.vectorX = 0;
-    this.vectorY = 0; //10;
+    this.vectorY = 10;
   }
 
   update() {
@@ -188,35 +178,33 @@ class MouseRotation {
     if (Math.abs(this.vectorX) > this.moveSpeedMax)
       this.vectorX = Math.sign(this.vectorX) * this.moveSpeedMax;
 
-    for (const object of this.objects) {
-      if (this.pointerHolding) {
-        object.rotateOnWorldAxis(
-          new THREE.Vector3(0, 1, 0),
-          this.vectorY * this.moveSpeedFactor
-        );
-        object.rotateOnWorldAxis(
-          new THREE.Vector3(1, 0, 0),
-          this.vectorX * this.moveSpeedFactor
-        );
-      } else {
-        object.rotateOnWorldAxis(
-          new THREE.Vector3(0, 1, 0),
-          this.vectorY * this.moveSpeedFactor
-        );
-        object.rotateOnWorldAxis(
-          new THREE.Vector3(1, 0, 0),
-          this.vectorX * this.moveSpeedFactor
-        );
+    if (this.pointerHolding) {
+      this.object.rotateOnWorldAxis(
+        new THREE.Vector3(0, 1, 0),
+        this.vectorY * this.moveSpeedFactor
+      );
+      this.object.rotateOnWorldAxis(
+        new THREE.Vector3(1, 0, 0),
+        this.vectorX * this.moveSpeedFactor
+      );
+    } else {
+      this.object.rotateOnWorldAxis(
+        new THREE.Vector3(0, 1, 0),
+        this.vectorY * this.moveSpeedFactor
+      );
+      this.object.rotateOnWorldAxis(
+        new THREE.Vector3(1, 0, 0),
+        this.vectorX * this.moveSpeedFactor
+      );
+
+      // Slowing down
+      if (this.slowingDown) {
+        this.vectorY *= this.slowDownFactor;
+        if (Math.abs(this.vectorY) < this.moveSpeedMin) this.vectorY = 0;
+
+        this.vectorX *= this.slowDownFactor;
+        if (Math.abs(this.vectorX) < this.moveSpeedMin) this.vectorX = 0;
       }
-    }
-
-    // Slowing down
-    if (this.slowingDown) {
-      this.vectorY *= this.slowDownFactor;
-      if (Math.abs(this.vectorY) < this.moveSpeedMin) this.vectorY = 0;
-
-      this.vectorX *= this.slowDownFactor;
-      if (Math.abs(this.vectorX) < this.moveSpeedMin) this.vectorX = 0;
     }
   }
 
