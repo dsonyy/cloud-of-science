@@ -1,10 +1,16 @@
 {
+    "colors": {
+        "Big Data": [229, 101, 102],
+        "Physics": [152, 70, 154],
+        "Databases": [176, 212, 176],
+        "Languages": [238, 180, 117],
+        "Machine Learning": [108, 130, 190]
+    },
     "nodes": [
         {
             "title": "Dummy Article #0",
             "description": "A very brief description of this bubble.",
             "category": "Big Data",
-
             "tags": [ "big data", "blockchain", "IoT", "cryptocurrencies"],
             "iconSrc": "dummy-icon0.png",
             "articleSrc": "dummy-article0.html"
@@ -13,16 +19,150 @@
             "title": "Dummy Article #1",
             "description": "A very brief description of this bubble.",
             "category": "Physics",
-
             "tags": [ "quantum computing", "qubit", "quark"],
             "iconSrc": "dummy-icon1.png",
             "articleSrc": "dummy-article1.html"
         },
         {
-            "title": "Dummy Article #3",
+            "title": "Dummy Article #2",
             "description": "A very brief description of this bubble.",
             "category": "Databases",
-            
+            "tags": [ "big data", "graph databases"],
+            "iconSrc": "dummy-icon2.png",
+            "articleSrc": "dummy-article2.html"
+        },
+        {
+            "title": "Dummy Article #3",
+            "description": "A very brief description of this bubble.",
+            "category": "Languages",
+            "tags": [ "quantum computing", "qubit", "quark"],
+            "iconSrc": "dummy-icon1.png",
+            "articleSrc": "dummy-article1.html"
+        },
+        {
+            "title": "Dummy Article #4",
+            "description": "A very brief description of this bubble.",
+            "category": "Machine Learning",
+            "tags": [ "big data", "graph databases"],
+            "iconSrc": "dummy-icon2.png",
+            "articleSrc": "dummy-article2.html"
+        },
+        {
+            "title": "Dummy Article #5",
+            "description": "A very brief description of this bubble.",
+            "category": "Big Data",
+            "tags": [ "big data", "blockchain", "IoT", "cryptocurrencies"],
+            "iconSrc": "dummy-icon0.png",
+            "articleSrc": "dummy-article0.html"
+        },
+        {
+            "title": "Dummy Article #6",
+            "description": "A very brief description of this bubble.",
+            "category": "Physics",
+            "tags": [ "quantum computing", "qubit", "quark"],
+            "iconSrc": "dummy-icon1.png",
+            "articleSrc": "dummy-article1.html"
+        },
+        {
+            "title": "Dummy Article #7",
+            "description": "A very brief description of this bubble.",
+            "category": "Databases",
+            "tags": [ "big data", "graph databases"],
+            "iconSrc": "dummy-icon2.png",
+            "articleSrc": "dummy-article2.html"
+        },
+        {
+            "title": "Dummy Article #8",
+            "description": "A very brief description of this bubble.",
+            "category": "Languages",
+            "tags": [ "quantum computing", "qubit", "quark"],
+            "iconSrc": "dummy-icon1.png",
+            "articleSrc": "dummy-article1.html"
+        },
+        {
+            "title": "Dummy Article #9",
+            "description": "A very brief description of this bubble.",
+            "category": "Machine Learning",
+            "tags": [ "big data", "graph databases"],
+            "iconSrc": "dummy-icon2.png",
+            "articleSrc": "dummy-article2.html"
+        },
+        {
+            "title": "Dummy Article #10",
+            "description": "A very brief description of this bubble.",
+            "category": "Big Data",
+            "tags": [ "big data", "blockchain", "IoT", "cryptocurrencies"],
+            "iconSrc": "dummy-icon0.png",
+            "articleSrc": "dummy-article0.html"
+        },
+        {
+            "title": "Dummy Article #11",
+            "description": "A very brief description of this bubble.",
+            "category": "Physics",
+            "tags": [ "quantum computing", "qubit", "quark"],
+            "iconSrc": "dummy-icon1.png",
+            "articleSrc": "dummy-article1.html"
+        },
+        {
+            "title": "Dummy Article #12",
+            "description": "A very brief description of this bubble.",
+            "category": "Databases",
+            "tags": [ "big data", "graph databases"],
+            "iconSrc": "dummy-icon2.png",
+            "articleSrc": "dummy-article2.html"
+        },
+        {
+            "title": "Dummy Article #13",
+            "description": "A very brief description of this bubble.",
+            "category": "Languages",
+            "tags": [ "quantum computing", "qubit", "quark"],
+            "iconSrc": "dummy-icon1.png",
+            "articleSrc": "dummy-article1.html"
+        },
+        {
+            "title": "Dummy Article #14",
+            "description": "A very brief description of this bubble.",
+            "category": "Machine Learning",
+            "tags": [ "big data", "graph databases"],
+            "iconSrc": "dummy-icon2.png",
+            "articleSrc": "dummy-article2.html"
+        },
+        {
+            "title": "Dummy Article #15",
+            "description": "A very brief description of this bubble.",
+            "category": "Big Data",
+            "tags": [ "big data", "blockchain", "IoT", "cryptocurrencies"],
+            "iconSrc": "dummy-icon0.png",
+            "articleSrc": "dummy-article0.html"
+        },
+        {
+            "title": "Dummy Article #16",
+            "description": "A very brief description of this bubble.",
+            "category": "Physics",
+            "tags": [ "quantum computing", "qubit", "quark"],
+            "iconSrc": "dummy-icon1.png",
+            "articleSrc": "dummy-article1.html"
+        },
+        {
+            "title": "Dummy Article #17",
+            "description": "A very brief description of this bubble.",
+            "category": "Databases",
+            "tags": [ "big data", "graph databases"],
+            "iconSrc": "dummy-icon2.png",
+            "articleSrc": "dummy-article2.html"
+        },
+        {
+            "title": "Dummy Article #18",
+            "description": "A very brief description of this bubble.",
+            "category": "Languages",
+            "tags": [ "quantum computing", "qubit", "quark"],
+            "iconSrc": "dummy-icon1.png",
+            "articleSrc": "dummy-article1.html"
+        },
+        {
+            "title": "Dummy Article #19",
+            "description": "A very brief description of this bubble.",
+            "category": "Machine Learning",
             "tags": [ "big data", "graph databases"],
             "iconSrc": "dummy-icon2.png",
             "articleSrc": "dummy-article2.html"

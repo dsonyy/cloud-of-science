@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import Node from "./node";
 import Connection from "./connection";
+import NodesLoader from "./nodesLoader";
 
 export const cameraPosition = new THREE.Vector3(0, 0, 16);
 
@@ -72,6 +73,10 @@ export default class Cloud {
       this.nodes,
       this.connection
     );
+
+    // Nodes loader
+    this.nodesLoader = new NodesLoader();
+    console.log(this.nodesLoader.nodes);
   }
 
   update() {
@@ -109,7 +114,7 @@ export default class Cloud {
         new Node(point[0], point[1], point[2], {
           id: id++,
           color: Node.randomColor,
-          icon: "static/icons/observatory.png",
+          icon: "static/icons/dummy-icon0.png",
         })
       );
       this.nodesGroup.add(this.nodes[this.nodes.length - 1].group);
@@ -260,7 +265,6 @@ class MouseRaycaster {
       if (justHovered) {
         this.connection.hide();
         this.connection.showRandom(intersectedNode);
-        console.log("asdf");
       }
     } else {
       this.intersectionNode = null;
