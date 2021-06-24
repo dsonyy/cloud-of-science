@@ -5,8 +5,9 @@
   position: fixed;
   min-width: 300px;
   width: 30vw;
-  height: calc(100% - 14px);
+  height: calc(100% - 28px);
   margin: 7px;
+  padding: 7px;
 
   background-color: #0d1622d9;
   border-radius: 5px;
