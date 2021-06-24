@@ -26,9 +26,10 @@ export default class Connection {
       }
     }
 
-    for (const neigbor of neighbors) {
+    for (let i = 0; i < 3; i++) {
+      const neighbor = neighbors[Math.floor(Math.random() * neighbors.length)];
       this.group.add(
-        Connection.createConnection(neigbor.position, activeNode.position)
+        Connection.createConnection(neighbor.position, activeNode.position)
       );
     }
   }
@@ -66,7 +67,6 @@ export default class Connection {
       connectionMaterial
     );
     line.material.opacity = 0.6;
-    console.log(line.material);
     return line;
   }
 }

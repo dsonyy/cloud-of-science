@@ -39,6 +39,10 @@ export default class Cloud {
     this.constructEmptyNodes(20, this.radius);
     this.scene.add(this.nodesGroup);
 
+    // Connection
+    this.connection = new Connection(this.nodes);
+    this.nodesGroup.add(this.connection.group);
+
     // Lights
     this.lights = {
       ambient: new THREE.AmbientLight(0xffffff, 0.6),
@@ -64,16 +68,10 @@ export default class Cloud {
       this.radius * 3
     );
     this.mouseRaycaster = new MouseRaycaster(
-      this.element,
       this.camera,
-      this.nodes
+      this.nodes,
+      this.connection
     );
-
-    // Test
-    this.connection = new Connection(this.nodes);
-    this.nodesGroup.add(this.connection.group);
-    this.connection.showRandom(this.nodes[0]);
-    console.log(this.connection);
   }
 
   update() {
@@ -223,12 +221,14 @@ class MouseRotation {
 }
 
 class MouseRaycaster {
-  constructor(element, camera, nodes) {
+  constructor(camera, nodes, connection) {
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
     this.camera = camera;
     this.nodes = nodes;
     this.intersectionNode = null;
+
+    this.connection = connection;
 
     this.meshes = [];
     for (const node of nodes) {
@@ -245,15 +245,29 @@ class MouseRaycaster {
     const intersections = this.raycaster.intersectObjects(this.meshes);
     if (intersections.length != 0) {
       const intersection = intersections[0];
+      let intersectedNode;
+      let justHovered = false;
       for (const node of this.nodes) {
-        node.hover(node.mesh.id == intersection.object.id);
+        justHovered |= node.hover(node.mesh.id == intersection.object.id);
         this.intersectionNode = node;
+
+        if (node.mesh.id == intersection.object.id) {
+          // TODO: cleanup
+          intersectedNode = node;
+        }
+      }
+
+      if (justHovered) {
+        this.connection.hide();
+        this.connection.showRandom(intersectedNode);
+        console.log("asdf");
       }
     } else {
       this.intersectionNode = null;
       for (const node of this.nodes) {
         node.hover(false);
       }
+      this.connection.hide();
     }
   }
 

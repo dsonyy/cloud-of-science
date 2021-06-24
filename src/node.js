@@ -65,7 +65,7 @@ export default class Node {
   }
 
   hover(hovered) {
-    if (this.hovered == hovered) return;
+    if (this.hovered == hovered) return false;
     this.hovered = hovered;
 
     if (this.hovered) {
@@ -75,6 +75,7 @@ export default class Node {
       this.material.color.setHex(this.content.color);
       document.body.style.cursor = "auto";
     }
+    return true;
   }
 
   click(clicked) {
