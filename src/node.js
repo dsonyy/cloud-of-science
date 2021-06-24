@@ -1,8 +1,8 @@
 import * as THREE from "three";
 import { cameraPosition } from "./cloud";
 
-const NodeGeometry = new THREE.SphereGeometry(0.5, 40, 40);
-const NodeOutlineGeometry = new THREE.SphereGeometry(0.515, 40, 40);
+const NodeGeometry = new THREE.SphereGeometry(0.6, 40, 40);
+const NodeOutlineGeometry = new THREE.SphereGeometry(0.615, 40, 40);
 const NodeOutlineMaterial = new THREE.MeshBasicMaterial({
   color: 0x111111,
   side: THREE.BackSide,
@@ -33,9 +33,9 @@ export default class Node {
 
     // Icon
     this.map = new THREE.TextureLoader().load(content.icon);
-    const material = new THREE.SpriteMaterial({ map: this.map, fog: false });
+    const material = new THREE.SpriteMaterial({ map: this.map });
     this.icon = new THREE.Sprite(material);
-    this.icon.scale.set(0.7, 0.7, 1);
+    this.icon.scale.set(0.8, 0.8, 1);
     this.icon.position.set(
       this.mesh.position.x,
       this.mesh.position.y,
@@ -52,12 +52,10 @@ export default class Node {
   update(cloudRadius) {
     // Icon opacity
     const dist = (this.calcDistance(cloudRadius) + 1) / 2;
-    if (dist * dist < 0.1) {
-      this.icon.material.opacity = dist * dist;
-    } else if (dist * dist > 0.95) {
+    if (dist > 0.95) {
       this.icon.material.opacity = 1;
     } else {
-      this.icon.material.opacity = dist * dist;
+      this.icon.material.opacity = dist;
     }
   }
 

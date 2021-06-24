@@ -67,22 +67,6 @@ export default class Cloud {
       this.camera,
       this.nodes
     );
-
-    // Icon test
-    // this.map = new THREE.TextureLoader().load("static/icons/observatory.png");
-    // let material = new THREE.SpriteMaterial({
-    //   map: this.map,
-    //   sizeAttenuation: false,
-    // });
-    // this.icon = new THREE.Sprite(material);
-    // this.icon.scale.set(0.05, 0.05, 1);
-    // this.scene.add(this.icon);
-
-    // this.map = new THREE.TextureLoader().load("static/icons/observatory2.png");
-    // this.icon = new THREE.Sprite(material);
-    // this.icon.scale.set(1, 1, 1);
-    // this.icon.position.set(2, 0, 0);
-    // this.scene.add(this.icon);
   }
 
   update() {
@@ -150,9 +134,9 @@ class MouseLightMovement {
     if (this.element.contains(e.target)) {
       const rect = this.element.getBoundingClientRect();
       this.object.position.x =
-        ((e.offsetX - rect.width / 2) / rect.width) * this.width;
+        (-(e.offsetX - rect.width / 2) / rect.width) * this.width;
       this.object.position.y =
-        (-(e.offsetY - rect.height / 2) / rect.height) * this.height;
+        ((e.offsetY - rect.height / 2) / rect.height) * this.height;
     }
   }
 }
