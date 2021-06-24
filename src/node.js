@@ -32,33 +32,8 @@ export default class Node {
     this.group.add(this.meshOutline);
 
     // Icon
-    // this.icon = new THREE.Mesh(
-    //   new THREE.PlaneGeometry(1, 1),
-    //   new THREE.MeshBasicMaterial({
-    //     color: 0x0,
-    //   })
-    // );
-    // this.icon.position.set(
-    //   this.mesh.position.x,
-    //   this.mesh.position.y,
-    //   this.mesh.position.z
-    // );
-    // this.group.add(this.icon);
-
-    // this.icon = new THREE.ArrowHelper(
-    //   new THREE.Vector3(
-    //     this.mesh.position.x,
-    //     this.mesh.position.y,
-    //     this.mesh.position.z
-    //   ),
-    //   this.mesh.position,
-    //   2,
-    //   0x0
-    // );
-    // this.group.add(this.icon);
-
     this.map = new THREE.TextureLoader().load(content.icon);
-    const material = new THREE.SpriteMaterial({ map: this.map });
+    const material = new THREE.SpriteMaterial({ map: this.map, fog: false });
     this.icon = new THREE.Sprite(material);
     this.icon.scale.set(0.7, 0.7, 1);
     this.icon.position.set(
@@ -74,17 +49,17 @@ export default class Node {
     return palette[Math.floor(Math.random() * palette.length)];
   }
 
-  updateColorWithDistance(cloudRadius = 1) {
-    const dist = this.calcDistance(cloudRadius);
-    if (dist >= 0) {
-      this.material.color.setHex(this.content.color);
+  update(cloudRadius) {
+    // Icon opacity
+    const dist = (this.calcDistance(cloudRadius) + 1) / 2;
+    if (dist * dist < 0.1) {
+      this.icon.material.opacity = dist * dist;
+    } else if (dist * dist > 0.95) {
+      this.icon.material.opacity = 1;
     } else {
-      const color = new THREE.Color(this.content.color);
-      let l = this.colorLightnessFactor * -dist;
-      if (l > this.colorMaxLightness) l = this.colorMaxLightness;
-      color.offsetHSL(0, 0, l);
-      this.material.color = color;
+      this.icon.material.opacity = dist * dist;
     }
+    console.log(dist);
   }
 
   hover(hovered) {
@@ -111,7 +86,7 @@ export default class Node {
     }
   }
 
-  calcDistance(cloudRadius = 1) {
+  calcDistance(cloudRadius) {
     const pos = new THREE.Vector3();
     this.mesh.getWorldPosition(pos);
     return pos.z / cloudRadius;

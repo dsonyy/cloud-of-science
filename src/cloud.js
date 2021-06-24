@@ -88,6 +88,9 @@ export default class Cloud {
 
   update() {
     this.mouseRotation.update();
+    for (const node of this.nodes) {
+      node.update(this.radius);
+    }
   }
 
   render() {
