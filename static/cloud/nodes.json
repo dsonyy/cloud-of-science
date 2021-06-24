@@ -1,140 +1,138 @@
 {
-    "colors": {
-        "Robotyka": [229, 101, 102],
-        "Sztuczna inteligencja": [152, 70, 154],
-        "DYI": [176, 212, 176],
-        "Medycyna": [238, 180, 117]
-        
+  "colors": {
+    "Robotyka": [229, 101, 102],
+    "Sztuczna inteligencja": [152, 70, 154],
+    "DYI": [176, 212, 176],
+    "Medycyna": [238, 180, 117]
+  },
+  "nodes": [
+    {
+      "title": "Robotyka roju",
+      "description": "",
+      "category": "Robotyka",
+      "tags": [],
+      "iconSrc": "roboroj.png",
+      "articleSrc": "roboroj.html"
     },
-    "nodes": [
-        {
-            "title": "Robotyka roju",
-            "description": "",
-            "category": "Robotyka",
-            "tags": [],
-            "iconSrc": "roboroj.png",
-            "articleSrc": "roboroj.html"
-        },
-		{
-            "title": "Robotyka modularna",
-            "description": "",
-            "category": "Robotyka",
-            "tags": [],
-            "iconSrc": "robomodu.png",
-            "articleSrc": "robomodu.html"
-        },
-		{
-            "title": "Uczenie przez działanie",
-            "description": "",
-            "category": "Robotyka",
-            "tags": [],
-            "iconSrc": "uczedzia.png",
-            "articleSrc": "uczedzia.html"
-        },
-		{
-            "title": "Neuroprotezy",
-            "description": "",
-            "category": "Robotyka",
-            "tags": [],
-            "iconSrc": "neuroprot.png",
-            "articleSrc": "neuroprot.html"
-        },
-		{
-            "title": "Architektury kognitywne",
-            "description": "",
-            "category": "Sztuczna inteligencja",
-            "tags": [],
-            "iconSrc": "archikog.png",
-            "articleSrc": "archikog.html"
-        },
-		{
-            "title": "Głębokie uczenie maszynowe",
-            "description": "",
-            "category": "Sztuczna inteligencja",
-            "tags": [],
-            "iconSrc": "glebokie.png",
-            "articleSrc": "glebokie.html"
-        },
-		{
-            "title": "Drukowanie 3D",
-            "description": "",
-            "category": "DYI",
-            "tags": [],
-            "iconSrc": "druk3d.png",
-            "articleSrc": "druk3d.html"
-        },
-		{
-            "title": "Automatyczna synteza chemiczna",
-            "description": "",
-            "category": "DYI",
-            "tags": [],
-            "iconSrc": "autochem.png",
-            "articleSrc": "autochem.html"
-        },
-		{
-            "title": "Rolnictwo komórkowe",
-            "description": "",
-            "category": "DYI",
-            "tags": [],
-            "iconSrc": "rolkomo.png",
-            "articleSrc": "rolkomo.html"
-        },
-		{
-            "title": "Inżynieria tkankowa",
-            "description": "",
-            "category": "Medycyna",
-            "tags": [],
-            "iconSrc": "inzytkan.png",
-            "articleSrc": "inzytkan.html"
-        },
-		{
-            "title": "Komórki macierzyste",
-            "description": "",
-            "category": "Medycyna",
-            "tags": [],
-            "iconSrc": "komomac.png",
-            "articleSrc": "komomac.html"
-        },
-		{
-            "title": "Origami DNA",
-            "description": "",
-            "category": "Medycyna",
-            "tags": [],
-            "iconSrc": "origdna.png",
-            "articleSrc": "origdna.html"
-        },
-		{
-            "title": "Organoidy",
-            "description": "",
-            "category": "Medycyna",
-            "tags": [],
-            "iconSrc": "organoid.png",
-            "articleSrc": "organoid.html"
-        },
-		{
-            "title": "CRISPR/Cas",
-            "description": "",
-            "category": "Medycyna",
-            "tags": [],
-            "iconSrc": "crispr.png",
-            "articleSrc": "crispr.html"
-        },
-		{
-            "title": "Obrazowanie aktywności mózgu",
-            "description": "",
-            "category": "Medycyna",
-            "tags": [],
-            "iconSrc": "obramozg.png",
-            "articleSrc": "obramozg.html"
-        },
-		{
-            "title": "Interfejsy mózg-komputer",
-            "description": "",
-            "category": "Medycyna",
-            "tags": [],
-            "iconSrc": "bci.png",
-            "articleSrc": "bci.html"
-        }
-		
-    ]
+    {
+      "title": "Robotyka modularna",
+      "description": "",
+      "category": "Robotyka",
+      "tags": [],
+      "iconSrc": "robomodu.png",
+      "articleSrc": "robomodu.html"
+    },
+    {
+      "title": "Uczenie przez działanie",
+      "description": "",
+      "category": "Robotyka",
+      "tags": [],
+      "iconSrc": "uczedzia.png",
+      "articleSrc": "uczedzia.html"
+    },
+    {
+      "title": "Neuroprotezy",
+      "description": "",
+      "category": "Robotyka",
+      "tags": [],
+      "iconSrc": "neuroprot.png",
+      "articleSrc": "neuroprot.html"
+    },
+    {
+      "title": "Architektury kognitywne",
+      "description": "",
+      "category": "Sztuczna inteligencja",
+      "tags": [],
+      "iconSrc": "archikog.png",
+      "articleSrc": "archikog.html"
+    },
+    {
+      "title": "Głębokie uczenie maszynowe",
+      "description": "",
+      "category": "Sztuczna inteligencja",
+      "tags": [],
+      "iconSrc": "glebokie.png",
+      "articleSrc": "glebokie.html"
+    },
+    {
+      "title": "Drukowanie 3D",
+      "description": "",
+      "category": "DYI",
+      "tags": [],
+      "iconSrc": "druk3d.png",
+      "articleSrc": "druk3d.html"
+    },
+    {
+      "title": "Automatyczna synteza chemiczna",
+      "description": "",
+      "category": "DYI",
+      "tags": [],
+      "iconSrc": "autochem.png",
+      "articleSrc": "autochem.html"
+    },
+    {
+      "title": "Rolnictwo komórkowe",
+      "description": "",
+      "category": "DYI",
+      "tags": [],
+      "iconSrc": "rolkomo.png",
+      "articleSrc": "rolkomo.html"
+    },
+    {
+      "title": "Inżynieria tkankowa",
+      "description": "",
+      "category": "Medycyna",
+      "tags": [],
+      "iconSrc": "inzytkan.png",
+      "articleSrc": "inzytkan.html"
+    },
+    {
+      "title": "Komórki macierzyste",
+      "description": "",
+      "category": "Medycyna",
+      "tags": [],
+      "iconSrc": "komomac.png",
+      "articleSrc": "komomac.html"
+    },
+    {
+      "title": "Origami DNA",
+      "description": "",
+      "category": "Medycyna",
+      "tags": [],
+      "iconSrc": "origdna.png",
+      "articleSrc": "origdna.html"
+    },
+    {
+      "title": "Organoidy",
+      "description": "",
+      "category": "Medycyna",
+      "tags": [],
+      "iconSrc": "organoid.png",
+      "articleSrc": "organoid.html"
+    },
+    {
+      "title": "CRISPR/Cas",
+      "description": "",
+      "category": "Medycyna",
+      "tags": [],
+      "iconSrc": "crispr.png",
+      "articleSrc": "crispr.html"
+    },
+    {
+      "title": "Obrazowanie aktywności mózgu",
+      "description": "",
+      "category": "Medycyna",
+      "tags": [],
+      "iconSrc": "obramozg.png",
+      "articleSrc": "obramozg.html"
+    },
+    {
+      "title": "Interfejsy mózg-komputer",
+      "description": "",
+      "category": "Medycyna",
+      "tags": [],
+      "iconSrc": "bci.png",
+      "articleSrc": "bci.html"
+    }
+  ]
 }

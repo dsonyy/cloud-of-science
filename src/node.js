@@ -45,7 +45,7 @@ export default class Node {
     this.map = new THREE.TextureLoader().load(content.iconSrc);
     const material = new THREE.SpriteMaterial({ map: this.map });
     this.icon = new THREE.Sprite(material);
-    this.icon.scale.set(0.7, 0.7, 1);
+    this.icon.scale.set(1, 1, 1);
     this.icon.position.set(
       this.mesh.position.x,
       this.mesh.position.y,
