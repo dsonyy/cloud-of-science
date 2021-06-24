@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import Node from "./node";
 import Connection from "./connection";
+import NodesLoader from "./nodesLoader";
 
 export const cameraPosition = new THREE.Vector3(0, 0, 16);
 
@@ -36,12 +37,8 @@ export default class Cloud {
     this.radius = 5;
     this.nodes = [];
     this.nodesGroup = new THREE.Group();
-    this.constructEmptyNodes(20, this.radius);
+    this.nodesGroup.rotation.z = Math.PI / 2;
     this.scene.add(this.nodesGroup);
-
-    // Connection
-    this.connection = new Connection(this.nodes);
-    this.nodesGroup.add(this.connection.group);
 
     // Lights
     this.lights = {
@@ -59,6 +56,10 @@ export default class Cloud {
       this.camera.position.z + this.radius * 1.25
     );
 
+    // Connection
+    this.connection = new Connection([]);
+    this.nodesGroup.add(this.connection.group);
+
     // Events
     this.mouseRotation = new MouseRotation(this.element, this.nodesGroup);
     this.mouseLightMovement = new MouseLightMovement(
@@ -67,11 +68,19 @@ export default class Cloud {
       this.radius * 4,
       this.radius * 3
     );
-    this.mouseRaycaster = new MouseRaycaster(
-      this.camera,
-      this.nodes,
-      this.connection
-    );
+    this.mouseRaycaster = new MouseRaycaster(this.camera, [], this.connection);
+
+    // Loading nodes
+    this.nodesLoader = new NodesLoader(this.radius);
+    this.nodesLoader.fetch().then(() => {
+      this.nodes = this.nodesLoader.nodes;
+      for (const node of this.nodes) {
+        this.nodesGroup.add(node.group);
+      }
+      this.connection.nodes = this.nodes;
+      this.mouseRaycaster.setNodes(this.nodes);
+      console.log(this.nodes);
+    });
   }
 
   update() {
@@ -109,7 +118,7 @@ export default class Cloud {
         new Node(point[0], point[1], point[2], {
           id: id++,
           color: Node.randomColor,
-          icon: "static/icons/observatory.png",
+          icon: "static/icons/dummy-icon0.png",
         })
       );
       this.nodesGroup.add(this.nodes[this.nodes.length - 1].group);
@@ -236,6 +245,14 @@ class MouseRaycaster {
     }
   }
 
+  setNodes(nodes) {
+    this.nodes = nodes;
+    this.meshes = [];
+    for (const node of nodes) {
+      this.meshes.push(node.mesh);
+    }
+  }
+
   onPointerMove(e) {
     this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -260,7 +277,6 @@ class MouseRaycaster {
       if (justHovered) {
         this.connection.hide();
         this.connection.showRandom(intersectedNode);
-        console.log("asdf");
       }
     } else {
       this.intersectionNode = null;

@@ -13,16 +13,21 @@ const NodeOutlineMaterial = new THREE.MeshBasicMaterial({
 
 export default class Node {
   constructor(x, y, z, content) {
+    // Content
     this.id = content.id;
-    this.content = content;
+    this.color = new THREE.Color(
+      content.color[0] / 255,
+      content.color[1] / 255,
+      content.color[2] / 255
+    );
+
     this.group = new THREE.Group();
     this.hovered = false;
     this.clicked = false;
-
     this.position = new THREE.Vector3(x, y, z);
 
     // Bubble
-    this.material = createGradientMaterial(5, this.content.color);
+    this.material = createGradientMaterial(5, this.color.getHex());
     this.geometry = NodeGeometry;
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.position.set(x, y, z);
@@ -37,7 +42,7 @@ export default class Node {
     this.group.add(this.meshOutline);
 
     // Icon
-    this.map = new THREE.TextureLoader().load(content.icon);
+    this.map = new THREE.TextureLoader().load(content.iconSrc);
     const material = new THREE.SpriteMaterial({ map: this.map });
     this.icon = new THREE.Sprite(material);
     this.icon.scale.set(0.7, 0.7, 1);
@@ -72,7 +77,7 @@ export default class Node {
       this.material.color.offsetHSL(0, 0, 0.3);
       document.body.style.cursor = "pointer";
     } else {
-      this.material.color.setHex(this.content.color);
+      this.material.color.set(this.color);
       document.body.style.cursor = "auto";
     }
     return true;
