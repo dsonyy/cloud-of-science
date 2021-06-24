@@ -1,8 +1,11 @@
 import * as THREE from "three";
+import { NodeRadius } from "./node";
 
 const connectionMaterial = new THREE.LineBasicMaterial({
   color: 0x0,
-  side: THREE.BackSide,
+  transparent: true,
+  linewidth: 1, // TOFIX: this property is not supported by modern OpenGL
+  // source: https://stackoverflow.com/questions/11638883/thickness-of-lines-using-three-linebasicmaterial
 });
 
 export default class Connection {
@@ -24,9 +27,9 @@ export default class Connection {
     }
 
     for (const neigbor of neighbors) {
-      const a = neigbor.position;
-      const b = activeNode.position;
-      this.group.add(Connection.createLineGeometry(a, b));
+      this.group.add(
+        Connection.createConnection(neigbor.position, activeNode.position)
+      );
     }
   }
 
@@ -34,10 +37,36 @@ export default class Connection {
     this.group.clear();
   }
 
-  static createLineGeometry(a, b) {
-    return new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([a, b]),
+  static createConnection(a, b) {
+    // Distance a->b
+    const dist = a.distanceTo(b);
+
+    // Normalized vector a->b
+    const norm = new THREE.Vector3();
+    norm.subVectors(b, a).normalize();
+
+    // Shrink vector
+    const shrink = new THREE.Vector3();
+    shrink.copy(norm);
+    shrink.multiplyScalar(NodeRadius);
+
+    // Shrinking a
+    const A = new THREE.Vector3();
+    A.copy(a);
+    A.add(shrink);
+
+    // Shrinking b
+    const B = new THREE.Vector3();
+    B.copy(b);
+    B.add(shrink.negate());
+
+    // Creating line object
+    const line = new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([A, B]),
       connectionMaterial
     );
+    line.material.opacity = 0.6;
+    console.log(line.material);
+    return line;
   }
 }

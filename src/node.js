@@ -1,8 +1,11 @@
 import * as THREE from "three";
 import { cameraPosition } from "./cloud";
 
-const NodeGeometry = new THREE.SphereGeometry(0.6, 40, 40);
-const NodeOutlineGeometry = new THREE.SphereGeometry(0.615, 40, 40);
+export const NodeRadius = 0.6;
+export const NodeOutlineRadius = NodeRadius + 0.015;
+
+const NodeGeometry = new THREE.SphereGeometry(NodeRadius, 40, 40);
+const NodeOutlineGeometry = new THREE.SphereGeometry(NodeOutlineRadius, 40, 40);
 const NodeOutlineMaterial = new THREE.MeshBasicMaterial({
   color: 0x111111,
   side: THREE.BackSide,
@@ -111,5 +114,6 @@ function createGradientMaterial(n, color) {
   return new THREE.MeshToonMaterial({
     color: color,
     gradientMap: gradientMap,
+    side: THREE.BackSide,
   });
 }
