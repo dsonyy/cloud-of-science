@@ -1,7 +1,11 @@
 import * as THREE from "three";
+import { cameraPosition } from "./cloud";
 
-const NodeGeometry = new THREE.SphereGeometry(0.5, 40, 40);
-const NodeOutlineGeometry = new THREE.SphereGeometry(0.515, 40, 40);
+export const NodeRadius = 0.6;
+export const NodeOutlineRadius = NodeRadius + 0.015;
+
+const NodeGeometry = new THREE.SphereGeometry(NodeRadius, 40, 40);
+const NodeOutlineGeometry = new THREE.SphereGeometry(NodeOutlineRadius, 40, 40);
 const NodeOutlineMaterial = new THREE.MeshBasicMaterial({
   color: 0x111111,
   side: THREE.BackSide,
@@ -14,6 +18,8 @@ export default class Node {
     this.group = new THREE.Group();
     this.hovered = false;
     this.clicked = false;
+
+    this.position = new THREE.Vector3(x, y, z);
 
     // Bubble
     this.material = createGradientMaterial(5, this.content.color);
@@ -34,6 +40,13 @@ export default class Node {
     this.map = new THREE.TextureLoader().load(content.icon);
     const material = new THREE.SpriteMaterial({ map: this.map });
     this.icon = new THREE.Sprite(material);
+    this.icon.scale.set(0.7, 0.7, 1);
+    this.icon.position.set(
+      this.mesh.position.x,
+      this.mesh.position.y,
+      this.mesh.position.z
+    );
+    this.group.add(this.icon);
   }
 
   static get randomColor() {
@@ -41,21 +54,18 @@ export default class Node {
     return palette[Math.floor(Math.random() * palette.length)];
   }
 
-  updateColorWithDistance(cloudRadius = 1) {
-    const dist = this.calcDistance(cloudRadius);
-    if (dist >= 0) {
-      this.material.color.setHex(this.content.color);
+  update(cloudRadius) {
+    // Icon opacity
+    const dist = (this.calcDistance(cloudRadius) + 1) / 2;
+    if (dist > 0.95) {
+      this.icon.material.opacity = 1;
     } else {
-      const color = new THREE.Color(this.content.color);
-      let l = this.colorLightnessFactor * -dist;
-      if (l > this.colorMaxLightness) l = this.colorMaxLightness;
-      color.offsetHSL(0, 0, l);
-      this.material.color = color;
+      this.icon.material.opacity = dist;
     }
   }
 
   hover(hovered) {
-    if (this.hovered == hovered) return;
+    if (this.hovered == hovered) return false;
     this.hovered = hovered;
 
     if (this.hovered) {
@@ -65,6 +75,7 @@ export default class Node {
       this.material.color.setHex(this.content.color);
       document.body.style.cursor = "auto";
     }
+    return true;
   }
 
   click(clicked) {
@@ -78,7 +89,7 @@ export default class Node {
     }
   }
 
-  calcDistance(cloudRadius = 1) {
+  calcDistance(cloudRadius) {
     const pos = new THREE.Vector3();
     this.mesh.getWorldPosition(pos);
     return pos.z / cloudRadius;
@@ -104,5 +115,6 @@ function createGradientMaterial(n, color) {
   return new THREE.MeshToonMaterial({
     color: color,
     gradientMap: gradientMap,
+    side: THREE.BackSide,
   });
 }

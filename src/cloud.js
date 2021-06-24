@@ -1,5 +1,8 @@
 import * as THREE from "three";
 import Node from "./node";
+import Connection from "./connection";
+
+export const cameraPosition = new THREE.Vector3(0, 0, 16);
 
 export default class Cloud {
   constructor(element) {
@@ -18,7 +21,11 @@ export default class Cloud {
       0.1,
       1000
     );
-    this.camera.position.z = 16;
+    this.camera.position.set(
+      cameraPosition.x,
+      cameraPosition.y,
+      cameraPosition.z
+    );
 
     // Renderer
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -29,10 +36,12 @@ export default class Cloud {
     this.radius = 5;
     this.nodes = [];
     this.nodesGroup = new THREE.Group();
-    this.nodeIconsGroup = new THREE.Group();
     this.constructEmptyNodes(20, this.radius);
     this.scene.add(this.nodesGroup);
-    this.scene.add(this.nodeIconsGroup);
+
+    // Connection
+    this.connection = new Connection(this.nodes);
+    this.nodesGroup.add(this.connection.group);
 
     // Lights
     this.lights = {
@@ -51,7 +60,6 @@ export default class Cloud {
     );
 
     // Events
-    window.addEventListener("resize", () => this.onWindowResize());
     this.mouseRotation = new MouseRotation(this.element, this.nodesGroup);
     this.mouseLightMovement = new MouseLightMovement(
       this.element,
@@ -60,14 +68,17 @@ export default class Cloud {
       this.radius * 3
     );
     this.mouseRaycaster = new MouseRaycaster(
-      this.element,
       this.camera,
-      this.nodes
+      this.nodes,
+      this.connection
     );
   }
 
   update() {
     this.mouseRotation.update();
+    for (const node of this.nodes) {
+      node.update(this.radius);
+    }
   }
 
   render() {
@@ -98,11 +109,10 @@ export default class Cloud {
         new Node(point[0], point[1], point[2], {
           id: id++,
           color: Node.randomColor,
-          // icon: "static/sprite0.png",
+          icon: "static/icons/observatory.png",
         })
       );
       this.nodesGroup.add(this.nodes[this.nodes.length - 1].group);
-      this.nodeIconsGroup.add(this.nodes[this.nodes.length - 1].icon);
     }
     this.nodesGroup.rotation.z = Math.PI / 2;
   }
@@ -123,17 +133,15 @@ class MouseLightMovement {
     this.object = object;
     this.width = areaWidth;
     this.height = areaHeight;
-
-    this.element.addEventListener("pointermove", (e) => this.onPointerMove(e));
   }
 
   onPointerMove(e) {
     if (this.element.contains(e.target)) {
       const rect = this.element.getBoundingClientRect();
       this.object.position.x =
-        ((e.offsetX - rect.width / 2) / rect.width) * this.width;
+        (-(e.offsetX - rect.width / 2) / rect.width) * this.width;
       this.object.position.y =
-        (-(e.offsetY - rect.height / 2) / rect.height) * this.height;
+        ((e.offsetY - rect.height / 2) / rect.height) * this.height;
     }
   }
 }
@@ -153,10 +161,6 @@ class MouseRotation {
 
     this.vectorX = 0;
     this.vectorY = 10;
-
-    document.addEventListener("pointermove", (e) => this.onPointerMove(e));
-    document.addEventListener("pointerdown", (e) => this.onPointerDown(e));
-    document.addEventListener("pointerup", (e) => this.onPointerUp(e));
   }
 
   update() {
@@ -217,20 +221,19 @@ class MouseRotation {
 }
 
 class MouseRaycaster {
-  constructor(element, camera, nodes) {
+  constructor(camera, nodes, connection) {
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
     this.camera = camera;
     this.nodes = nodes;
     this.intersectionNode = null;
 
+    this.connection = connection;
+
     this.meshes = [];
     for (const node of nodes) {
       this.meshes.push(node.mesh);
     }
-
-    element.addEventListener("pointermove", (e) => this.onPointerMove(e));
-    element.addEventListener("pointerdown", (e) => this.onPointerDown(e));
   }
 
   onPointerMove(e) {
@@ -242,15 +245,29 @@ class MouseRaycaster {
     const intersections = this.raycaster.intersectObjects(this.meshes);
     if (intersections.length != 0) {
       const intersection = intersections[0];
+      let intersectedNode;
+      let justHovered = false;
       for (const node of this.nodes) {
-        node.hover(node.mesh.id == intersection.object.id);
+        justHovered |= node.hover(node.mesh.id == intersection.object.id);
         this.intersectionNode = node;
+
+        if (node.mesh.id == intersection.object.id) {
+          // TODO: cleanup
+          intersectedNode = node;
+        }
+      }
+
+      if (justHovered) {
+        this.connection.hide();
+        this.connection.showRandom(intersectedNode);
+        console.log("asdf");
       }
     } else {
       this.intersectionNode = null;
       for (const node of this.nodes) {
         node.hover(false);
       }
+      this.connection.hide();
     }
   }
 
