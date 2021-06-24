@@ -79,7 +79,6 @@ export default class Cloud {
       }
       this.connection.nodes = this.nodes;
       this.mouseRaycaster.setNodes(this.nodes);
-      console.log(this.nodes);
     });
   }
 
