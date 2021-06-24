@@ -118,7 +118,7 @@ export default class Cloud {
         new Node(point[0], point[1], point[2], {
           id: id++,
           color: Node.randomColor,
-          icon: "static/observatory.png",
+          icon: "static/icons/observatory.png",
         })
       );
       this.nodesGroup.add(this.nodes[this.nodes.length - 1].group);
