@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import Node from "./node";
 
+export const cameraPosition = new THREE.Vector3(0, 0, 16);
+
 export default class Cloud {
   constructor(element) {
     this.element = element;
@@ -18,7 +20,11 @@ export default class Cloud {
       0.1,
       1000
     );
-    this.camera.position.z = 16;
+    this.camera.position.set(
+      cameraPosition.x,
+      cameraPosition.y,
+      cameraPosition.z
+    );
 
     // Renderer
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -29,10 +35,8 @@ export default class Cloud {
     this.radius = 5;
     this.nodes = [];
     this.nodesGroup = new THREE.Group();
-    this.nodeIconsGroup = new THREE.Group();
     this.constructEmptyNodes(20, this.radius);
     this.scene.add(this.nodesGroup);
-    this.scene.add(this.nodeIconsGroup);
 
     // Lights
     this.lights = {
@@ -67,6 +71,9 @@ export default class Cloud {
 
   update() {
     this.mouseRotation.update();
+    for (const node of this.nodes) {
+      node.update(this.radius);
+    }
   }
 
   render() {
@@ -97,11 +104,10 @@ export default class Cloud {
         new Node(point[0], point[1], point[2], {
           id: id++,
           color: Node.randomColor,
-          // icon: "static/sprite0.png",
+          icon: "static/icons/observatory.png",
         })
       );
       this.nodesGroup.add(this.nodes[this.nodes.length - 1].group);
-      this.nodeIconsGroup.add(this.nodes[this.nodes.length - 1].icon);
     }
     this.nodesGroup.rotation.z = Math.PI / 2;
   }
@@ -128,9 +134,9 @@ class MouseLightMovement {
     if (this.element.contains(e.target)) {
       const rect = this.element.getBoundingClientRect();
       this.object.position.x =
-        ((e.offsetX - rect.width / 2) / rect.width) * this.width;
+        (-(e.offsetX - rect.width / 2) / rect.width) * this.width;
       this.object.position.y =
-        (-(e.offsetY - rect.height / 2) / rect.height) * this.height;
+        ((e.offsetY - rect.height / 2) / rect.height) * this.height;
     }
   }
 }
