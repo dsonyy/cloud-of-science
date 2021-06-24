@@ -111,6 +111,5 @@ function createGradientMaterial(n, color) {
   return new THREE.MeshToonMaterial({
     color: color,
     gradientMap: gradientMap,
-    side: THREE.BackSide,
   });
 }
