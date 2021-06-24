@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import Node from "./node";
+import Connection from "./connection";
 
 export const cameraPosition = new THREE.Vector3(0, 0, 16);
 
@@ -67,6 +68,12 @@ export default class Cloud {
       this.camera,
       this.nodes
     );
+
+    //Test
+    this.connection = new Connection(this.nodes);
+    this.nodesGroup.add(this.connection.group);
+    this.connection.showRandom(this.nodes[0]);
+    console.log(this.connection);
   }
 
   update() {

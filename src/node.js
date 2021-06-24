@@ -16,6 +16,8 @@ export default class Node {
     this.hovered = false;
     this.clicked = false;
 
+    this.position = new THREE.Vector3(x, y, z);
+
     // Bubble
     this.material = createGradientMaterial(5, this.content.color);
     this.geometry = NodeGeometry;
