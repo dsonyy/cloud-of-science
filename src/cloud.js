@@ -37,7 +37,6 @@ export default class Cloud {
     this.nodesGroup = new THREE.Group();
     this.constructEmptyNodes(20, this.radius);
     this.scene.add(this.nodesGroup);
-    this.scene.add(this.nodeIconsGroup);
 
     // Lights
     this.lights = {

@@ -59,7 +59,6 @@ export default class Node {
     } else {
       this.icon.material.opacity = dist * dist;
     }
-    console.log(dist);
   }
 
   hover(hovered) {
