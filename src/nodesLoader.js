@@ -4,11 +4,14 @@ import Cloud from "./cloud";
 const NodesFilePath = "static/cloud/nodes.json";
 
 export default class NodesLoader {
-  constructor() {
+  constructor(cloudRadius) {
     this.nodes = [];
     this.colors;
+    this.cloudRadius = cloudRadius;
+  }
 
-    fetch(NodesFilePath)
+  async fetch() {
+    return fetch(NodesFilePath)
       .then((response) => response.json())
       .then((data) => this.processData(data))
       .catch(function (error) {
@@ -19,7 +22,10 @@ export default class NodesLoader {
   processData(data) {
     this.colors = data.colors;
 
-    const points = Cloud.calcFibonacciSpherePoints(data.nodes.length);
+    const points = Cloud.calcFibonacciSpherePoints(
+      data.nodes.length,
+      this.cloudRadius
+    );
 
     let id = 0;
     for (const rawNode of data.nodes) {

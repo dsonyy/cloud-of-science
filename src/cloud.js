@@ -37,12 +37,8 @@ export default class Cloud {
     this.radius = 5;
     this.nodes = [];
     this.nodesGroup = new THREE.Group();
-    this.constructEmptyNodes(20, this.radius);
+    this.nodesGroup.rotation.z = Math.PI / 2;
     this.scene.add(this.nodesGroup);
-
-    // Connection
-    this.connection = new Connection(this.nodes);
-    this.nodesGroup.add(this.connection.group);
 
     // Lights
     this.lights = {
@@ -60,6 +56,10 @@ export default class Cloud {
       this.camera.position.z + this.radius * 1.25
     );
 
+    // Connection
+    this.connection = new Connection([]);
+    this.nodesGroup.add(this.connection.group);
+
     // Events
     this.mouseRotation = new MouseRotation(this.element, this.nodesGroup);
     this.mouseLightMovement = new MouseLightMovement(
@@ -68,15 +68,19 @@ export default class Cloud {
       this.radius * 4,
       this.radius * 3
     );
-    this.mouseRaycaster = new MouseRaycaster(
-      this.camera,
-      this.nodes,
-      this.connection
-    );
+    this.mouseRaycaster = new MouseRaycaster(this.camera, [], this.connection);
 
-    // Nodes loader
-    this.nodesLoader = new NodesLoader();
-    console.log(this.nodesLoader.nodes);
+    // Loading nodes
+    this.nodesLoader = new NodesLoader(this.radius);
+    this.nodesLoader.fetch().then(() => {
+      this.nodes = this.nodesLoader.nodes;
+      for (const node of this.nodes) {
+        this.nodesGroup.add(node.group);
+      }
+      this.connection.nodes = this.nodes;
+      this.mouseRaycaster.setNodes(this.nodes);
+      console.log(this.nodes);
+    });
   }
 
   update() {
@@ -235,6 +239,14 @@ class MouseRaycaster {
 
     this.connection = connection;
 
+    this.meshes = [];
+    for (const node of nodes) {
+      this.meshes.push(node.mesh);
+    }
+  }
+
+  setNodes(nodes) {
+    this.nodes = nodes;
     this.meshes = [];
     for (const node of nodes) {
       this.meshes.push(node.mesh);
