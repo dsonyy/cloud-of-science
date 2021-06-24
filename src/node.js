@@ -1,8 +1,11 @@
 import * as THREE from "three";
 import { cameraPosition } from "./cloud";
 
-const NodeGeometry = new THREE.SphereGeometry(0.6, 40, 40);
-const NodeOutlineGeometry = new THREE.SphereGeometry(0.615, 40, 40);
+export const NodeRadius = 0.6;
+export const NodeOutlineRadius = NodeRadius + 0.015;
+
+const NodeGeometry = new THREE.SphereGeometry(NodeRadius, 40, 40);
+const NodeOutlineGeometry = new THREE.SphereGeometry(NodeOutlineRadius, 40, 40);
 const NodeOutlineMaterial = new THREE.MeshBasicMaterial({
   color: 0x111111,
   side: THREE.BackSide,
@@ -15,6 +18,8 @@ export default class Node {
     this.group = new THREE.Group();
     this.hovered = false;
     this.clicked = false;
+
+    this.position = new THREE.Vector3(x, y, z);
 
     // Bubble
     this.material = createGradientMaterial(5, this.content.color);
@@ -60,7 +65,7 @@ export default class Node {
   }
 
   hover(hovered) {
-    if (this.hovered == hovered) return;
+    if (this.hovered == hovered) return false;
     this.hovered = hovered;
 
     if (this.hovered) {
@@ -70,6 +75,7 @@ export default class Node {
       this.material.color.setHex(this.content.color);
       document.body.style.cursor = "auto";
     }
+    return true;
   }
 
   click(clicked) {
