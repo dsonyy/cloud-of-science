@@ -47,8 +47,9 @@ nav div:hover {
 footer {
   font-size: small;
   position: fixed;
-  right: 7px;
+  left: 7px;
   bottom: 7px;
+  opacity: 0.5;
 }
 
 a {
