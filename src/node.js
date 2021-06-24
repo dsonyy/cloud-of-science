@@ -45,27 +45,28 @@ export default class Node {
     // );
     // this.group.add(this.icon);
 
-    this.icon = new THREE.ArrowHelper(
-      new THREE.Vector3(
-        this.mesh.position.x,
-        this.mesh.position.y,
-        this.mesh.position.z
-      ),
-      this.mesh.position,
-      2,
-      0x0
-    );
-    this.group.add(this.icon);
-
-    // this.map = new THREE.TextureLoader().load(content.icon);
-    // const material = new THREE.SpriteMaterial({ map: this.map });
-    // this.icon = new THREE.Sprite(material);
-    // this.icon.scale.set(1, 1, 1);
-    //   this.icon.position.set(
+    // this.icon = new THREE.ArrowHelper(
+    //   new THREE.Vector3(
     //     this.mesh.position.x,
     //     this.mesh.position.y,
     //     this.mesh.position.z
-    //   );
+    //   ),
+    //   this.mesh.position,
+    //   2,
+    //   0x0
+    // );
+    // this.group.add(this.icon);
+
+    this.map = new THREE.TextureLoader().load(content.icon);
+    const material = new THREE.SpriteMaterial({ map: this.map });
+    this.icon = new THREE.Sprite(material);
+    this.icon.scale.set(0.8, 0.8, 1);
+    this.icon.position.set(
+      this.mesh.position.x,
+      this.mesh.position.y,
+      this.mesh.position.z
+    );
+    this.group.add(this.icon);
   }
 
   static get randomColor() {
@@ -86,9 +87,14 @@ export default class Node {
     }
   }
 
-  update() {
-    const camera = this.mesh.worldToLocal(cameraPosition).normalize();
-    this.icon.setDirection(camera);
+  update(group) {
+    this.icon.lookAt(cameraPosition);
+
+    // let rotation = new THREE.Quaternion();
+    // this.group.getWorldQuaternion(rotation);
+    // rotation.set(-rotation.x, -rotation.y, -rotation.z, -rotation.w);
+    // this.icon.setRotationFromQuaternion(rotation);
+    // this.icon.setDirection(camera);
     // let globalPos = new THREE.Vector3();
     // this.mesh.getWorldPosition(globalPos);
     // let offset = new THREE.Vector3();
@@ -156,5 +162,6 @@ function createGradientMaterial(n, color) {
   return new THREE.MeshToonMaterial({
     color: color,
     gradientMap: gradientMap,
+    side: THREE.BackSide,
   });
 }

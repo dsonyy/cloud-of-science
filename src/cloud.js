@@ -37,7 +37,7 @@ export default class Cloud {
     this.nodeIcons = [];
     this.nodesGroup = new THREE.Group();
     this.nodeIconsGroup = new THREE.Group();
-    this.constructEmptyNodes(2, this.radius);
+    this.constructEmptyNodes(20, this.radius);
     this.scene.add(this.nodesGroup);
     this.scene.add(this.nodeIconsGroup);
 
@@ -94,7 +94,7 @@ export default class Cloud {
   update() {
     this.mouseRotation.update();
     for (const node of this.nodes) {
-      node.update();
+      node.update(this.nodesGroup);
     }
   }
 
