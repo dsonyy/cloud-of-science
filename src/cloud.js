@@ -96,9 +96,20 @@ export default class Cloud {
     }
 
     for (const node of this.nodes) {
-      if (this.mouseRaycaster.hoveredNode)
-        node.hover(this.mouseRaycaster.hoveredNode.id == node.id);
-      else node.hover(false);
+      if (this.mouseRaycaster.hoveredNode) {
+        const state = this.mouseRaycaster.hoveredNode.id == node.id;
+        const changed = node.hover(state);
+        if (state && changed) {
+          this.connection.hide();
+          this.connection.showRandom(this.mouseRaycaster.hoveredNode);
+        }
+      } else {
+        node.hover(false);
+      }
+    }
+
+    if (this.mouseRaycaster.hoveredNode == null) {
+      this.connection.hide();
     }
   }
 
