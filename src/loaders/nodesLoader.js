@@ -42,7 +42,7 @@ export default class NodesLoader {
         tags: rawNode.tags,
         color: color,
         iconSrc: "static/icons/" + rawNode.iconSrc,
-        articleSrc: "static/cloud/" + rawNode.articleSrc,
+        articleName: rawNode.articleSrc,
       });
       this.nodes.push(node);
     }

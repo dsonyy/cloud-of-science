@@ -21,6 +21,7 @@ export default class Node {
       content.color[2] / 255
     );
     this.title = content.title;
+    this.articleName = content.articleName;
 
     this.group = new THREE.Group();
     this.hovered = false;
@@ -85,7 +86,7 @@ export default class Node {
   }
 
   click(clicked) {
-    if (this.clicked == clicked) return;
+    if (this.clicked == clicked) return false;
     this.clicked = clicked;
 
     if (this.clicked) {
@@ -93,6 +94,7 @@ export default class Node {
     } else {
       document.getElementById("article").style.display = "none";
     }
+    return true;
   }
 
   calcDistance(cloudRadius) {

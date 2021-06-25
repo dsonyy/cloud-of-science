@@ -1,16 +1,15 @@
 import * as THREE from "three";
 
 export default class MouseRaycaster {
-  constructor(camera, nodes, connection) {
+  constructor(camera, nodes) {
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
     this.camera = camera;
     this.nodes = nodes;
     this.intersectionNode = null;
-    this.connection = connection;
 
     this.hoveredNode = null;
-    this.previouslyHoveredNode = null;
+    this.clickedNode = null;
   }
 
   onPointerMove(e) {
@@ -34,7 +33,6 @@ export default class MouseRaycaster {
 
     if (justHoveredNode == null && this.hoveredNode != null) {
       // Left
-      this.previouslyHoveredNode = this.hoveredNode;
       this.hoveredNode = null;
     } else if (justHoveredNode == null) {
       // Nothing has been hovered yet
@@ -47,44 +45,14 @@ export default class MouseRaycaster {
     } else if (justHoveredNode.id == this.hoveredNode.id) {
       // Still hovering
     }
-
-    // if (this.hoveredNode != null && !this.hoveredNode.hovered) {
-    //   console.log(this.hoveredNode.title);
-    //   this.hoveredNode.hovered = true;
-    // }
-
-    // const intersections = this.raycaster.intersectObjects(this.meshes);
-    // if (intersections.length != 0) {
-    //   const intersection = intersections[0];
-    //   let intersectedNode;
-    //   let justHovered = false;
-    //   for (const node of this.nodes) {
-    //     justHovered |= node.hover(node.mesh.id == intersection.object.id);
-    //     this.intersectionNode = node;
-
-    //     if (node.mesh.id == intersection.object.id) {
-    //       // TODO: cleanup
-    //       intersectedNode = node;
-    //     }
-    //   }
-
-    //   if (justHovered) {
-    //     this.connection.hide();
-    //     this.connection.showRandom(intersectedNode);
-    //   }
-    // } else {
-    //   this.intersectionNode = null;
-    //   for (const node of this.nodes) {
-    //     node.hover(false);
-    //   }
-    //   this.connection.hide();
-    // }
   }
 
   onPointerDown(e) {
     if (e.button == 0) {
       if (this.hoveredNode != null) {
-        this.clicked = true;
+        this.clickedNode = this.hoveredNode;
+      } else {
+        this.clickedNode = null;
       }
     }
   }

@@ -96,6 +96,7 @@ export default class Cloud {
     }
 
     for (const node of this.nodes) {
+      // Hovering
       if (this.mouseRaycaster.hoveredNode) {
         const state = this.mouseRaycaster.hoveredNode.id == node.id;
         const changed = node.hover(state);
@@ -105,6 +106,18 @@ export default class Cloud {
         }
       } else {
         node.hover(false);
+      }
+
+      // Clicking
+      if (this.mouseRaycaster.clickedNode) {
+        const state = this.mouseRaycaster.clickedNode.id == node.id;
+        const changed = node.click(state);
+        if (state && changed) {
+          console.log(node.articleName);
+          this.articleLoader.reloadArticle(node.articleName);
+        }
+      } else {
+        node.click(false);
       }
     }
 
