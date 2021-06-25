@@ -94,6 +94,12 @@ export default class Cloud {
     for (const node of this.nodes) {
       node.update(this.radius);
     }
+
+    for (const node of this.nodes) {
+      if (this.mouseRaycaster.hoveredNode)
+        node.hover(this.mouseRaycaster.hoveredNode.id == node.id);
+      else node.hover(false);
+    }
   }
 
   render() {

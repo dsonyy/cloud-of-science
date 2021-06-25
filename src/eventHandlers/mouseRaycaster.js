@@ -10,6 +10,7 @@ export default class MouseRaycaster {
     this.connection = connection;
 
     this.hoveredNode = null;
+    this.previouslyHoveredNode = null;
   }
 
   onPointerMove(e) {
@@ -33,6 +34,7 @@ export default class MouseRaycaster {
 
     if (justHoveredNode == null && this.hoveredNode != null) {
       // Left
+      this.previouslyHoveredNode = this.hoveredNode;
       this.hoveredNode = null;
     } else if (justHoveredNode == null) {
       // Nothing has been hovered yet
@@ -42,7 +44,6 @@ export default class MouseRaycaster {
     ) {
       // Just hovered
       this.hoveredNode = justHoveredNode;
-      console.log(justHoveredNode.title);
     } else if (justHoveredNode.id == this.hoveredNode.id) {
       // Still hovering
     }
@@ -82,12 +83,8 @@ export default class MouseRaycaster {
 
   onPointerDown(e) {
     if (e.button == 0) {
-      if (this.intersectionNode != null) {
-        this.intersectionNode.click(true);
-      } else {
-        for (const node of this.nodes) {
-          node.click(false);
-        }
+      if (this.hoveredNode != null) {
+        this.clicked = true;
       }
     }
   }
