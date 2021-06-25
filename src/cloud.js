@@ -82,7 +82,7 @@ export default class Cloud {
         this.nodesGroup.add(node.group);
       }
       this.connection.nodes = this.nodes;
-      this.mouseRaycaster.setNodes(this.nodes);
+      this.mouseRaycaster.nodes = this.nodes;
     });
 
     // Loading articles

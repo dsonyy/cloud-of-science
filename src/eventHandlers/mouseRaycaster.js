@@ -7,21 +7,9 @@ export default class MouseRaycaster {
     this.camera = camera;
     this.nodes = nodes;
     this.intersectionNode = null;
-
     this.connection = connection;
 
-    this.meshes = [];
-    for (const node of nodes) {
-      this.meshes.push(node.mesh);
-    }
-  }
-
-  setNodes(nodes) {
-    this.nodes = nodes;
-    this.meshes = [];
-    for (const node of nodes) {
-      this.meshes.push(node.mesh);
-    }
+    this.hoveredNode = null;
   }
 
   onPointerMove(e) {
@@ -30,32 +18,47 @@ export default class MouseRaycaster {
 
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
-    const intersections = this.raycaster.intersectObjects(this.meshes);
-    if (intersections.length != 0) {
-      const intersection = intersections[0];
-      let intersectedNode;
-      let justHovered = false;
-      for (const node of this.nodes) {
-        justHovered |= node.hover(node.mesh.id == intersection.object.id);
-        this.intersectionNode = node;
-
-        if (node.mesh.id == intersection.object.id) {
-          // TODO: cleanup
-          intersectedNode = node;
-        }
+    let closestInter = null;
+    this.hoveredNode = null;
+    for (const node of this.nodes) {
+      const inter = this.raycaster.intersectObject(node.mesh);
+      if (
+        inter.length == 1 &&
+        (closestInter == null || closestInter.distance > inter[0].distance)
+      ) {
+        closestInter = inter[0];
+        this.hoveredNode = node;
       }
-
-      if (justHovered) {
-        this.connection.hide();
-        this.connection.showRandom(intersectedNode);
-      }
-    } else {
-      this.intersectionNode = null;
-      for (const node of this.nodes) {
-        node.hover(false);
-      }
-      this.connection.hide();
     }
+
+    if (this.hoveredNode != null) console.log(this.hoveredNode.id);
+
+    // const intersections = this.raycaster.intersectObjects(this.meshes);
+    // if (intersections.length != 0) {
+    //   const intersection = intersections[0];
+    //   let intersectedNode;
+    //   let justHovered = false;
+    //   for (const node of this.nodes) {
+    //     justHovered |= node.hover(node.mesh.id == intersection.object.id);
+    //     this.intersectionNode = node;
+
+    //     if (node.mesh.id == intersection.object.id) {
+    //       // TODO: cleanup
+    //       intersectedNode = node;
+    //     }
+    //   }
+
+    //   if (justHovered) {
+    //     this.connection.hide();
+    //     this.connection.showRandom(intersectedNode);
+    //   }
+    // } else {
+    //   this.intersectionNode = null;
+    //   for (const node of this.nodes) {
+    //     node.hover(false);
+    //   }
+    //   this.connection.hide();
+    // }
   }
 
   onPointerDown(e) {
