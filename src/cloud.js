@@ -99,8 +99,11 @@ export default class Cloud {
       const rayEvent = this.mouseRaycaster.queue.shift();
       if (rayEvent.action == "hover" && rayEvent.justNow) {
         rayEvent.node.hover(true);
+        this.connection.hide();
+        this.connection.showRandom(rayEvent.node);
       } else if (rayEvent.action == "leave" && rayEvent.justNow) {
         rayEvent.node.hover(false);
+        this.connection.hide();
       } else if (rayEvent.action == "click" && rayEvent.justNow) {
         for (const node of this.nodes) node.click(false);
         rayEvent.node.click(true);
@@ -114,9 +117,6 @@ export default class Cloud {
           rayEvent.node.click(false);
         }
       }
-
-      if (rayEvent.action == "click" || rayEvent.action == "unclick")
-        console.log(rayEvent);
     }
 
     // for (const node of this.nodes) {
@@ -145,9 +145,9 @@ export default class Cloud {
     //   }
     // }
 
-    // if (this.mouseRaycaster.hoveredNode == null) {
-    //   this.connection.hide();
-    // }
+    if (this.mouseRaycaster.hoveredNode == null) {
+      this.connection.hide();
+    }
   }
 
   render() {
