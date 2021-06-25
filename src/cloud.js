@@ -1,7 +1,11 @@
 import * as THREE from "three";
 import Node from "./node";
 import Connection from "./connection";
-import NodesLoader from "./nodesLoader";
+import NodesLoader from "./loaders/nodesLoader";
+import ArticlesLoader from "./loaders/articleLoader";
+import MouseRaycaster from "./eventHandlers/mouseRaycaster";
+import MouseRotation from "./eventHandlers/mouseRotation";
+import MouseLightMovement from "./eventHandlers/mouseLightMovement";
 
 export const cameraPosition = new THREE.Vector3(0, 0, 16);
 
@@ -78,15 +82,72 @@ export default class Cloud {
         this.nodesGroup.add(node.group);
       }
       this.connection.nodes = this.nodes;
-      this.mouseRaycaster.setNodes(this.nodes);
-      console.log(this.nodes);
+      this.mouseRaycaster.nodes = this.nodes;
     });
+
+    // Loading articles
+    this.articleLoader = new ArticlesLoader();
   }
 
   update() {
     this.mouseRotation.update();
     for (const node of this.nodes) {
       node.update(this.radius);
+    }
+
+    while (this.mouseRaycaster.queue.length) {
+      const rayEvent = this.mouseRaycaster.queue.shift();
+      if (rayEvent.action == "hover" && rayEvent.justNow) {
+        rayEvent.node.hover(true);
+        this.connection.hide();
+        this.connection.showRandom(rayEvent.node);
+      } else if (rayEvent.action == "leave" && rayEvent.justNow) {
+        rayEvent.node.hover(false);
+        this.connection.hide();
+      } else if (rayEvent.action == "click" && rayEvent.justNow) {
+        for (const node of this.nodes) node.click(false);
+        rayEvent.node.click(true);
+        this.articleLoader.reloadArticle(rayEvent.node.articleName);
+      } else if (rayEvent.action == "click" && !rayEvent.justNow) {
+        if (rayEvent.node) {
+          rayEvent.node.click(false);
+        }
+        this.mouseRaycaster.clickedNode = null;
+      } else if (rayEvent.action == "unclick" && rayEvent.justNow) {
+        if (rayEvent.node) {
+          rayEvent.node.click(false);
+        }
+      }
+    }
+
+    // for (const node of this.nodes) {
+    //   // Hovering
+    //   if (this.mouseRaycaster.hoveredNode) {
+    //     const state = this.mouseRaycaster.hoveredNode.id == node.id;
+    //     const changed = node.hover(state);
+    //     if (state && changed) {
+    //       this.connection.hide();
+    //       this.connection.showRandom(this.mouseRaycaster.hoveredNode);
+    //     }
+    //   } else {
+    //     node.hover(false);
+    //   }
+
+    //   // Clicking
+    //   if (this.mouseRaycaster.clickedNode) {
+    //     const state = this.mouseRaycaster.clickedNode.id == node.id;
+    //     const changed = node.click(state);
+    //     if (state && changed) {
+    //       console.log(node.articleName);
+    //       this.articleLoader.reloadArticle(node.articleName);
+    //     }
+    //   } else {
+    //     node.click(false);
+    //   }
+    // }
+
+    if (this.mouseRaycaster.hoveredNode == null) {
+      this.connection.hide();
     }
   }
 
@@ -133,169 +194,5 @@ export default class Cloud {
     this.renderer.setSize(this.width, this.height);
     this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
-  }
-}
-
-class MouseLightMovement {
-  constructor(element, object, areaWidth, areaHeight) {
-    this.element = element;
-    this.object = object;
-    this.width = areaWidth;
-    this.height = areaHeight;
-  }
-
-  onPointerMove(e) {
-    if (this.element.contains(e.target)) {
-      const rect = this.element.getBoundingClientRect();
-      this.object.position.x =
-        (-(e.offsetX - rect.width / 2) / rect.width) * this.width;
-      this.object.position.y =
-        ((e.offsetY - rect.height / 2) / rect.height) * this.height;
-    }
-  }
-}
-
-class MouseRotation {
-  constructor(element, object) {
-    this.element = element;
-    this.object = object;
-
-    this.pointerHolding = false;
-    this.slowingDown = false;
-
-    this.slowDownFactor = 0.92;
-    this.moveSpeedFactor = 0.0001;
-    this.moveSpeedMax = 400;
-    this.moveSpeedMin = 3;
-
-    this.vectorX = 0;
-    this.vectorY = 10;
-  }
-
-  update() {
-    if (Math.abs(this.vectorY) > this.moveSpeedMax)
-      this.vectorY = Math.sign(this.vectorY) * this.moveSpeedMax;
-    if (Math.abs(this.vectorX) > this.moveSpeedMax)
-      this.vectorX = Math.sign(this.vectorX) * this.moveSpeedMax;
-
-    if (this.pointerHolding) {
-      this.object.rotateOnWorldAxis(
-        new THREE.Vector3(0, 1, 0),
-        this.vectorY * this.moveSpeedFactor
-      );
-      this.object.rotateOnWorldAxis(
-        new THREE.Vector3(1, 0, 0),
-        this.vectorX * this.moveSpeedFactor
-      );
-    } else {
-      this.object.rotateOnWorldAxis(
-        new THREE.Vector3(0, 1, 0),
-        this.vectorY * this.moveSpeedFactor
-      );
-      this.object.rotateOnWorldAxis(
-        new THREE.Vector3(1, 0, 0),
-        this.vectorX * this.moveSpeedFactor
-      );
-
-      // Slowing down
-      if (this.slowingDown) {
-        this.vectorY *= this.slowDownFactor;
-        if (Math.abs(this.vectorY) < this.moveSpeedMin) this.vectorY = 0;
-
-        this.vectorX *= this.slowDownFactor;
-        if (Math.abs(this.vectorX) < this.moveSpeedMin) this.vectorX = 0;
-      }
-    }
-  }
-
-  onPointerMove(e) {
-    if (this.pointerHolding) {
-      this.vectorY += e.movementX;
-      this.vectorX += e.movementY;
-    }
-  }
-
-  onPointerDown(e) {
-    if (this.element.contains(e.target)) {
-      this.vectorY = 0;
-      this.vectorX = 0;
-      this.pointerHolding = true;
-    }
-  }
-
-  onPointerUp(e) {
-    this.pointerHolding = false;
-    this.slowingDown = true;
-  }
-}
-
-class MouseRaycaster {
-  constructor(camera, nodes, connection) {
-    this.raycaster = new THREE.Raycaster();
-    this.mouse = new THREE.Vector2();
-    this.camera = camera;
-    this.nodes = nodes;
-    this.intersectionNode = null;
-
-    this.connection = connection;
-
-    this.meshes = [];
-    for (const node of nodes) {
-      this.meshes.push(node.mesh);
-    }
-  }
-
-  setNodes(nodes) {
-    this.nodes = nodes;
-    this.meshes = [];
-    for (const node of nodes) {
-      this.meshes.push(node.mesh);
-    }
-  }
-
-  onPointerMove(e) {
-    this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-
-    this.raycaster.setFromCamera(this.mouse, this.camera);
-
-    const intersections = this.raycaster.intersectObjects(this.meshes);
-    if (intersections.length != 0) {
-      const intersection = intersections[0];
-      let intersectedNode;
-      let justHovered = false;
-      for (const node of this.nodes) {
-        justHovered |= node.hover(node.mesh.id == intersection.object.id);
-        this.intersectionNode = node;
-
-        if (node.mesh.id == intersection.object.id) {
-          // TODO: cleanup
-          intersectedNode = node;
-        }
-      }
-
-      if (justHovered) {
-        this.connection.hide();
-        this.connection.showRandom(intersectedNode);
-      }
-    } else {
-      this.intersectionNode = null;
-      for (const node of this.nodes) {
-        node.hover(false);
-      }
-      this.connection.hide();
-    }
-  }
-
-  onPointerDown(e) {
-    if (e.button == 0) {
-      if (this.intersectionNode != null) {
-        this.intersectionNode.click(true);
-      } else {
-        for (const node of this.nodes) {
-          node.click(false);
-        }
-      }
-    }
   }
 }
