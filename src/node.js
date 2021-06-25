@@ -77,10 +77,10 @@ export default class Node {
 
     if (this.hovered) {
       this.material.color.offsetHSL(0, 0, 0.3);
-      document.body.style.cursor = "pointer";
+      // document.body.style.cursor = "pointer";
     } else {
       this.material.color.set(this.color);
-      document.body.style.cursor = "auto";
+      // document.body.style.cursor = "auto";
     }
     return true;
   }

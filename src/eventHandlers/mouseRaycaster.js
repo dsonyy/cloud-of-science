@@ -10,6 +10,8 @@ export default class MouseRaycaster {
 
     this.hoveredNode = null;
     this.clickedNode = null;
+
+    this.queue = [];
   }
 
   onPointerMove(e) {
@@ -31,27 +33,81 @@ export default class MouseRaycaster {
       }
     }
 
-    if (justHoveredNode == null && this.hoveredNode != null) {
-      // Left
-      this.hoveredNode = null;
-    } else if (justHoveredNode == null) {
-      // Nothing has been hovered yet
-    } else if (
-      this.hoveredNode == null ||
-      this.hoveredNode.id != justHoveredNode.id
-    ) {
-      // Just hovered
+    if (justHoveredNode && this.hoveredNode == null) {
+      this.queue.push({
+        action: "hover",
+        justNow: true,
+        node: justHoveredNode,
+      });
       this.hoveredNode = justHoveredNode;
-    } else if (justHoveredNode.id == this.hoveredNode.id) {
-      // Still hovering
+    } else if (justHoveredNode && this.hoveredNode.id == justHoveredNode.id) {
+      this.queue.push({
+        action: "hover",
+        justNow: false,
+        node: justHoveredNode,
+      });
+      this.hoveredNode = justHoveredNode;
+    } else if (justHoveredNode && this.hoveredNode.id == justHoveredNode.id) {
+      this.queue.push({
+        action: "hover",
+        justNow: true,
+        node: justHoveredNode,
+      });
+      this.hoveredNode = justHoveredNode;
+    } else if (justHoveredNode && this.hoveredNode.id == justHoveredNode.id) {
+      this.queue.push({
+        action: "hover",
+        justNow: true,
+        node: justHoveredNode,
+      });
+      this.hoveredNode = justHoveredNode;
+    } else if (justHoveredNode && this.hoveredNode.id != justHoveredNode.id) {
+      this.queue.push({
+        action: "leave",
+        justNow: true,
+        node: this.hoveredNode,
+      });
+      this.hoveredNode = justHoveredNode;
+      this.queue.push({
+        action: "hover",
+        justNow: true,
+        node: this.hoveredNode,
+      });
+    } else if (!justHoveredNode && this.hoveredNode) {
+      this.queue.push({
+        action: "leave",
+        justNow: true,
+        node: this.hoveredNode,
+      });
+      this.hoveredNode = justHoveredNode;
     }
   }
 
   onPointerDown(e) {
     if (e.button == 0) {
-      if (this.hoveredNode != null) {
+      if (
+        this.clickedNode &&
+        this.hoveredNode &&
+        this.hoveredNode.id == this.clickedNode.id
+      ) {
+        this.queue.push({
+          action: "click",
+          justNow: false,
+          node: this.clickedNode,
+        });
+      } else if (this.hoveredNode) {
         this.clickedNode = this.hoveredNode;
+        this.queue.push({
+          action: "click",
+          justNow: true,
+          node: this.clickedNode,
+        });
       } else {
+        this.queue.push({
+          action: "unclick",
+          justNow: true,
+          node: this.clickedNode,
+        });
         this.clickedNode = null;
       }
     }

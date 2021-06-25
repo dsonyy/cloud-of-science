@@ -95,35 +95,59 @@ export default class Cloud {
       node.update(this.radius);
     }
 
-    for (const node of this.nodes) {
-      // Hovering
-      if (this.mouseRaycaster.hoveredNode) {
-        const state = this.mouseRaycaster.hoveredNode.id == node.id;
-        const changed = node.hover(state);
-        if (state && changed) {
-          this.connection.hide();
-          this.connection.showRandom(this.mouseRaycaster.hoveredNode);
+    while (this.mouseRaycaster.queue.length) {
+      const rayEvent = this.mouseRaycaster.queue.shift();
+      if (rayEvent.action == "hover" && rayEvent.justNow) {
+        rayEvent.node.hover(true);
+      } else if (rayEvent.action == "leave" && rayEvent.justNow) {
+        rayEvent.node.hover(false);
+      } else if (rayEvent.action == "click" && rayEvent.justNow) {
+        for (const node of this.nodes) node.click(false);
+        rayEvent.node.click(true);
+      } else if (rayEvent.action == "click" && !rayEvent.justNow) {
+        if (rayEvent.node) {
+          rayEvent.node.click(false);
         }
-      } else {
-        node.hover(false);
+        this.mouseRaycaster.clickedNode = null;
+      } else if (rayEvent.action == "unclick" && rayEvent.justNow) {
+        if (rayEvent.node) {
+          rayEvent.node.click(false);
+        }
       }
 
-      // Clicking
-      if (this.mouseRaycaster.clickedNode) {
-        const state = this.mouseRaycaster.clickedNode.id == node.id;
-        const changed = node.click(state);
-        if (state && changed) {
-          console.log(node.articleName);
-          this.articleLoader.reloadArticle(node.articleName);
-        }
-      } else {
-        node.click(false);
-      }
+      if (rayEvent.action == "click" || rayEvent.action == "unclick")
+        console.log(rayEvent);
     }
 
-    if (this.mouseRaycaster.hoveredNode == null) {
-      this.connection.hide();
-    }
+    // for (const node of this.nodes) {
+    //   // Hovering
+    //   if (this.mouseRaycaster.hoveredNode) {
+    //     const state = this.mouseRaycaster.hoveredNode.id == node.id;
+    //     const changed = node.hover(state);
+    //     if (state && changed) {
+    //       this.connection.hide();
+    //       this.connection.showRandom(this.mouseRaycaster.hoveredNode);
+    //     }
+    //   } else {
+    //     node.hover(false);
+    //   }
+
+    //   // Clicking
+    //   if (this.mouseRaycaster.clickedNode) {
+    //     const state = this.mouseRaycaster.clickedNode.id == node.id;
+    //     const changed = node.click(state);
+    //     if (state && changed) {
+    //       console.log(node.articleName);
+    //       this.articleLoader.reloadArticle(node.articleName);
+    //     }
+    //   } else {
+    //     node.click(false);
+    //   }
+    // }
+
+    // if (this.mouseRaycaster.hoveredNode == null) {
+    //   this.connection.hide();
+    // }
   }
 
   render() {
