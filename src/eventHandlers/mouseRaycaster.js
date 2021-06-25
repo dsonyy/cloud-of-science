@@ -19,7 +19,7 @@ export default class MouseRaycaster {
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
     let closestInter = null;
-    this.hoveredNode = null;
+    let justHoveredNode;
     for (const node of this.nodes) {
       const inter = this.raycaster.intersectObject(node.mesh);
       if (
@@ -27,11 +27,30 @@ export default class MouseRaycaster {
         (closestInter == null || closestInter.distance > inter[0].distance)
       ) {
         closestInter = inter[0];
-        this.hoveredNode = node;
+        justHoveredNode = node;
       }
     }
 
-    if (this.hoveredNode != null) console.log(this.hoveredNode.id);
+    if (justHoveredNode == null && this.hoveredNode != null) {
+      // Left
+      this.hoveredNode = null;
+    } else if (justHoveredNode == null) {
+      // Nothing has been hovered yet
+    } else if (
+      this.hoveredNode == null ||
+      this.hoveredNode.id != justHoveredNode.id
+    ) {
+      // Just hovered
+      this.hoveredNode = justHoveredNode;
+      console.log(justHoveredNode.title);
+    } else if (justHoveredNode.id == this.hoveredNode.id) {
+      // Still hovering
+    }
+
+    // if (this.hoveredNode != null && !this.hoveredNode.hovered) {
+    //   console.log(this.hoveredNode.title);
+    //   this.hoveredNode.hovered = true;
+    // }
 
     // const intersections = this.raycaster.intersectObjects(this.meshes);
     // if (intersections.length != 0) {

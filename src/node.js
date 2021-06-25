@@ -20,6 +20,7 @@ export default class Node {
       content.color[1] / 255,
       content.color[2] / 255
     );
+    this.title = content.title;
 
     this.group = new THREE.Group();
     this.hovered = false;
