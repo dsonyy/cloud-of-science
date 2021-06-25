@@ -1,4 +1,3 @@
-import * as THREE from "three";
 import Cloud from "./cloud";
 
 export default class App {

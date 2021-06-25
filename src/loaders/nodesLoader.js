@@ -1,5 +1,5 @@
-import Node from "./node";
-import Cloud from "./cloud";
+import Node from "../node";
+import Cloud from "../cloud";
 
 const NodesFilePath = "static/cloud/nodes.json";
 
