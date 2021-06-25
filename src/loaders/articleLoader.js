@@ -19,6 +19,14 @@ export default class ArticlesLoader {
     this.articles[name] = data;
   }
 
+  hideArticle() {
+    this.element.style.display = "none";
+  }
+
+  showArticle() {
+    this.element.style.display = "initial";
+  }
+
   reloadArticle(name) {
     if (this.articles[name]) {
       this.element.innerHTML = this.articles[name];
