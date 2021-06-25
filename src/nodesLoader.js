@@ -15,7 +15,7 @@ export default class NodesLoader {
       .then((response) => response.json())
       .then((data) => this.processData(data))
       .catch(function (error) {
-        console.log(error);
+        console.error(error);
       });
   }
 

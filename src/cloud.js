@@ -2,6 +2,7 @@ import * as THREE from "three";
 import Node from "./node";
 import Connection from "./connection";
 import NodesLoader from "./nodesLoader";
+import ArticlesLoader from "./articleLoader";
 
 export const cameraPosition = new THREE.Vector3(0, 0, 16);
 
@@ -79,8 +80,10 @@ export default class Cloud {
       }
       this.connection.nodes = this.nodes;
       this.mouseRaycaster.setNodes(this.nodes);
-      console.log(this.nodes);
     });
+
+    // Loading articles
+    this.articleLoader = new ArticlesLoader();
   }
 
   update() {
