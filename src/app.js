@@ -10,9 +10,9 @@ export default class App {
 
     // Global events handling
     window.addEventListener("resize", (e) => this.onResize(e));
-    this.element.addEventListener("pointermove", (e) => this.onPointerMove(e));
-    this.element.addEventListener("pointerdown", (e) => this.onPointerDown(e));
-    this.element.addEventListener("pointerup", (e) => this.onPointerUp(e));
+    this.element.addEventListener("mousemove", (e) => this.onMouseMove(e));
+    this.element.addEventListener("mousedown", (e) => this.onMouseDown(e));
+    this.element.addEventListener("mouseup", (e) => this.onMouseUp(e));
   }
 
   update() {
@@ -24,10 +24,10 @@ export default class App {
     this.cloud.onWindowResize(e);
   }
 
-  onPointerMove(e) {
-    this.cloud.mouseLightMovement.onPointerMove(e);
-    this.cloud.mouseRaycaster.onPointerMove(e);
-    this.cloud.mouseRotation.onPointerMove(e);
+  onMouseMove(e) {
+    this.cloud.mouseLightMovement.onMouseMove(e);
+    this.cloud.mouseRaycaster.onMouseMove(e);
+    this.cloud.mouseRotation.onMouseMove(e);
 
     if (this.cloud.mouseRaycaster.hoveredNode == null) {
       this.element.style.cursor = "auto";
@@ -36,12 +36,12 @@ export default class App {
     }
   }
 
-  onPointerDown(e) {
-    this.cloud.mouseRaycaster.onPointerDown(e);
-    this.cloud.mouseRotation.onPointerDown(e);
+  onMouseDown(e) {
+    this.cloud.mouseRaycaster.onMouseDown(e);
+    this.cloud.mouseRotation.onMouseDown(e);
   }
 
-  onPointerUp(e) {
-    this.cloud.mouseRotation.onPointerUp(e);
+  onMouseUp(e) {
+    this.cloud.mouseRotation.onMouseUp(e);
   }
 }

@@ -14,7 +14,7 @@ export default class MouseRaycaster {
     this.queue = [];
   }
 
-  onPointerMove(e) {
+  onMouseMove(e) {
     this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
@@ -83,7 +83,7 @@ export default class MouseRaycaster {
     }
   }
 
-  onPointerDown(e) {
+  onMouseDown(e) {
     if (e.button == 0) {
       if (
         this.clickedNode &&

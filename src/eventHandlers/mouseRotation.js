@@ -17,6 +17,51 @@ export default class MouseRotation {
     this.vectorY = 10;
   }
 
+  update() {}
+
+  onMouseMove(e) {
+    if (this.pointerHolding) {
+      this.vectorY += e.movementX;
+      this.vectorX += e.movementY;
+    }
+  }
+
+  onMouseDown(e) {
+    if (this.element.contains(e.target)) {
+      this.vectorY = 0;
+      this.vectorX = 0;
+      this.pointerHolding = true;
+    }
+    console.log(e);
+  }
+
+  onMouseUp(e) {
+    this.pointerHolding = false;
+    this.slowingDown = true;
+  }
+
+  onTouchStart(e) {
+    console.log(e);
+  }
+}
+
+export class MouseRotation2 {
+  constructor(element, object) {
+    this.element = element;
+    this.object = object;
+
+    this.pointerHolding = false;
+    this.slowingDown = false;
+
+    this.slowDownFactor = 0.92;
+    this.moveSpeedFactor = 0.0001;
+    this.moveSpeedMax = 400;
+    this.moveSpeedMin = 3;
+
+    this.vectorX = 0;
+    this.vectorY = 10;
+  }
+
   update() {
     if (Math.abs(this.vectorY) > this.moveSpeedMax)
       this.vectorY = Math.sign(this.vectorY) * this.moveSpeedMax;
@@ -53,14 +98,15 @@ export default class MouseRotation {
     }
   }
 
-  onPointerMove(e) {
+  onMouseMove(e) {
     if (this.pointerHolding) {
       this.vectorY += e.movementX;
       this.vectorX += e.movementY;
     }
+    console.log(e);
   }
 
-  onPointerDown(e) {
+  onMouseDown(e) {
     if (this.element.contains(e.target)) {
       this.vectorY = 0;
       this.vectorX = 0;
@@ -68,7 +114,7 @@ export default class MouseRotation {
     }
   }
 
-  onPointerUp(e) {
+  onMouseUp(e) {
     this.pointerHolding = false;
     this.slowingDown = true;
   }

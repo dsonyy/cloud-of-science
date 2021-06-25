@@ -6,7 +6,7 @@ export default class MouseLightMovement {
     this.height = areaHeight;
   }
 
-  onPointerMove(e) {
+  onMouseMove(e) {
     if (this.element.contains(e.target)) {
       const rect = this.element.getBoundingClientRect();
       this.object.position.x =
