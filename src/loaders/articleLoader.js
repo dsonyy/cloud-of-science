@@ -23,11 +23,9 @@ export default class ArticlesLoader {
     if (this.articles[name]) {
       this.element.innerHTML = this.articles[name];
     } else {
-      console.log("no article", name);
       this.fetch(name).then(() => {
         this.element.innerHTML = this.articles[name];
       });
-      console.log("fetched and shown", name);
     }
   }
 

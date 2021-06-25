@@ -107,6 +107,7 @@ export default class Cloud {
       } else if (rayEvent.action == "click" && rayEvent.justNow) {
         for (const node of this.nodes) node.click(false);
         rayEvent.node.click(true);
+        this.articleLoader.reloadArticle(rayEvent.node.articleName);
       } else if (rayEvent.action == "click" && !rayEvent.justNow) {
         if (rayEvent.node) {
           rayEvent.node.click(false);
