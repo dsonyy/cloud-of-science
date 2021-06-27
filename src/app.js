@@ -49,7 +49,6 @@ export default class App {
   }
 
   onPointerLeave(e) {
-    console.log("left");
     this.cloud.pointerRotation.onPointerLeave(e);
   }
 }
