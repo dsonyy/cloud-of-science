@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { Text } from "troika-three-text";
 
 export const NodeRadius = 0.6;
 export const NodeOutlineRadius = NodeRadius + 0.015;
@@ -55,6 +56,18 @@ export default class Node {
     this.group.add(this.icon);
 
     // Title text
+    this.text = new Text();
+    this.text.text = this.title.toUpperCase();
+    this.text.fontSize = 0.5;
+    this.text.font = "static/fonts/arial.ttf";
+    this.text.anchorX = "center";
+    this.text.color = 0x222222;
+    this.text.position.set(
+      this.mesh.position.x,
+      this.mesh.position.y,
+      this.mesh.position.z
+    );
+    this.text.sync();
   }
 
   static get randomColor() {

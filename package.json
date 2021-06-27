@@ -18,6 +18,7 @@
     "onchange": "^7.0.2",
     "parallelshell": "^3.0.1",
     "three": "^0.129.0",
+    "troika-three-text": "^0.42.0",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0"
