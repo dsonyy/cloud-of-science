@@ -66,7 +66,5 @@ export default class PointerRotation {
 
   onPointersPinch(e) {}
 
-  onPointersRotate(e) {
-    this.object.rotation.z += THREE.MathUtils.degToRad(e.rotation);
-  }
+  onPointersRotate(e) {}
 }
