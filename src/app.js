@@ -10,10 +10,12 @@ export default class App {
 
     // Global events handling
     window.addEventListener("resize", (e) => this.onResize(e));
-    this.element.addEventListener("mousemove", (e) => this.onMouseMove(e));
-    this.element.addEventListener("mousedown", (e) => this.onMouseDown(e));
-    this.element.addEventListener("mouseup", (e) => this.onMouseUp(e));
-    this.element.addEventListener("mouseleave", (e) => this.onMouseLeave(e));
+    this.element.addEventListener("pointermove", (e) => this.onPointerMove(e));
+    this.element.addEventListener("pointerdown", (e) => this.onPointerDown(e));
+    this.element.addEventListener("pointerup", (e) => this.onPointerUp(e));
+    this.element.addEventListener("pointerleave", (e) =>
+      this.onPointerLeave(e)
+    );
   }
 
   update() {
@@ -25,29 +27,29 @@ export default class App {
     this.cloud.onWindowResize(e);
   }
 
-  onMouseMove(e) {
-    this.cloud.mouseLightMovement.onMouseMove(e);
-    this.cloud.mouseRaycaster.onMouseMove(e);
-    this.cloud.mouseRotation.onMouseMove(e);
+  onPointerMove(e) {
+    this.cloud.pointerLightMovement.onPointerMove(e);
+    this.cloud.pointerRaycaster.onPointerMove(e);
+    this.cloud.pointerRotation.onPointerMove(e);
 
-    if (this.cloud.mouseRaycaster.hoveredNode == null) {
+    if (this.cloud.pointerRaycaster.hoveredNode == null) {
       this.element.style.cursor = "auto";
     } else {
       this.element.style.cursor = "pointer";
     }
   }
 
-  onMouseDown(e) {
-    this.cloud.mouseRaycaster.onMouseDown(e);
-    this.cloud.mouseRotation.onMouseDown(e);
+  onPointerDown(e) {
+    this.cloud.pointerRaycaster.onPointerDown(e);
+    this.cloud.pointerRotation.onPointerDown(e);
   }
 
-  onMouseUp(e) {
-    this.cloud.mouseRotation.onMouseUp(e);
+  onPointerUp(e) {
+    this.cloud.pointerRotation.onPointerUp(e);
   }
 
-  onMouseLeave(e) {
+  onPointerLeave(e) {
     console.log("left");
-    this.cloud.mouseRotation.onMouseLeave(e);
+    this.cloud.pointerRotation.onPointerLeave(e);
   }
 }

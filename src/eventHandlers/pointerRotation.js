@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export default class MouseRotation {
+export default class pointerRotation {
   constructor(element, object) {
     this.element = element;
     this.object = object;
@@ -16,7 +16,7 @@ export default class MouseRotation {
     this.vectorX = 0;
     this.vectorY = 10;
 
-    this.mouseStart = null;
+    this.pointerStart = null;
   }
 
   update() {
@@ -55,29 +55,29 @@ export default class MouseRotation {
     }
   }
 
-  onMouseMove(e) {
+  onPointerMove(e) {
     if (this.pointerHolding) {
-      this.vectorY = e.clientX - this.mouseStart.x;
-      this.vectorX = e.clientY - this.mouseStart.y;
+      this.vectorY = e.clientX - this.pointerStart.x;
+      this.vectorX = e.clientY - this.pointerStart.y;
     }
   }
 
-  onMouseDown(e) {
+  onPointerDown(e) {
     if (this.element.contains(e.target)) {
       this.vectorY = 0;
       this.vectorX = 0;
       this.pointerHolding = true;
     }
-    this.mouseStart = new THREE.Vector2(e.clientX, e.clientY);
+    this.pointerStart = new THREE.Vector2(e.clientX, e.clientY);
   }
 
-  onMouseUp(e) {
+  onPointerUp(e) {
     this.pointerHolding = false;
     this.slowingDown = true;
-    this.mouseStart = null;
+    this.pointerStart = null;
   }
 
-  onMouseLeave(e) {
-    this.onMouseUp(e);
+  onPointerLeave(e) {
+    this.onPointerUp(e);
   }
 }
