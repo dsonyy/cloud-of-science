@@ -56,17 +56,17 @@ export default class Node {
     this.group.add(this.icon);
 
     // Title text
-    this.text = new SpriteText(
-      ("\n".repeat(10) + this.title).toUpperCase(), // dumb but simple and fast solution
-      0.17,
-      "#222"
-    );
-    this.text.fontSize = 20; // makes text more blurry or sharp (but in bad-looking way)
-    this.text.position.set(
-      this.mesh.position.x,
-      this.mesh.position.y,
-      this.mesh.position.z
-    );
+    // this.text = new SpriteText(
+    //   ("\n".repeat(10) + this.title).toUpperCase(), // dumb but simple and fast solution
+    //   0.17,
+    //   "#222"
+    // );
+    // this.text.fontSize = 20; // makes text more blurry or sharp (but in bad-looking way)
+    // this.text.position.set(
+    //   this.mesh.position.x,
+    //   this.mesh.position.y,
+    //   this.mesh.position.z
+    // );
   }
 
   static get randomColor() {

@@ -1,12 +1,6 @@
 import * as THREE from "three";
 import { NodeRadius } from "./node";
-
-const connectionMaterial = new THREE.LineBasicMaterial({
-  color: 0x0,
-  transparent: true,
-  linewidth: 1, // TOFIX: this property is not supported by modern OpenGL
-  // source: https://stackoverflow.com/questions/11638883/thickness-of-lines-using-three-linebasicmaterial
-});
+import { MeshLine, MeshLineMaterial } from "meshline";
 
 export default class Connection {
   constructor(nodes) {
@@ -60,13 +54,39 @@ export default class Connection {
     B.copy(b);
     B.add(shrink.negate());
 
-    console.log(a, b);
     // Creating line object
+    const line = Connection.createMeshLine(A, B);
+
+    return line;
+  }
+
+  static createClassicLine(a, b) {
     const line = new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([a, b]),
-      connectionMaterial
+      new THREE.BufferGeometry().setFromPoints([A, B]),
+      new THREE.LineBasicMaterial({
+        color: 0x0,
+        transparent: true,
+        linewidth: 1, // TOFIX: this property is not supported by modern OpenGL
+        // source: https://stackoverflow.com/questions/11638883/thickness-of-lines-using-three-linebasicmaterial
+      })
     );
     line.material.opacity = 0.6;
+
     return line;
+  }
+
+  static createMeshLine(a, b) {
+    const line = new MeshLine();
+    line.setPoints([a, b]);
+    const material = new MeshLineMaterial({
+      resolution: new THREE.Vector2(window.innerWidth, window.innerHeight),
+      color: new THREE.Color(0x222222),
+      lineWidth: 0.02,
+      opacity: 0.6,
+      transparent: true,
+      fog: true,
+    });
+    const mesh = new THREE.Mesh(line, material);
+    return mesh;
   }
 }
