@@ -22,7 +22,7 @@ export default class Connection {
 
     if (neighbors == 0) return;
 
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 3; i++) {
       const neighbor = neighbors[Math.floor(Math.random() * neighbors.length)];
       this.group.add(
         Connection.createConnection(neighbor.position, activeNode.position)
