@@ -6,6 +6,7 @@ import ArticlesLoader from "./loaders/articleLoader";
 import MouseRaycaster from "./eventHandlers/mouseRaycaster";
 import MouseRotation from "./eventHandlers/mouseRotation";
 import MouseLightMovement from "./eventHandlers/mouseLightMovement";
+import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
 
 export const cameraPosition = new THREE.Vector3(0, 0, 16);
 
@@ -87,6 +88,29 @@ export default class Cloud {
 
     // Loading articles
     this.articleLoader = new ArticlesLoader();
+
+    // Font
+    const loader = new THREE.FontLoader();
+    loader.load("static/fonts/helvetiker_regular.typeface.json", (font) => {
+      const color = new THREE.Color(0x0);
+      const material = new THREE.MeshBasicMaterial({
+        color: color,
+        transparent: true,
+        opacity: 1,
+        side: THREE.DoubleSide,
+      });
+      const message = "THREE JS STROKE TEXT";
+      const shapes = font.generateShapes(message, 0.2);
+      const geometry = new THREE.ShapeGeometry(shapes);
+      geometry.computeBoundingBox();
+      geometry.translate(
+        -0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x),
+        0,
+        0
+      );
+      const text = new THREE.Mesh(geometry, material);
+      this.scene.add(text);
+    });
   }
 
   update() {
