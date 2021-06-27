@@ -1,8 +1,7 @@
 import * as THREE from "three";
 
-export default class MouseRotation {
-  constructor(element, object) {
-    this.element = element;
+export default class PointerRotation {
+  constructor(object) {
     this.object = object;
 
     this.pointerHolding = false;
@@ -53,23 +52,15 @@ export default class MouseRotation {
     }
   }
 
-  onPointerMove(e) {
-    if (this.pointerHolding) {
-      this.vectorY += e.movementX;
-      this.vectorX += e.movementY;
-    }
-  }
+  onPointerPan(e) {
+    this.slowingDown = false;
+    this.pointerHolding = true;
+    this.vectorX = e.deltaY;
+    this.vectorY = e.deltaX;
 
-  onPointerDown(e) {
-    if (this.element.contains(e.target)) {
-      this.vectorY = 0;
-      this.vectorX = 0;
-      this.pointerHolding = true;
+    if (e.isFinal) {
+      this.pointerHolding = false;
+      this.slowingDown = true;
     }
-  }
-
-  onPointerUp(e) {
-    this.pointerHolding = false;
-    this.slowingDown = true;
   }
 }

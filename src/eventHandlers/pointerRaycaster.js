@@ -1,9 +1,9 @@
 import * as THREE from "three";
 
-export default class MouseRaycaster {
+export default class PointerRaycaster {
   constructor(camera, nodes) {
     this.raycaster = new THREE.Raycaster();
-    this.mouse = new THREE.Vector2();
+    this.pointer = new THREE.Vector2();
     this.camera = camera;
     this.nodes = nodes;
     this.intersectionNode = null;
@@ -15,10 +15,10 @@ export default class MouseRaycaster {
   }
 
   onPointerMove(e) {
-    this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    this.pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+    this.pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
-    this.raycaster.setFromCamera(this.mouse, this.camera);
+    this.raycaster.setFromCamera(this.pointer, this.camera);
 
     let closestInter = null;
     let justHoveredNode;

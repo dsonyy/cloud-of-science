@@ -1,4 +1,4 @@
-export default class MouseLightMovement {
+export default class PointerLightMovement {
   constructor(element, object, areaWidth, areaHeight) {
     this.element = element;
     this.object = object;

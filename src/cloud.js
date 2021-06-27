@@ -3,9 +3,9 @@ import Node from "./node";
 import Connection from "./connection";
 import NodesLoader from "./loaders/nodesLoader";
 import ArticlesLoader from "./loaders/articleLoader";
-import MouseRaycaster from "./eventHandlers/mouseRaycaster";
-import MouseRotation from "./eventHandlers/mouseRotation";
-import MouseLightMovement from "./eventHandlers/mouseLightMovement";
+import PointerRaycaster from "./eventHandlers/pointerRaycaster";
+import PointerRotation from "./eventHandlers/pointerRotation";
+import PointerLightMovement from "./eventHandlers/pointerLightMovement";
 
 export const cameraPosition = new THREE.Vector3(0, 0, 16);
 
@@ -65,14 +65,18 @@ export default class Cloud {
     this.nodesGroup.add(this.connection.group);
 
     // Events
-    this.mouseRotation = new MouseRotation(this.element, this.nodesGroup);
-    this.mouseLightMovement = new MouseLightMovement(
+    this.PointerRotation = new PointerRotation(this.nodesGroup);
+    this.pointerLightMovement = new PointerLightMovement(
       this.element,
       this.lights.point,
       this.radius * 4,
       this.radius * 3
     );
-    this.mouseRaycaster = new MouseRaycaster(this.camera, [], this.connection);
+    this.pointerRaycaster = new PointerRaycaster(
+      this.camera,
+      [],
+      this.connection
+    );
 
     // Loading nodes
     this.nodesLoader = new NodesLoader(this.radius);
@@ -82,7 +86,7 @@ export default class Cloud {
         this.nodesGroup.add(node.group);
       }
       this.connection.nodes = this.nodes;
-      this.mouseRaycaster.nodes = this.nodes;
+      this.pointerRaycaster.nodes = this.nodes;
     });
 
     // Loading articles
@@ -90,13 +94,14 @@ export default class Cloud {
   }
 
   update() {
-    this.mouseRotation.update();
+    this.PointerRotation.update();
+
     for (const node of this.nodes) {
       node.update(this.radius);
     }
 
-    while (this.mouseRaycaster.queue.length) {
-      const rayEvent = this.mouseRaycaster.queue.shift();
+    while (this.pointerRaycaster.queue.length) {
+      const rayEvent = this.pointerRaycaster.queue.shift();
       if (rayEvent.action == "hover" && rayEvent.justNow) {
         rayEvent.node.hover(true);
         this.connection.hide();
@@ -113,7 +118,7 @@ export default class Cloud {
         if (rayEvent.node) {
           rayEvent.node.click(false);
         }
-        this.mouseRaycaster.clickedNode = null;
+        this.pointerRaycaster.clickedNode = null;
       } else if (rayEvent.action == "unclick" && rayEvent.justNow) {
         if (rayEvent.node) {
           rayEvent.node.click(false);
@@ -122,33 +127,7 @@ export default class Cloud {
       }
     }
 
-    // for (const node of this.nodes) {
-    //   // Hovering
-    //   if (this.mouseRaycaster.hoveredNode) {
-    //     const state = this.mouseRaycaster.hoveredNode.id == node.id;
-    //     const changed = node.hover(state);
-    //     if (state && changed) {
-    //       this.connection.hide();
-    //       this.connection.showRandom(this.mouseRaycaster.hoveredNode);
-    //     }
-    //   } else {
-    //     node.hover(false);
-    //   }
-
-    //   // Clicking
-    //   if (this.mouseRaycaster.clickedNode) {
-    //     const state = this.mouseRaycaster.clickedNode.id == node.id;
-    //     const changed = node.click(state);
-    //     if (state && changed) {
-    //       console.log(node.articleName);
-    //       this.articleLoader.reloadArticle(node.articleName);
-    //     }
-    //   } else {
-    //     node.click(false);
-    //   }
-    // }
-
-    if (this.mouseRaycaster.hoveredNode == null) {
+    if (this.pointerRaycaster.hoveredNode == null) {
       this.connection.hide();
     }
   }
