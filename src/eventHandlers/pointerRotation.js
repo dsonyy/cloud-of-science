@@ -65,7 +65,10 @@ export default class PointerRotation {
   }
 
   onPointersPinch(e) {
-    this.object.position.setZ(this.object.position.z + e.scale);
-    document.getElementById("test").innerHTML = e.scale;
+    let zoom = e.scale - 1;
+    if (zoom < 0) zoom = 1 / zoom;
+
+    this.object.position.setZ(zoom);
+    document.getElementById("test").innerHTML = zoom;
   }
 }
