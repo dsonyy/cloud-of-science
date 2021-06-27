@@ -113,6 +113,7 @@ export default class Cloud {
         for (const node of this.nodes) node.click(false);
         rayEvent.node.click(true);
         this.articleLoader.reloadArticle(rayEvent.node.articleName);
+        this.articleLoader.showArticle();
       } else if (rayEvent.action == "click" && !rayEvent.justNow) {
         if (rayEvent.node) {
           rayEvent.node.click(false);
@@ -122,6 +123,7 @@ export default class Cloud {
         if (rayEvent.node) {
           rayEvent.node.click(false);
         }
+        this.articleLoader.hideArticle();
       }
     }
 

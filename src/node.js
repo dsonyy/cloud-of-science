@@ -88,12 +88,6 @@ export default class Node {
   click(clicked) {
     if (this.clicked == clicked) return false;
     this.clicked = clicked;
-
-    if (this.clicked) {
-      document.getElementById("article").style.display = "initial";
-    } else {
-      document.getElementById("article").style.display = "none";
-    }
     return true;
   }
 

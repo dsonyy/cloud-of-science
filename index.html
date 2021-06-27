@@ -9,11 +9,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Cloud of Science</title>
     <link rel="icon" type="image/png" href="static/favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
     <link rel="stylesheet" href="static/css/global.css" />
     <link rel="stylesheet" href="static/css/article.css" />
   </head>
   <body>
-    <div id="cloud">
+    <div id="cloud" class="animate__animated animate__fadeIn animate__delay-1s">
       <nav>
         <div>
           <a href=""><img src="static/fa/bars-solid.svg" height="26" /></a>
@@ -29,7 +33,11 @@
           /></a>
         </div>
       </nav>
-      <div id="article" class="right" style="display: none"></div>
+      <div
+        id="article"
+        class="right animate__animated animate__fadeInRight animate__fast"
+        style="display: none"
+      ></div>
       <script src="public/bundle.js"></script>
       <footer class="noselect">
         <a href="http://lukaszlamza.pl/">Łukasz Lamża</a>,
