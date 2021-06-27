@@ -28,7 +28,7 @@ export default class Connection {
 
     if (neighbors == 0) return;
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 1; i++) {
       const neighbor = neighbors[Math.floor(Math.random() * neighbors.length)];
       this.group.add(
         Connection.createConnection(neighbor.position, activeNode.position)
@@ -60,9 +60,10 @@ export default class Connection {
     B.copy(b);
     B.add(shrink.negate());
 
+    console.log(a, b);
     // Creating line object
     const line = new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([A, B]),
+      new THREE.BufferGeometry().setFromPoints([a, b]),
       connectionMaterial
     );
     line.material.opacity = 0.6;
