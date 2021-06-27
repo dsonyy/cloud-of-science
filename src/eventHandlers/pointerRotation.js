@@ -62,9 +62,10 @@ export default class PointerRotation {
       this.pointerHolding = false;
       this.slowingDown = true;
     }
+    console.log(e.scale);
   }
 
   onPointersPinch(e) {
-    this.object.position.setZ(this.object.position.z * e.scale * 3);
+    this.object.position.setZ(this.object.position.z + e.scale);
   }
 }
