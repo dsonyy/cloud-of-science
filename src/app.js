@@ -16,7 +16,7 @@ export default class App {
 
     // Hammer events handling
     this.hammerManager = new Hammer.Manager(this.element, {
-      recognizers: [[Hammer.Pan], [Hammer.Pinch]],
+      recognizers: [[Hammer.Pan], [Hammer.Pinch], [Hammer.Rotate]],
     });
     this.hammerManager.on("pan", (e) => this.onPointerPan(e));
     this.hammerManager.on("pinch", (e) => this.onPointersPinch(e));

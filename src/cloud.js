@@ -17,7 +17,7 @@ export default class Cloud {
 
     // Scene
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color("#ffffff");
+    this.scene.background = new THREE.Color("#000");
 
     // Camera
     this.camera = new THREE.PerspectiveCamera(
