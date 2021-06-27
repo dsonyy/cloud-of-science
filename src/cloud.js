@@ -65,7 +65,7 @@ export default class Cloud {
     this.nodesGroup.add(this.connection.group);
 
     // Events
-    this.pointerRotation = new PointerRotation(this.element, this.nodesGroup);
+    this.PointerRotation = new PointerRotation(this.nodesGroup);
     this.pointerLightMovement = new PointerLightMovement(
       this.element,
       this.lights.point,
@@ -94,7 +94,8 @@ export default class Cloud {
   }
 
   update() {
-    this.pointerRotation.update();
+    this.PointerRotation.update();
+
     for (const node of this.nodes) {
       node.update(this.radius);
     }

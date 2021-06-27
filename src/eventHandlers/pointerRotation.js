@@ -1,8 +1,7 @@
 import * as THREE from "three";
 
-export default class pointerRotation {
-  constructor(element, object) {
-    this.element = element;
+export default class PointerRotation {
+  constructor(object) {
     this.object = object;
 
     this.pointerHolding = false;
@@ -15,8 +14,6 @@ export default class pointerRotation {
 
     this.vectorX = 0;
     this.vectorY = 10;
-
-    this.pointerStart = null;
   }
 
   update() {
@@ -55,29 +52,15 @@ export default class pointerRotation {
     }
   }
 
-  onPointerMove(e) {
-    if (this.pointerHolding) {
-      this.vectorY = e.clientX - this.pointerStart.x;
-      this.vectorX = e.clientY - this.pointerStart.y;
+  onPointerPan(e) {
+    this.slowingDown = false;
+    this.pointerHolding = true;
+    this.vectorX = e.deltaY;
+    this.vectorY = e.deltaX;
+
+    if (e.isFinal) {
+      this.pointerHolding = false;
+      this.slowingDown = true;
     }
-  }
-
-  onPointerDown(e) {
-    if (this.element.contains(e.target)) {
-      this.vectorY = 0;
-      this.vectorX = 0;
-      this.pointerHolding = true;
-    }
-    this.pointerStart = new THREE.Vector2(e.clientX, e.clientY);
-  }
-
-  onPointerUp(e) {
-    this.pointerHolding = false;
-    this.slowingDown = true;
-    this.pointerStart = null;
-  }
-
-  onPointerLeave(e) {
-    this.onPointerUp(e);
   }
 }
