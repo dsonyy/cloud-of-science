@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { cameraPosition } from "./cloud";
+import SpriteText from "three-spritetext";
 
 export const NodeRadius = 0.6;
 export const NodeOutlineRadius = NodeRadius + 0.015;
@@ -54,6 +54,19 @@ export default class Node {
       this.mesh.position.z
     );
     this.group.add(this.icon);
+
+    // Title text
+    this.text = new SpriteText(
+      ("\n".repeat(10) + this.title).toUpperCase(), // dumb but simple and fast solution
+      0.17,
+      "#222"
+    );
+    this.text.fontSize = 20; // makes text more blurry or sharp (but in bad-looking way)
+    this.text.position.set(
+      this.mesh.position.x,
+      this.mesh.position.y,
+      this.mesh.position.z
+    );
   }
 
   static get randomColor() {
@@ -77,9 +90,11 @@ export default class Node {
 
     if (this.hovered) {
       this.material.color.offsetHSL(0, 0, 0.3);
+      this.group.add(this.text);
       // document.body.style.cursor = "pointer";
     } else {
       this.material.color.set(this.color);
+      this.group.remove(this.text);
       // document.body.style.cursor = "auto";
     }
     return true;

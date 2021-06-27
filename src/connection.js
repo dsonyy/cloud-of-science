@@ -41,9 +41,6 @@ export default class Connection {
   }
 
   static createConnection(a, b) {
-    // Distance a->b
-    const dist = a.distanceTo(b);
-
     // Normalized vector a->b
     const norm = new THREE.Vector3();
     norm.subVectors(b, a).normalize();
