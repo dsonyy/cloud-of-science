@@ -20,6 +20,7 @@ export default class App {
     });
     this.hammerManager.on("pan", (e) => this.onPointerPan(e));
     this.hammerManager.on("pinch", (e) => this.onPointersPinch(e));
+    this.hammerManager.on("rotate", (e) => this.onPointersRotate(e));
   }
 
   update() {
@@ -52,5 +53,9 @@ export default class App {
 
   onPointersPinch(e) {
     this.cloud.PointerRotation.onPointersPinch(e);
+  }
+
+  onPointersRotate(e) {
+    this.cloud.PointerRotation.onPointersRotate(e);
   }
 }

@@ -64,11 +64,9 @@ export default class PointerRotation {
     }
   }
 
-  onPointersPinch(e) {
-    let zoom = e.scale - 1;
-    if (zoom < 0) zoom = 1 / zoom;
+  onPointersPinch(e) {}
 
-    this.object.position.setZ(zoom);
-    document.getElementById("test").innerHTML = zoom;
+  onPointersRotate(e) {
+    this.object.rotation.z += THREE.MathUtils.degToRad(e.rotation);
   }
 }
