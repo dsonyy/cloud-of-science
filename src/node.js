@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { cameraPosition } from "./cloud";
 
 export const NodeRadius = 0.6;
 export const NodeOutlineRadius = NodeRadius + 0.015;

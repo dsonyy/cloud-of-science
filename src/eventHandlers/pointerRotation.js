@@ -63,4 +63,11 @@ export default class PointerRotation {
       this.slowingDown = true;
     }
   }
+
+  onPointersPinch(e) {
+    let zoom = e.scale;
+    if (zoom < 0.5) zoom = 0.5;
+    else if (zoom > 1.5) zoom = 1.5;
+    this.object.position.setZ(scale);
+  }
 }
