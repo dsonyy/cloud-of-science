@@ -13,6 +13,7 @@ export default class App {
     this.element.addEventListener("mousemove", (e) => this.onMouseMove(e));
     this.element.addEventListener("mousedown", (e) => this.onMouseDown(e));
     this.element.addEventListener("mouseup", (e) => this.onMouseUp(e));
+    this.element.addEventListener("mouseleave", (e) => this.onMouseLeave(e));
   }
 
   update() {
@@ -43,5 +44,10 @@ export default class App {
 
   onMouseUp(e) {
     this.cloud.mouseRotation.onMouseUp(e);
+  }
+
+  onMouseLeave(e) {
+    console.log("left");
+    this.cloud.mouseRotation.onMouseLeave(e);
   }
 }

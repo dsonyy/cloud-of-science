@@ -16,7 +16,7 @@ export default class MouseRotation {
     this.vectorX = 0;
     this.vectorY = 10;
 
-    this.mouseStart = new THREE.Vector2();
+    this.mouseStart = null;
   }
 
   update() {
@@ -57,10 +57,9 @@ export default class MouseRotation {
 
   onMouseMove(e) {
     if (this.pointerHolding) {
-      this.vectorY += e.movementX;
-      this.vectorX += e.movementY;
+      this.vectorY = e.clientX - this.mouseStart.x;
+      this.vectorX = e.clientY - this.mouseStart.y;
     }
-    console.log(this.mouseStart);
   }
 
   onMouseDown(e) {
@@ -69,12 +68,16 @@ export default class MouseRotation {
       this.vectorX = 0;
       this.pointerHolding = true;
     }
-    this.mouseStart.x = e.clientX;
-    this.mouseStart.y = e.clientY;
+    this.mouseStart = new THREE.Vector2(e.clientX, e.clientY);
   }
 
   onMouseUp(e) {
     this.pointerHolding = false;
     this.slowingDown = true;
+    this.mouseStart = null;
+  }
+
+  onMouseLeave(e) {
+    this.onMouseUp(e);
   }
 }
