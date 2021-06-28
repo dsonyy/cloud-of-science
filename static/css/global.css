@@ -13,6 +13,16 @@ body {
   width: 100vw;
 }
 
+#debug {
+  display: none;
+  position: fixed;
+  right: 5px;
+  top: 5px;
+
+  font-family: "Courier New", Courier, monospace;
+  font-size: medium;
+}
+
 header {
   font-weight: 700;
   font-size: small;

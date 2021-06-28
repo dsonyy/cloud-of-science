@@ -23,8 +23,8 @@
           <a href=""><img src="static/fa/bars-solid.svg" height="26" /></a>
         </div>
         <div>
-          <a href=""
-            ><img src="static/fa/info-circle-solid.svg" height="26"
+          <a onclick="showDebugInfo()"
+            ><img src="static/fa/code-solid.svg" height="26"
           /></a>
         </div>
         <div>
@@ -44,5 +44,14 @@
         <a href="https://szymonbednorz.com/">Szymon Bednorz</a>, 2021
       </footer>
     </div>
+    <div id="debug">debug info</div>
+    <script>
+      function showDebugInfo() {
+        const element = document.getElementById("debug");
+        if (element.style.display == "none" || !element.style.display)
+          element.style.display = "initial";
+        else element.style.display = "none";
+      }
+    </script>
   </body>
 </html>
