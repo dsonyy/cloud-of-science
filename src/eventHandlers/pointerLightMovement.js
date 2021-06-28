@@ -7,6 +7,8 @@ export default class PointerLightMovement {
   }
 
   onPointerMove(e) {
+    if (e.pointerType != "mouse") return;
+
     if (this.element.contains(e.target)) {
       const rect = this.element.getBoundingClientRect();
       this.object.position.x =

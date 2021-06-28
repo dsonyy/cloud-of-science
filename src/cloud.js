@@ -10,10 +10,10 @@ import PointerLightMovement from "./eventHandlers/pointerLightMovement";
 export const cameraPosition = new THREE.Vector3(0, 0, 16);
 
 export default class Cloud {
-  constructor(element) {
-    this.element = element;
-    this.width = element.clientWidth;
-    this.height = element.clientHeight;
+  constructor(parentElement) {
+    this.parentElement = parentElement;
+    this.width = parentElement.clientWidth;
+    this.height = parentElement.clientHeight;
 
     // Scene
     this.scene = new THREE.Scene();
@@ -35,7 +35,7 @@ export default class Cloud {
     // Renderer
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize(this.width, this.height);
-    element.appendChild(this.renderer.domElement);
+    parentElement.appendChild(this.renderer.domElement);
 
     // Nodes
     this.radius = 5;
@@ -67,7 +67,7 @@ export default class Cloud {
     // Events
     this.PointerRotation = new PointerRotation(this.nodesGroup);
     this.pointerLightMovement = new PointerLightMovement(
-      this.element,
+      this.renderer.domElement,
       this.lights.point,
       this.radius * 4,
       this.radius * 3
@@ -169,8 +169,8 @@ export default class Cloud {
   }
 
   onWindowResize() {
-    this.width = this.element.clientWidth;
-    this.height = this.element.clientHeight;
+    this.width = this.parentElement.clientWidth;
+    this.height = this.parentElement.clientHeight;
 
     this.renderer.setSize(this.width, this.height);
     this.camera.aspect = this.width / this.height;
