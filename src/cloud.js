@@ -107,8 +107,9 @@ export default class Cloud {
       if (tappedNode) {
         for (const node of this.nodes) node.click(false);
         tappedNode.click(true);
+
         this.articleLoader.reloadArticle(tappedNode.articleName);
-        this.articleLoader.showArticle();
+        this.articleLoader.showArticle("right");
       } else {
         for (const node of this.nodes) node.click(false);
         this.articleLoader.hideArticle();

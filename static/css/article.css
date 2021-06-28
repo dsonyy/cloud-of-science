@@ -1,7 +1,6 @@
 #article {
   position: fixed;
-  min-width: 400px;
-  width: 30%;
+  width: max(30%, 400px);
   height: 100%;
   padding: 16px;
 
@@ -18,22 +17,27 @@
   font-size: small;
 }
 
-.left {
-  left: 0;
+#article.left {
+  right: 60vw;
 }
 
-.right {
+#article.right {
   left: 60vw;
 }
 
 @media screen and (max-width: 1100px) {
+  .left {
+    left: 0;
+    right: initial;
+  }
+
   .right {
     left: initial;
     right: 0;
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 650px) {
   #article {
     width: calc(100% - 32px - 4px);
     bottom: 0px;

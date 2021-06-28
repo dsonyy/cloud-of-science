@@ -2,6 +2,7 @@ import * as THREE from "three";
 
 export default class PointerRaycaster {
   constructor(camera, nodes, canvasElement) {
+    this.pointer = new THREE.Vector2();
     this.raycaster = new THREE.Raycaster();
     this.camera = camera;
     this.nodes = nodes;
@@ -12,6 +13,9 @@ export default class PointerRaycaster {
   }
 
   onPointerTap(e) {
+    this.pointer.x = e.center.x;
+    this.pointer.y = e.center.y;
+
     this.raycaster.setFromCamera(
       new THREE.Vector2(
         (e.center.x / this.canvasElement.width) * 2 - 1,
@@ -40,6 +44,12 @@ export default class PointerRaycaster {
   handleTap() {
     this.tapped = false;
     return this.tappedNode;
+  }
+
+  get side() {
+    console.log(this.pointer.x, this.canvasElement.width / 2);
+    if (this.pointer.x >= this.canvasElement.width / 2) return "right";
+    else return "left";
   }
 
   // onPointerMove(e) {
