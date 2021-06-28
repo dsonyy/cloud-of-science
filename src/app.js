@@ -9,6 +9,7 @@ export default class App {
 
     // Cloud
     this.cloud = new Cloud(element);
+    this.canvasElement = this.cloud.canvasElement;
 
     // Events handling
     window.addEventListener("resize", (e) => this.onResize(e));
@@ -16,7 +17,7 @@ export default class App {
     this.element.addEventListener("pointerdown", (e) => this.onPointerDown(e));
 
     // Hammer events handling
-    this.hammerManager = new Hammer.Manager(this.element, {
+    this.hammerManager = new Hammer.Manager(this.canvasElement, {
       recognizers: [[Hammer.Pan]],
     });
     this.hammerManager.on("pan", (e) => this.onPointerPan(e));
@@ -34,17 +35,17 @@ export default class App {
 
   onPointerMove(e) {
     this.cloud.pointerLightMovement.onPointerMove(e);
-    this.cloud.pointerRaycaster.onPointerMove(e);
 
-    if (this.cloud.pointerRaycaster.hoveredNode == null) {
-      this.element.style.cursor = "auto";
-    } else {
-      this.element.style.cursor = "pointer";
-    }
+    // this.cloud.pointerRaycaster.onPointerMove(e);
+    // if (this.cloud.pointerRaycaster.hoveredNode == null) {
+    //   this.element.style.cursor = "auto";
+    // } else {
+    //   this.element.style.cursor = "pointer";
+    // }
   }
 
   onPointerDown(e) {
-    this.cloud.pointerRaycaster.onPointerDown(e);
+    // this.cloud.pointerRaycaster.onPointerDown(e);
   }
 
   onPointerPan(e) {

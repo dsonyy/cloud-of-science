@@ -36,6 +36,7 @@ export default class Cloud {
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize(this.width, this.height);
     parentElement.appendChild(this.renderer.domElement);
+    this.canvasElement = this.renderer.domElement;
 
     // Nodes
     this.radius = 5;
@@ -67,7 +68,7 @@ export default class Cloud {
     // Events
     this.PointerRotation = new PointerRotation(this.nodesGroup);
     this.pointerLightMovement = new PointerLightMovement(
-      this.renderer.domElement,
+      this.canvasElement,
       this.lights.point,
       this.radius * 4,
       this.radius * 3
