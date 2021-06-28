@@ -1,5 +1,6 @@
 import Cloud from "./cloud";
 import Hammer from "hammerjs";
+import { debugInfo } from "./debugInfo";
 
 export default class App {
   constructor(element) {
@@ -22,6 +23,7 @@ export default class App {
   }
 
   update() {
+    debugInfo.update("debug");
     this.cloud.update();
     this.cloud.render();
   }
