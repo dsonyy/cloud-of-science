@@ -126,37 +126,6 @@ export default class Cloud {
         for (const node of this.nodes) node.hover(false);
       }
     }
-
-    // while (this.pointerRaycaster.queue.length) {
-    //   const rayEvent = this.pointerRaycaster.queue.shift();
-    //   if (rayEvent.action == "hover" && rayEvent.justNow) {
-    //     rayEvent.node.hover(true);
-    //     this.connection.hide();
-    //     this.connection.showRandom(rayEvent.node);
-    //   } else if (rayEvent.action == "leave" && rayEvent.justNow) {
-    //     rayEvent.node.hover(false);
-    //     this.connection.hide();
-    //   } else if (rayEvent.action == "click" && rayEvent.justNow) {
-    //     for (const node of this.nodes) node.click(false);
-    //     rayEvent.node.click(true);
-    //     this.articleLoader.reloadArticle(rayEvent.node.articleName);
-    //     this.articleLoader.showArticle();
-    //   } else if (rayEvent.action == "click" && !rayEvent.justNow) {
-    //     if (rayEvent.node) {
-    //       rayEvent.node.click(false);
-    //     }
-    //     this.pointerRaycaster.clickedNode = null;
-    //   } else if (rayEvent.action == "unclick" && rayEvent.justNow) {
-    //     if (rayEvent.node) {
-    //       rayEvent.node.click(false);
-    //     }
-    //     this.articleLoader.hideArticle();
-    //   }
-    // }
-
-    // if (this.pointerRaycaster.hoveredNode == null) {
-    //   this.connection.hide();
-    // }
   }
 
   render() {

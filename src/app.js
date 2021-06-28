@@ -13,8 +13,9 @@ export default class App {
 
     // Events handling
     window.addEventListener("resize", (e) => this.onResize(e));
-    this.element.addEventListener("pointermove", (e) => this.onPointerMove(e));
-    this.element.addEventListener("pointerdown", (e) => this.onPointerDown(e));
+    this.canvasElement.addEventListener("pointermove", (e) =>
+      this.onPointerMove(e)
+    );
 
     // Hammer events handling
     this.hammerManager = new Hammer.Manager(this.canvasElement, {
@@ -43,10 +44,6 @@ export default class App {
     } else {
       this.element.style.cursor = "auto";
     }
-  }
-
-  onPointerDown(e) {
-    // this.cloud.pointerRaycaster.onPointerDown(e);
   }
 
   onPointerPan(e) {
