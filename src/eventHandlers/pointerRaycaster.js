@@ -10,6 +10,46 @@ export default class PointerRaycaster {
 
     this.tappedNode = null;
     this.tapped = false;
+
+    this.hoveredNode = null;
+    this.hovered = false;
+  }
+
+  onPointerMove(e) {
+    if (e.pointerType != "mouse") return;
+
+    var rect = e.target.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+
+    this.raycaster.setFromCamera(
+      new THREE.Vector2(
+        (x / this.canvasElement.width) * 2 - 1,
+        -(y / this.canvasElement.height) * 2 + 1
+      ),
+      this.camera
+    );
+
+    let closestInter = null;
+    let hoveredNode = null;
+    for (const node of this.nodes) {
+      const inter = this.raycaster.intersectObject(node.mesh);
+      if (
+        inter.length == 1 &&
+        (closestInter == null || closestInter.distance > inter[0].distance)
+      ) {
+        closestInter = inter[0];
+        hoveredNode = node;
+      }
+    }
+
+    this.hoveredNode = hoveredNode;
+    this.hovered = true;
+  }
+
+  handleHover() {
+    this.hovered = false;
+    return this.hoveredNode;
   }
 
   onPointerTap(e) {

@@ -37,8 +37,9 @@ export default class App {
   onPointerMove(e) {
     this.cloud.pointerLightMovement.onPointerMove(e);
 
-    // this.cloud.pointerRaycaster.onPointerMove(e);
-    // if (this.cloud.pointerRaycaster.hoveredNode == null) {
+    this.cloud.pointerRaycaster.onPointerMove(e);
+    // console.log(this.cloud.pointerRaycaster.hovered);
+    //if (this.cloud.pointerRaycaster.hovered == true) {
     //   this.element.style.cursor = "auto";
     // } else {
     //   this.element.style.cursor = "pointer";

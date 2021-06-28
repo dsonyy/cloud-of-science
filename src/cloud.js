@@ -52,7 +52,7 @@ export default class Cloud {
     };
     this.scene.add(this.lights.ambient);
     this.scene.add(this.lights.point);
-    this.lights.point.position.set(0, 0, 2 * this.radius);
+    this.lights.point.position.set(-3, -2, 2 * this.radius);
 
     // Fog
     this.scene.fog = new THREE.Fog(
@@ -105,14 +105,28 @@ export default class Cloud {
       const tappedNode = this.pointerRaycaster.handleTap();
 
       if (tappedNode) {
-        for (const node of this.nodes) node.click(false);
         tappedNode.click(true);
+        for (const node of this.nodes) node.hover(false);
+        tappedNode.hover(true);
 
         this.articleLoader.reloadArticle(tappedNode.articleName);
         this.articleLoader.showArticle("right");
       } else {
-        for (const node of this.nodes) node.click(false);
+        for (const node of this.nodes) {
+          node.click(false);
+          node.hover(false);
+        }
         this.articleLoader.hideArticle();
+      }
+    }
+
+    if (this.pointerRaycaster.hovered) {
+      const hoveredNode = this.pointerRaycaster.handleHover();
+      if (hoveredNode) {
+        for (const node of this.nodes) node.hover(false);
+        hoveredNode.hover(true);
+      } else {
+        for (const node of this.nodes) node.hover(false);
       }
     }
 
