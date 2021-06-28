@@ -7,6 +7,7 @@ Visualizing technology-related science as an interactive cloud.
 - [Installation](#installation)
 - [Customization](#customization)
 - [Credits](#credits)
+- [License](#license)
 
 ## What is it?
 
@@ -17,3 +18,5 @@ Visualizing technology-related science as an interactive cloud.
 ## Customization
 
 ## Credits
+
+## License
