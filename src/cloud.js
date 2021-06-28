@@ -122,9 +122,9 @@ export default class Cloud {
       if (hoveredNode) {
         for (const node of this.nodes) node.hover(false);
         hoveredNode.hover(true);
-      } else {
-        for (const node of this.nodes) node.hover(false);
       }
+    } else {
+      for (const node of this.nodes) node.hover(false);
     }
   }
 

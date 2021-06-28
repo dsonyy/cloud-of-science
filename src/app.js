@@ -16,6 +16,9 @@ export default class App {
     this.canvasElement.addEventListener("pointermove", (e) =>
       this.onPointerMove(e)
     );
+    this.canvasElement.addEventListener("pointerleave", (e) =>
+      this.onPointerLeave(e)
+    );
 
     // Hammer events handling
     this.hammerManager = new Hammer.Manager(this.canvasElement, {
@@ -44,6 +47,10 @@ export default class App {
     } else {
       this.element.style.cursor = "auto";
     }
+  }
+
+  onPointerLeave(e) {
+    this.cloud.pointerRaycaster.onPointerLeave(e);
   }
 
   onPointerPan(e) {
