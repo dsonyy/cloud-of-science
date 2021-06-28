@@ -44,7 +44,7 @@ export default class PointerRaycaster {
     }
 
     this.hoveredNode = hoveredNode;
-    this.hovered = true;
+    if (this.hoveredNode) this.hovered = true;
   }
 
   handleHover() {
