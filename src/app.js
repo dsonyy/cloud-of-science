@@ -18,9 +18,10 @@ export default class App {
 
     // Hammer events handling
     this.hammerManager = new Hammer.Manager(this.canvasElement, {
-      recognizers: [[Hammer.Pan]],
+      recognizers: [[Hammer.Pan], [Hammer.Tap]],
     });
     this.hammerManager.on("pan", (e) => this.onPointerPan(e));
+    this.hammerManager.on("tap", (e) => this.onPointerTap(e));
   }
 
   update() {
@@ -50,5 +51,9 @@ export default class App {
 
   onPointerPan(e) {
     this.cloud.PointerRotation.onPointerPan(e);
+  }
+
+  onPointerTap(e) {
+    this.cloud.pointerRaycaster.onPointerTap(e);
   }
 }
