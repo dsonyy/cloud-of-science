@@ -33,6 +33,7 @@ export default class ArticlesLoader {
   }
 
   reloadArticle(name) {
+    this.element.innerHTML = "";
     if (this.articles[name]) {
       this.element.innerHTML = this.articles[name];
     } else {
