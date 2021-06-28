@@ -66,7 +66,7 @@ export default class Cloud {
     this.nodesGroup.add(this.connection.group);
 
     // Events
-    this.PointerRotation = new PointerRotation(this.nodesGroup);
+    this.pointerRotation = new PointerRotation(this.nodesGroup);
     this.pointerLightMovement = new PointerLightMovement(
       this.canvasElement,
       this.lights.point,
@@ -95,20 +95,24 @@ export default class Cloud {
   }
 
   update() {
-    this.PointerRotation.update();
+    this.pointerRotation.update();
 
     for (const node of this.nodes) {
       node.update(this.radius);
     }
 
-    console.log(this.pointerRaycaster.tapped);
     if (this.pointerRaycaster.tapped) {
       const tappedNode = this.pointerRaycaster.handleTap();
 
-      for (const node of this.nodes) node.click(false);
-      tappedNode.click(true);
-      this.articleLoader.reloadArticle(tappedNode.articleName);
-      this.articleLoader.showArticle();
+      if (tappedNode) {
+        for (const node of this.nodes) node.click(false);
+        tappedNode.click(true);
+        this.articleLoader.reloadArticle(tappedNode.articleName);
+        this.articleLoader.showArticle();
+      } else {
+        for (const node of this.nodes) node.click(false);
+        this.articleLoader.hideArticle();
+      }
     }
 
     // while (this.pointerRaycaster.queue.length) {

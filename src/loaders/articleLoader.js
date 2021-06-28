@@ -25,6 +25,7 @@ export default class ArticlesLoader {
 
   showArticle() {
     this.element.style.display = "initial";
+    this.element.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   reloadArticle(name) {

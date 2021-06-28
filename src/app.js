@@ -50,7 +50,7 @@ export default class App {
   }
 
   onPointerPan(e) {
-    this.cloud.PointerRotation.onPointerPan(e);
+    this.cloud.pointerRotation.onPointerPan(e);
   }
 
   onPointerTap(e) {

@@ -34,7 +34,7 @@ export default class PointerRaycaster {
     }
 
     this.tappedNode = tappedNode;
-    if (this.tappedNode) this.tapped = true;
+    this.tapped = true;
   }
 
   handleTap() {
