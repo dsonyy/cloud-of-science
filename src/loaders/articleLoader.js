@@ -23,11 +23,17 @@ export default class ArticlesLoader {
     this.element.style.display = "none";
   }
 
-  showArticle() {
+  showArticle(side = "right") {
+    this.element.classList.remove("left");
+    this.element.classList.remove("right");
+    this.element.classList.add(side);
+
     this.element.style.display = "initial";
+    this.element.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   reloadArticle(name) {
+    this.element.innerHTML = "";
     if (this.articles[name]) {
       this.element.innerHTML = this.articles[name];
     } else {

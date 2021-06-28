@@ -9,17 +9,23 @@ export default class App {
 
     // Cloud
     this.cloud = new Cloud(element);
+    this.canvasElement = this.cloud.canvasElement;
 
     // Events handling
     window.addEventListener("resize", (e) => this.onResize(e));
-    this.element.addEventListener("pointermove", (e) => this.onPointerMove(e));
-    this.element.addEventListener("pointerdown", (e) => this.onPointerDown(e));
+    this.canvasElement.addEventListener("pointermove", (e) =>
+      this.onPointerMove(e)
+    );
+    this.canvasElement.addEventListener("pointerleave", (e) =>
+      this.onPointerLeave(e)
+    );
 
     // Hammer events handling
-    this.hammerManager = new Hammer.Manager(this.element, {
-      recognizers: [[Hammer.Pan]],
+    this.hammerManager = new Hammer.Manager(this.canvasElement, {
+      recognizers: [[Hammer.Pan], [Hammer.Tap]],
     });
     this.hammerManager.on("pan", (e) => this.onPointerPan(e));
+    this.hammerManager.on("tap", (e) => this.onPointerTap(e));
   }
 
   update() {
@@ -34,20 +40,24 @@ export default class App {
 
   onPointerMove(e) {
     this.cloud.pointerLightMovement.onPointerMove(e);
-    this.cloud.pointerRaycaster.onPointerMove(e);
 
-    if (this.cloud.pointerRaycaster.hoveredNode == null) {
-      this.element.style.cursor = "auto";
-    } else {
+    this.cloud.pointerRaycaster.onPointerMove(e);
+    if (this.cloud.pointerRaycaster.hovered) {
       this.element.style.cursor = "pointer";
+    } else {
+      this.element.style.cursor = "auto";
     }
   }
 
-  onPointerDown(e) {
-    this.cloud.pointerRaycaster.onPointerDown(e);
+  onPointerLeave(e) {
+    this.cloud.pointerRaycaster.onPointerLeave(e);
   }
 
   onPointerPan(e) {
-    this.cloud.PointerRotation.onPointerPan(e);
+    this.cloud.pointerRotation.onPointerPan(e);
+  }
+
+  onPointerTap(e) {
+    this.cloud.pointerRaycaster.onPointerTap(e);
   }
 }
