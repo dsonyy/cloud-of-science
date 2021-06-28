@@ -12,6 +12,7 @@ export default class Connection {
   constructor(nodes) {
     this.nodes = nodes;
     this.group = new THREE.Group();
+    this.activeNode = null;
   }
 
   show(activeNode) {
@@ -19,6 +20,12 @@ export default class Connection {
   }
 
   showRandom(activeNode) {
+    if (this.activeNode != null && activeNode.id == this.activeNode.id) return;
+    else if (this.activeNode != null && activeNode.id != this.activeNode.id)
+      this.hide();
+
+    this.activeNode = activeNode;
+
     const neighbors = [];
     for (const node of this.nodes) {
       if (node.id != activeNode.id) {
@@ -38,6 +45,7 @@ export default class Connection {
 
   hide() {
     this.group.clear();
+    this.activeNode = null;
   }
 
   static createConnection(a, b) {

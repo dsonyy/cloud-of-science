@@ -122,9 +122,11 @@ export default class Cloud {
       if (hoveredNode) {
         for (const node of this.nodes) node.hover(false);
         hoveredNode.hover(true);
+        this.connection.showRandom(hoveredNode);
       }
     } else {
       for (const node of this.nodes) node.hover(false);
+      this.connection.hide();
     }
   }
 
