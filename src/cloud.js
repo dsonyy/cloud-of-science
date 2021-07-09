@@ -1,11 +1,11 @@
 import * as THREE from "three";
-import Node from "./node";
 import Connection from "./connection";
 import NodesLoader from "./loaders/nodesLoader";
 import ArticlesLoader from "./loaders/articleLoader";
 import PointerRaycaster from "./eventHandlers/pointerRaycaster";
 import PointerRotation from "./eventHandlers/pointerRotation";
 import PointerLightMovement from "./eventHandlers/pointerLightMovement";
+import CloudScaffolding from "./cloudScaffolding";
 
 export const cameraPosition = new THREE.Vector3(0, 0, 16);
 
@@ -38,12 +38,12 @@ export default class Cloud {
     parentElement.appendChild(this.renderer.domElement);
     this.canvasElement = this.renderer.domElement;
 
-    // Nodes
+    // Scaffolding
     this.radius = 5;
+    this.scaffolding = new CloudScaffolding(this.radius);
+
+    // Nodes
     this.nodes = [];
-    this.nodesGroup = new THREE.Group();
-    this.nodesGroup.rotation.z = Math.PI / 2;
-    this.scene.add(this.nodesGroup);
 
     // Lights
     this.lights = {
@@ -63,10 +63,10 @@ export default class Cloud {
 
     // Connection
     this.connection = new Connection([]);
-    this.nodesGroup.add(this.connection.group);
+    this.scene.add(this.connection.group);
 
     // Events
-    this.pointerRotation = new PointerRotation(this.nodesGroup);
+    this.pointerRotation = new PointerRotation(this.scaffolding.group);
     this.pointerLightMovement = new PointerLightMovement(
       this.canvasElement,
       this.lights.point,
@@ -80,11 +80,11 @@ export default class Cloud {
     );
 
     // Loading nodes
-    this.nodesLoader = new NodesLoader(this.radius);
+    this.nodesLoader = new NodesLoader(this.scaffolding);
     this.nodesLoader.fetch().then(() => {
       this.nodes = this.nodesLoader.nodes;
       for (const node of this.nodes) {
-        this.nodesGroup.add(node.group);
+        this.scene.add(node.group);
       }
       this.connection.nodes = this.nodes;
       this.pointerRaycaster.nodes = this.nodes;
@@ -128,42 +128,13 @@ export default class Cloud {
       for (const node of this.nodes) node.hover(false);
       this.connection.hide();
     }
+
+    this.connection.update();
   }
 
   render() {
     this.camera.lookAt(this.scene.position);
     this.renderer.render(this.scene, this.camera);
-  }
-
-  static calcFibonacciSpherePoints(samples, radius) {
-    let points = [];
-    let phi = Math.PI * (3 - Math.sqrt(5));
-    for (let i = 0; i < samples; i++) {
-      let y = 1 - (i / (samples - 1)) * 2;
-      let r = Math.sqrt(1 - y * y);
-      let theta = phi * i;
-
-      let x = Math.cos(theta) * r;
-      let z = Math.sin(theta) * r;
-
-      points.push([x * radius, y * radius, z * radius]);
-    }
-    return points;
-  }
-
-  constructEmptyNodes(n, radius) {
-    let id = 0;
-    for (const point of Cloud.calcFibonacciSpherePoints(n, radius)) {
-      this.nodes.push(
-        new Node(point[0], point[1], point[2], {
-          id: id++,
-          color: Node.randomColor,
-          icon: "static/icons/dummy-icon0.png",
-        })
-      );
-      this.nodesGroup.add(this.nodes[this.nodes.length - 1].group);
-    }
-    this.nodesGroup.rotation.z = Math.PI / 2;
   }
 
   onWindowResize() {

@@ -12,7 +12,7 @@ const NodeOutlineMaterial = new THREE.MeshBasicMaterial({
 });
 
 export default class Node {
-  constructor(x, y, z, content) {
+  constructor(scaffoldingPlacement, content) {
     // Content
     this.id = content.id;
     this.color = new THREE.Color(
@@ -23,16 +23,21 @@ export default class Node {
     this.title = content.title;
     this.articleName = content.articleName;
 
+    this.placement = scaffoldingPlacement;
+
     this.group = new THREE.Group();
+    this.group.position.set(
+      this.placement.position.x,
+      this.placement.position.y,
+      this.placement.position.z
+    );
     this.hovered = false;
     this.clicked = false;
-    this.position = new THREE.Vector3(x, y, z);
 
     // Bubble
     this.material = createGradientMaterial(5, this.color.getHex());
     this.geometry = NodeGeometry;
     this.mesh = new THREE.Mesh(this.geometry, this.material);
-    this.mesh.position.set(x, y, z);
     this.group.add(this.mesh);
 
     this.colorLightnessFactor = 0.5;
@@ -40,37 +45,37 @@ export default class Node {
 
     // Outline
     this.meshOutline = new THREE.Mesh(NodeOutlineGeometry, NodeOutlineMaterial);
-    this.meshOutline.position.set(x, y, z);
     this.group.add(this.meshOutline);
 
     // Icon
     this.map = new THREE.TextureLoader().load(content.iconSrc);
     const material = new THREE.SpriteMaterial({ map: this.map });
     this.icon = new THREE.Sprite(material);
-    this.icon.scale.set(1, 1, 1);
-    this.icon.position.set(
-      this.mesh.position.x,
-      this.mesh.position.y,
-      this.mesh.position.z
-    );
+    this.icon.scale.set(0.9, 0.9, 0.9);
+    this.icon.position.z += NodeRadius;
     this.group.add(this.icon);
 
     // Title text
     this.text = new Text();
-    this.text.text = "\n".repeat(7) + this.title.toUpperCase();
+    this.text.text = this.title.toUpperCase();
     this.text.fontSize = 0.2;
     this.text.font = "static/fonts/arial.ttf";
     this.text.anchorX = "center";
-    this.text.anchorY = "middle";
-    this.text.color = 0x222222;
-    this.text.position.set(
-      this.mesh.position.x,
-      this.mesh.position.y,
-      this.mesh.position.z
-    );
+    this.text.anchorY = 1 - this.text.fontSize;
+    this.text.color = 0x0;
     this.text.visible = false;
     this.text.sync();
     this.group.add(this.text);
+
+    // Test arrow
+    this.arrow = new THREE.ArrowHelper(
+      new THREE.Vector3(0, -1, 0),
+      new THREE.Vector3(),
+      2,
+      0x0
+    );
+    this.arrow.visible = false;
+    this.group.add(this.arrow);
   }
 
   static get randomColor() {
@@ -87,7 +92,27 @@ export default class Node {
       this.icon.material.opacity = dist;
     }
 
-    this.text.lookAt(0, 0, 16);
+    // Icon position to the camera
+    this.iconUpdate(new THREE.Vector3(0, 0, 16)); // TODO: remove hardcoded camera position
+
+    // Scaffolding placement position
+    let pos = new THREE.Vector3();
+    this.placement.getWorldPosition(pos);
+    this.group.position.set(pos.x, pos.y, pos.z);
+  }
+
+  iconUpdate(cameraPos) {
+    const nodePos = this.group.position;
+
+    // Normalized vector nodePos->cameraPos
+    const v = new THREE.Vector3();
+    v.subVectors(cameraPos, nodePos).normalize();
+
+    // Multiply by bubble's radius (with a small offset)
+    v.multiplyScalar(NodeRadius + 0.1);
+
+    // Set icon position
+    this.icon.position.set(v.x, v.y, v.z);
   }
 
   hover(hovered) {
@@ -136,6 +161,5 @@ function createGradientMaterial(n, color) {
   return new THREE.MeshToonMaterial({
     color: color,
     gradientMap: gradientMap,
-    side: THREE.BackSide,
   });
 }
