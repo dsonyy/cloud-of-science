@@ -1,4 +1,6 @@
 import Cloud from "./cloud";
+import Hammer from "hammerjs";
+import { debugInfo } from "./debugInfo";
 
 export default class App {
   constructor(element) {
@@ -7,15 +9,27 @@ export default class App {
 
     // Cloud
     this.cloud = new Cloud(element);
+    this.canvasElement = this.cloud.canvasElement;
 
-    // Global events handling
+    // Events handling
     window.addEventListener("resize", (e) => this.onResize(e));
-    this.element.addEventListener("pointermove", (e) => this.onPointerMove(e));
-    this.element.addEventListener("pointerdown", (e) => this.onPointerDown(e));
-    this.element.addEventListener("pointerup", (e) => this.onPointerUp(e));
+    this.canvasElement.addEventListener("pointermove", (e) =>
+      this.onPointerMove(e)
+    );
+    this.canvasElement.addEventListener("pointerleave", (e) =>
+      this.onPointerLeave(e)
+    );
+
+    // Hammer events handling
+    this.hammerManager = new Hammer.Manager(this.canvasElement, {
+      recognizers: [[Hammer.Pan], [Hammer.Tap]],
+    });
+    this.hammerManager.on("pan", (e) => this.onPointerPan(e));
+    this.hammerManager.on("tap", (e) => this.onPointerTap(e));
   }
 
   update() {
+    debugInfo.update("debug");
     this.cloud.update();
     this.cloud.render();
   }
@@ -25,23 +39,25 @@ export default class App {
   }
 
   onPointerMove(e) {
-    this.cloud.mouseLightMovement.onPointerMove(e);
-    this.cloud.mouseRaycaster.onPointerMove(e);
-    this.cloud.mouseRotation.onPointerMove(e);
+    this.cloud.pointerLightMovement.onPointerMove(e);
 
-    if (this.cloud.mouseRaycaster.hoveredNode == null) {
-      this.element.style.cursor = "auto";
-    } else {
+    this.cloud.pointerRaycaster.onPointerMove(e);
+    if (this.cloud.pointerRaycaster.hovered) {
       this.element.style.cursor = "pointer";
+    } else {
+      this.element.style.cursor = "auto";
     }
   }
 
-  onPointerDown(e) {
-    this.cloud.mouseRaycaster.onPointerDown(e);
-    this.cloud.mouseRotation.onPointerDown(e);
+  onPointerLeave(e) {
+    this.cloud.pointerRaycaster.onPointerLeave(e);
   }
 
-  onPointerUp(e) {
-    this.cloud.mouseRotation.onPointerUp(e);
+  onPointerPan(e) {
+    this.cloud.pointerRotation.onPointerPan(e);
+  }
+
+  onPointerTap(e) {
+    this.cloud.pointerRaycaster.onPointerTap(e);
   }
 }
