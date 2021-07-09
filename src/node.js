@@ -52,6 +52,7 @@ export default class Node {
     const material = new THREE.SpriteMaterial({ map: this.map });
     this.icon = new THREE.Sprite(material);
     this.icon.scale.set(1, 1, 1);
+    this.icon.position.z += NodeRadius;
     this.group.add(this.icon);
 
     // Title text
@@ -146,6 +147,5 @@ function createGradientMaterial(n, color) {
   return new THREE.MeshToonMaterial({
     color: color,
     gradientMap: gradientMap,
-    side: THREE.BackSide,
   });
 }
