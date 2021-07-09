@@ -46,7 +46,6 @@ export default class Cloud {
     // Nodes
     this.nodes = [];
     this.nodesGroup = new THREE.Group();
-    this.nodesGroup.rotation.z = Math.PI / 2;
     this.scene.add(this.nodesGroup);
 
     // Lights

@@ -27,9 +27,9 @@ export default class Node {
 
     this.group = new THREE.Group();
     this.group.position.set(
-      this.placement.x,
-      this.placement.y,
-      this.placement.z
+      this.placement.position.x,
+      this.placement.position.y,
+      this.placement.position.z
     );
     this.hovered = false;
     this.clicked = false;
@@ -96,11 +96,9 @@ export default class Node {
     }
 
     // Scaffolding placement position
-    this.group.position.set(
-      this.placement.x,
-      this.placement.y,
-      this.placement.z
-    );
+    let pos = new THREE.Vector3();
+    this.placement.getWorldPosition(pos);
+    this.group.position.set(pos.x, pos.y, pos.z);
 
     // Text
     this.text.lookAt(0, 0, 16);
