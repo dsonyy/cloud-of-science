@@ -1,13 +1,14 @@
 import Node from "../node";
 import Cloud from "../cloud";
+import CloudScaffolding from "../cloudScaffolding";
 
 const NodesFilePath = "static/cloud/nodes.json";
 
 export default class NodesLoader {
-  constructor(cloudRadius) {
+  constructor(cloudScaffolding) {
     this.nodes = [];
     this.colors;
-    this.cloudRadius = cloudRadius;
+    this.cloudScaffolding = cloudScaffolding;
   }
 
   async fetch() {
@@ -22,19 +23,16 @@ export default class NodesLoader {
   processData(data) {
     this.colors = data.colors;
 
-    const points = Cloud.calcFibonacciSpherePoints(
-      data.nodes.length,
-      this.cloudRadius
-    );
+    this.cloudScaffolding.create(data.nodes.length);
 
     let id = 0;
     for (const rawNode of data.nodes) {
-      const point = points.pop();
+      const placement = this.cloudScaffolding.placements[id];
       const color = this.colors[rawNode.category]
         ? this.colors[rawNode.category]
         : 0;
 
-      const node = new Node(point[0], point[1], point[2], {
+      const node = new Node(placement, {
         id: id++,
         title: rawNode.title,
         description: rawNode.description,

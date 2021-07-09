@@ -12,7 +12,7 @@ const NodeOutlineMaterial = new THREE.MeshBasicMaterial({
 });
 
 export default class Node {
-  constructor(x, y, z, content) {
+  constructor(scaffoldingPlacement, content) {
     // Content
     this.id = content.id;
     this.color = new THREE.Color(
@@ -23,16 +23,24 @@ export default class Node {
     this.title = content.title;
     this.articleName = content.articleName;
 
+    this.placement = scaffoldingPlacement;
+
     this.group = new THREE.Group();
+    this.group.position.set(
+      this.placement.x,
+      this.placement.y,
+      this.placement.z
+    );
     this.hovered = false;
     this.clicked = false;
-    this.position = new THREE.Vector3(x, y, z);
+    // this.position = new THREE.Vector3(x, y, z);
+    this.position = new THREE.Vector3(0, 0, 0);
 
     // Bubble
     this.material = createGradientMaterial(5, this.color.getHex());
     this.geometry = NodeGeometry;
     this.mesh = new THREE.Mesh(this.geometry, this.material);
-    this.mesh.position.set(x, y, z);
+    // this.mesh.position.set(x, y, z);
     this.group.add(this.mesh);
 
     this.colorLightnessFactor = 0.5;
@@ -40,7 +48,7 @@ export default class Node {
 
     // Outline
     this.meshOutline = new THREE.Mesh(NodeOutlineGeometry, NodeOutlineMaterial);
-    this.meshOutline.position.set(x, y, z);
+    // this.meshOutline.position.set(x, y, z);
     this.group.add(this.meshOutline);
 
     // Icon
@@ -48,11 +56,11 @@ export default class Node {
     const material = new THREE.SpriteMaterial({ map: this.map });
     this.icon = new THREE.Sprite(material);
     this.icon.scale.set(1, 1, 1);
-    this.icon.position.set(
-      this.mesh.position.x,
-      this.mesh.position.y,
-      this.mesh.position.z
-    );
+    // this.icon.position.set(
+    //   this.mesh.position.x,
+    //   this.mesh.position.y,
+    //   this.mesh.position.z
+    // );
     this.group.add(this.icon);
 
     // Title text
@@ -63,11 +71,11 @@ export default class Node {
     this.text.anchorX = "center";
     this.text.anchorY = "middle";
     this.text.color = 0x222222;
-    this.text.position.set(
-      this.mesh.position.x,
-      this.mesh.position.y,
-      this.mesh.position.z
-    );
+    // this.text.position.set(
+    //   this.mesh.position.x,
+    //   this.mesh.position.y,
+    //   this.mesh.position.z
+    // );
     this.text.visible = false;
     this.text.sync();
     this.group.add(this.text);
@@ -87,6 +95,14 @@ export default class Node {
       this.icon.material.opacity = dist;
     }
 
+    // Scaffolding placement position
+    this.group.position.set(
+      this.placement.x,
+      this.placement.y,
+      this.placement.z
+    );
+
+    // Text
     this.text.lookAt(0, 0, 16);
   }
 
