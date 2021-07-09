@@ -51,7 +51,7 @@ export default class Node {
     this.map = new THREE.TextureLoader().load(content.iconSrc);
     const material = new THREE.SpriteMaterial({ map: this.map });
     this.icon = new THREE.Sprite(material);
-    this.icon.scale.set(1, 1, 1);
+    this.icon.scale.set(0.9, 0.9, 0.9);
     this.icon.position.z += NodeRadius;
     this.group.add(this.icon);
 
@@ -71,10 +71,10 @@ export default class Node {
     this.arrow = new THREE.ArrowHelper(
       new THREE.Vector3(0, -1, 0),
       new THREE.Vector3(),
-      1,
+      2,
       0x0
     );
-    this.arrow.visible = true;
+    this.arrow.visible = false;
     this.group.add(this.arrow);
   }
 
@@ -92,6 +92,9 @@ export default class Node {
       this.icon.material.opacity = dist;
     }
 
+    // Icon position to the camera
+    this.iconUpdate(new THREE.Vector3(0, 0, 16)); // TODO: remove hardcoded camera position
+
     // Scaffolding placement position
     let pos = new THREE.Vector3();
     this.placement.getWorldPosition(pos);
@@ -99,6 +102,20 @@ export default class Node {
 
     // Text
     this.text.lookAt(0, 0, 16);
+  }
+
+  iconUpdate(cameraPos) {
+    const nodePos = this.group.position;
+
+    // Normalized vector nodePos->cameraPos
+    const v = new THREE.Vector3();
+    v.subVectors(cameraPos, nodePos).normalize();
+
+    // Multiply by bubble's radius (with a small offset)
+    v.multiplyScalar(NodeRadius + 0.1);
+
+    // Set icon position
+    this.icon.position.set(v.x, v.y, v.z);
   }
 
   hover(hovered) {
