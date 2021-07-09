@@ -57,12 +57,12 @@ export default class Node {
 
     // Title text
     this.text = new Text();
-    this.text.text = "\n".repeat(7) + this.title.toUpperCase();
+    this.text.text = this.title.toUpperCase();
     this.text.fontSize = 0.2;
     this.text.font = "static/fonts/arial.ttf";
     this.text.anchorX = "center";
-    this.text.anchorY = "middle";
-    this.text.color = 0x222222;
+    this.text.anchorY = 1 - this.text.fontSize;
+    this.text.color = 0x0;
     this.text.visible = false;
     this.text.sync();
     this.group.add(this.text);
@@ -99,9 +99,6 @@ export default class Node {
     let pos = new THREE.Vector3();
     this.placement.getWorldPosition(pos);
     this.group.position.set(pos.x, pos.y, pos.z);
-
-    // Text
-    this.text.lookAt(0, 0, 16);
   }
 
   iconUpdate(cameraPos) {
