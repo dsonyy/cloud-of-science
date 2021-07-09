@@ -57,10 +57,11 @@ export default class Node {
 
     // Title text
     this.text = new Text();
-    this.text.text = "\n".repeat(2) + this.title; //.toUpperCase();
-    this.text.fontSize = 0.25;
+    this.text.text = "\n".repeat(7) + this.title.toUpperCase();
+    this.text.fontSize = 0.2;
     this.text.font = "static/fonts/arial.ttf";
     this.text.anchorX = "center";
+    this.text.anchorY = "middle";
     this.text.color = 0x222222;
     this.text.position.set(
       this.mesh.position.x,
@@ -70,15 +71,6 @@ export default class Node {
     this.text.visible = false;
     this.text.sync();
     this.group.add(this.text);
-
-    // Arrow helper
-    this.arrow = new THREE.ArrowHelper(
-      new THREE.Vector3(1, 0, 0),
-      this.mesh.position,
-      1,
-      0x0
-    );
-    this.group.add(this.arrow);
   }
 
   static get randomColor() {
@@ -96,13 +88,6 @@ export default class Node {
     }
 
     this.text.lookAt(0, 0, 16);
-
-    if (this.group.parent != null) {
-      const v = this.group.parent.rotation;
-      this.arrow.setRotationFromEuler(new THREE.Euler(-v.x, -0, 0));
-    }
-    // const v = this.text.worldToLocal(new THREE.Vector3(0, 1, 0));
-    // this.arrow.origin = new THREE.Vector3(0, 1, 0);
   }
 
   hover(hovered) {
