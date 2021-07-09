@@ -45,8 +45,6 @@ export default class Cloud {
 
     // Nodes
     this.nodes = [];
-    this.nodesGroup = new THREE.Group();
-    this.scene.add(this.nodesGroup);
 
     // Lights
     this.lights = {
@@ -66,7 +64,7 @@ export default class Cloud {
 
     // Connection
     this.connection = new Connection([]);
-    this.nodesGroup.add(this.connection.group);
+    this.scene.add(this.connection.group);
 
     // Events
     this.pointerRotation = new PointerRotation(this.scaffolding.group);
@@ -87,7 +85,7 @@ export default class Cloud {
     this.nodesLoader.fetch().then(() => {
       this.nodes = this.nodesLoader.nodes;
       for (const node of this.nodes) {
-        this.nodesGroup.add(node.group);
+        this.scene.add(node.group);
       }
       this.connection.nodes = this.nodes;
       this.pointerRaycaster.nodes = this.nodes;

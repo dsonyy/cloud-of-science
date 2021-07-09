@@ -32,8 +32,12 @@ export default class Connection {
     for (let i = 0; i < 3; i++) {
       const neighbor = neighbors[Math.floor(Math.random() * neighbors.length)];
       this.group.add(
-        Connection.createConnection(neighbor.position, activeNode.position)
+        Connection.createConnection(
+          neighbor.group.position,
+          activeNode.group.position
+        )
       );
+      console.log(this.group.children);
     }
   }
 
