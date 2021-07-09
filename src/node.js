@@ -65,6 +65,16 @@ export default class Node {
     this.text.visible = false;
     this.text.sync();
     this.group.add(this.text);
+
+    // Test arrow
+    this.arrow = new THREE.ArrowHelper(
+      new THREE.Vector3(0, -1, 0),
+      new THREE.Vector3(),
+      1,
+      0x0
+    );
+    this.arrow.visible = true;
+    this.group.add(this.arrow);
   }
 
   static get randomColor() {
