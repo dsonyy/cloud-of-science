@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { cameraPosition } from "./cloud";
+import { Text } from "troika-three-text";
 
 export const NodeRadius = 0.6;
 export const NodeOutlineRadius = NodeRadius + 0.015;
@@ -54,6 +54,23 @@ export default class Node {
       this.mesh.position.z
     );
     this.group.add(this.icon);
+
+    // Title text
+    this.text = new Text();
+    this.text.text = "\n".repeat(7) + this.title.toUpperCase();
+    this.text.fontSize = 0.2;
+    this.text.font = "static/fonts/arial.ttf";
+    this.text.anchorX = "center";
+    this.text.anchorY = "middle";
+    this.text.color = 0x222222;
+    this.text.position.set(
+      this.mesh.position.x,
+      this.mesh.position.y,
+      this.mesh.position.z
+    );
+    this.text.visible = false;
+    this.text.sync();
+    this.group.add(this.text);
   }
 
   static get randomColor() {
@@ -69,6 +86,8 @@ export default class Node {
     } else {
       this.icon.material.opacity = dist;
     }
+
+    this.text.lookAt(0, 0, 16);
   }
 
   hover(hovered) {
@@ -77,10 +96,10 @@ export default class Node {
 
     if (this.hovered) {
       this.material.color.offsetHSL(0, 0, 0.3);
-      // document.body.style.cursor = "pointer";
+      this.text.visible = true;
     } else {
       this.material.color.set(this.color);
-      // document.body.style.cursor = "auto";
+      this.text.visible = false;
     }
     return true;
   }
