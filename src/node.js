@@ -57,8 +57,8 @@ export default class Node {
 
     // Title text
     this.text = new Text();
-    this.text.text = this.title.toUpperCase();
-    this.text.fontSize = 0.5;
+    this.text.text = "\n".repeat(2) + this.title; //.toUpperCase();
+    this.text.fontSize = 0.25;
     this.text.font = "static/fonts/arial.ttf";
     this.text.anchorX = "center";
     this.text.color = 0x222222;
@@ -67,7 +67,18 @@ export default class Node {
       this.mesh.position.y,
       this.mesh.position.z
     );
+    this.text.visible = false;
     this.text.sync();
+    this.group.add(this.text);
+
+    // Arrow helper
+    this.arrow = new THREE.ArrowHelper(
+      new THREE.Vector3(1, 0, 0),
+      this.mesh.position,
+      1,
+      0x0
+    );
+    this.group.add(this.arrow);
   }
 
   static get randomColor() {
@@ -83,6 +94,15 @@ export default class Node {
     } else {
       this.icon.material.opacity = dist;
     }
+
+    this.text.lookAt(0, 0, 16);
+
+    if (this.group.parent != null) {
+      const v = this.group.parent.rotation;
+      this.arrow.setRotationFromEuler(new THREE.Euler(-v.x, -0, 0));
+    }
+    // const v = this.text.worldToLocal(new THREE.Vector3(0, 1, 0));
+    // this.arrow.origin = new THREE.Vector3(0, 1, 0);
   }
 
   hover(hovered) {
@@ -91,12 +111,10 @@ export default class Node {
 
     if (this.hovered) {
       this.material.color.offsetHSL(0, 0, 0.3);
-      this.group.add(this.text);
-      // document.body.style.cursor = "pointer";
+      this.text.visible = true;
     } else {
       this.material.color.set(this.color);
-      this.group.remove(this.text);
-      // document.body.style.cursor = "auto";
+      this.text.visible = false;
     }
     return true;
   }
