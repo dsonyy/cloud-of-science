@@ -6,7 +6,23 @@ export default class Connection {
   constructor(nodes) {
     this.nodes = nodes;
     this.group = new THREE.Group();
+
     this.activeNode = null;
+    this.targets = [];
+  }
+
+  update() {
+    if (this.activeNode == null) return;
+
+    this.group.clear();
+    for (const target of this.targets) {
+      this.group.add(
+        Connection.createConnection(
+          this.activeNode.group.position,
+          target.group.position
+        )
+      );
+    }
   }
 
   show(activeNode) {
@@ -31,19 +47,17 @@ export default class Connection {
 
     for (let i = 0; i < 3; i++) {
       const neighbor = neighbors[Math.floor(Math.random() * neighbors.length)];
-      this.group.add(
-        Connection.createConnection(
-          neighbor.group.position,
-          activeNode.group.position
-        )
-      );
-      console.log(this.group.children);
+
+      this.targets.push(neighbor);
+
+      this.update();
     }
   }
 
   hide() {
     this.group.clear();
     this.activeNode = null;
+    this.targets = [];
   }
 
   static createConnection(a, b) {

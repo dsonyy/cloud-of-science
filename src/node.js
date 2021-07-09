@@ -33,14 +33,11 @@ export default class Node {
     );
     this.hovered = false;
     this.clicked = false;
-    // this.position = new THREE.Vector3(x, y, z);
-    this.position = new THREE.Vector3(0, 0, 0);
 
     // Bubble
     this.material = createGradientMaterial(5, this.color.getHex());
     this.geometry = NodeGeometry;
     this.mesh = new THREE.Mesh(this.geometry, this.material);
-    // this.mesh.position.set(x, y, z);
     this.group.add(this.mesh);
 
     this.colorLightnessFactor = 0.5;
@@ -48,7 +45,6 @@ export default class Node {
 
     // Outline
     this.meshOutline = new THREE.Mesh(NodeOutlineGeometry, NodeOutlineMaterial);
-    // this.meshOutline.position.set(x, y, z);
     this.group.add(this.meshOutline);
 
     // Icon
@@ -56,11 +52,6 @@ export default class Node {
     const material = new THREE.SpriteMaterial({ map: this.map });
     this.icon = new THREE.Sprite(material);
     this.icon.scale.set(1, 1, 1);
-    // this.icon.position.set(
-    //   this.mesh.position.x,
-    //   this.mesh.position.y,
-    //   this.mesh.position.z
-    // );
     this.group.add(this.icon);
 
     // Title text
@@ -71,11 +62,6 @@ export default class Node {
     this.text.anchorX = "center";
     this.text.anchorY = "middle";
     this.text.color = 0x222222;
-    // this.text.position.set(
-    //   this.mesh.position.x,
-    //   this.mesh.position.y,
-    //   this.mesh.position.z
-    // );
     this.text.visible = false;
     this.text.sync();
     this.group.add(this.text);

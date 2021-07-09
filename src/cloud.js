@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import Node from "./node";
 import Connection from "./connection";
 import NodesLoader from "./loaders/nodesLoader";
 import ArticlesLoader from "./loaders/articleLoader";
@@ -129,6 +128,8 @@ export default class Cloud {
       for (const node of this.nodes) node.hover(false);
       this.connection.hide();
     }
+
+    this.connection.update();
   }
 
   render() {
