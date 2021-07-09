@@ -15,6 +15,7 @@
   "dependencies": {
     "browser-sync": "^2.26.14",
     "hammerjs": "^2.0.8",
+    "meshline": "^2.0.3",
     "onchange": "^7.0.2",
     "parallelshell": "^3.0.1",
     "three": "^0.129.0",
