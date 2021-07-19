@@ -6,8 +6,7 @@ import PointerRaycaster from "./eventHandlers/pointerRaycaster";
 import PointerRotation from "./eventHandlers/pointerRotation";
 import PointerLightMovement from "./eventHandlers/pointerLightMovement";
 import CloudScaffolding from "./cloudScaffolding";
-
-export const cameraPosition = new THREE.Vector3(0, 0, 16);
+import Wheel from "./eventHandlers/wheel";
 
 export default class Cloud {
   constructor(parentElement) {
@@ -26,11 +25,7 @@ export default class Cloud {
       0.1,
       1000
     );
-    this.camera.position.set(
-      cameraPosition.x,
-      cameraPosition.y,
-      cameraPosition.z
-    );
+    this.camera.position.set(0, 0, 16);
 
     // Renderer
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -78,6 +73,7 @@ export default class Cloud {
       [],
       this.canvasElement
     );
+    this.wheel = new Wheel(this.camera, this.scene.fog);
 
     // Loading nodes
     this.nodesLoader = new NodesLoader(this.scaffolding);
@@ -144,5 +140,9 @@ export default class Cloud {
     this.renderer.setSize(this.width, this.height);
     this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
+  }
+
+  onWheel(e) {
+    this.wheel.update(e);
   }
 }
