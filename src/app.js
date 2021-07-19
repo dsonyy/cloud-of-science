@@ -13,7 +13,7 @@ export default class App {
 
     // Events handling
     window.addEventListener("resize", (e) => this.onResize(e));
-    window.addEventListener("wheel", (e) => this.onWheel(e));
+    this.canvasElement.addEventListener("wheel", (e) => this.onWheel(e));
     this.canvasElement.addEventListener("pointermove", (e) =>
       this.onPointerMove(e)
     );

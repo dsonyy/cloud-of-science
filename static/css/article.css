@@ -12,6 +12,10 @@
   overflow: auto;
 }
 
+#article nav {
+  right: 0;
+}
+
 #article p {
   text-align: justify;
   font-size: small;
@@ -41,7 +45,7 @@
   #article {
     width: calc(100% - 32px - 4px);
     bottom: 0px;
-    height: calc(100% - 90px - 2px);
+    height: calc(100% - 2px);
     border-top: black 2px solid;
   }
 }

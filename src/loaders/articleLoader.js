@@ -4,6 +4,9 @@ export default class ArticlesLoader {
   constructor() {
     this.articles = {};
     this.setArticleElement();
+
+    const articleClose = document.getElementById("article-close"); // TODO: more cleaner way to access this button
+    articleClose.onclick = () => this.hideArticle();
   }
 
   async fetch(name) {
@@ -33,12 +36,13 @@ export default class ArticlesLoader {
   }
 
   reloadArticle(name) {
-    this.element.innerHTML = "";
+    const content = this.element.getElementsByClassName("content")[0];
+    content.innerHTML = "";
     if (this.articles[name]) {
-      this.element.innerHTML = this.articles[name];
+      content.innerHTML = this.articles[name];
     } else {
       this.fetch(name).then(() => {
-        this.element.innerHTML = this.articles[name];
+        content.innerHTML = this.articles[name];
       });
     }
   }
