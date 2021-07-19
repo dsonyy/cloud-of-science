@@ -34,7 +34,7 @@ export default class Cloud {
     this.canvasElement = this.renderer.domElement;
 
     // Scaffolding
-    this.radius = 5;
+    this.radius = 4.5;
     this.scaffolding = new CloudScaffolding(this.radius);
 
     // Nodes

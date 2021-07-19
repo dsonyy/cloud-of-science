@@ -20,14 +20,6 @@
     <div id="cloud" class="animate__animated animate__fadeIn animate__delay-1s">
       <nav>
         <div>
-          <a href=""><img src="static/fa/bars-solid.svg" height="26" /></a>
-        </div>
-        <div>
-          <a onclick="showDebugInfo()"
-            ><img src="static/fa/code-solid.svg" height="26"
-          /></a>
-        </div>
-        <div>
           <a href="https://github.com/dsonyy/cloud-of-science"
             ><img src="static/fa/github-brands.svg" height="26"
           /></a>
@@ -37,7 +29,14 @@
         id="article"
         class="right animate__animated animate__fadeInRight animate__faster"
         style="display: none"
-      ></div>
+      >
+        <nav>
+          <div id="article-close">
+            <img src="static/fa/times-solid.svg" height="26" />
+          </div>
+        </nav>
+        <div class="content"></div>
+      </div>
       <script src="public/bundle.js"></script>
     </div>
     <div id="debug">debug info</div>
