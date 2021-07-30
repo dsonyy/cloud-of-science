@@ -88,9 +88,20 @@ export default class Cloud {
 
     // Loading articles
     this.articleLoader = new ArticlesLoader();
+
+    // Animations test
+    this.mixer = new THREE.AnimationMixer(this.scaffolding);
+    const clips = this.scaffolding.animations;
+
+    const clip = THREE.AnimationClip.findByName(clips, "dance");
+    const action = mixer.clipAction(clip);
+    action.play();
   }
 
   update() {
+    // anim test
+    this.mixer.update(deltaSeconds);
+
     this.pointerRotation.update();
 
     for (const node of this.nodes) {
