@@ -21,11 +21,39 @@ header {
   top: 5px;
 }
 
-footer {
-  font-size: x-small;
+nav {
   position: fixed;
-  right: 5px;
-  bottom: 5px;
+  margin: 7px;
+  display: flex;
+  flex-direction: row;
+}
+
+nav div {
+  width: 44px;
+  height: 44px;
+  margin: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+}
+
+nav div:hover {
+  background-color: rgba(127, 127, 127, 0.3);
+  cursor: pointer;
+}
+
+footer {
+  font-size: small;
+  position: fixed;
+  left: 7px;
+  bottom: 7px;
+  opacity: 0.5;
+}
+
+a {
+  color: black;
 }
 
 .noselect {

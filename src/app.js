@@ -1,4 +1,3 @@
-import * as THREE from "three";
 import Cloud from "./cloud";
 
 export default class App {
@@ -29,6 +28,12 @@ export default class App {
     this.cloud.mouseLightMovement.onPointerMove(e);
     this.cloud.mouseRaycaster.onPointerMove(e);
     this.cloud.mouseRotation.onPointerMove(e);
+
+    if (this.cloud.mouseRaycaster.hoveredNode == null) {
+      this.element.style.cursor = "auto";
+    } else {
+      this.element.style.cursor = "pointer";
+    }
   }
 
   onPointerDown(e) {

@@ -1,5 +1,5 @@
-import Node from "./node";
-import Cloud from "./cloud";
+import Node from "../node";
+import Cloud from "../cloud";
 
 const NodesFilePath = "static/cloud/nodes.json";
 
@@ -15,7 +15,7 @@ export default class NodesLoader {
       .then((response) => response.json())
       .then((data) => this.processData(data))
       .catch(function (error) {
-        console.log(error);
+        console.error(error);
       });
   }
 
@@ -42,7 +42,7 @@ export default class NodesLoader {
         tags: rawNode.tags,
         color: color,
         iconSrc: "static/icons/" + rawNode.iconSrc,
-        articleSrc: "static/cloud/" + rawNode.articleSrc,
+        articleName: rawNode.articleSrc,
       });
       this.nodes.push(node);
     }

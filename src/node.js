@@ -20,6 +20,8 @@ export default class Node {
       content.color[1] / 255,
       content.color[2] / 255
     );
+    this.title = content.title;
+    this.articleName = content.articleName;
 
     this.group = new THREE.Group();
     this.hovered = false;
@@ -45,7 +47,7 @@ export default class Node {
     this.map = new THREE.TextureLoader().load(content.iconSrc);
     const material = new THREE.SpriteMaterial({ map: this.map });
     this.icon = new THREE.Sprite(material);
-    this.icon.scale.set(0.7, 0.7, 1);
+    this.icon.scale.set(1, 1, 1);
     this.icon.position.set(
       this.mesh.position.x,
       this.mesh.position.y,
@@ -75,16 +77,16 @@ export default class Node {
 
     if (this.hovered) {
       this.material.color.offsetHSL(0, 0, 0.3);
-      document.body.style.cursor = "pointer";
+      // document.body.style.cursor = "pointer";
     } else {
       this.material.color.set(this.color);
-      document.body.style.cursor = "auto";
+      // document.body.style.cursor = "auto";
     }
     return true;
   }
 
   click(clicked) {
-    if (this.clicked == clicked) return;
+    if (this.clicked == clicked) return false;
     this.clicked = clicked;
 
     if (this.clicked) {
@@ -92,6 +94,7 @@ export default class Node {
     } else {
       document.getElementById("article").style.display = "none";
     }
+    return true;
   }
 
   calcDistance(cloudRadius) {
