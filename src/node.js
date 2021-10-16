@@ -58,12 +58,12 @@ export default class Node {
     // Title text
     this.text = new Text();
     this.text.text = this.title.toUpperCase();
-    this.text.fontSize = 0.2;
+    this.text.fontSize = 0.18;
     this.text.font = "static/fonts/arial.ttf";
     this.text.anchorX = "center";
     this.text.anchorY = 1 - this.text.fontSize;
     this.text.color = 0x0;
-    this.text.visible = false;
+    this.text.visible = true;
     this.text.sync();
     this.group.add(this.text);
 
@@ -124,7 +124,7 @@ export default class Node {
       this.text.visible = true;
     } else {
       this.material.color.set(this.color);
-      this.text.visible = false;
+      this.text.visible = true;
     }
     return true;
   }
