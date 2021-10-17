@@ -79,6 +79,35 @@ export default class Node {
     );
     this.arrow.visible = false;
     this.group.add(this.arrow);
+
+    // Dots
+    this.materialDot = new THREE.MeshBasicMaterial({
+      color: this.color.getHex(),
+      // side: THREE.BackSide,
+    });
+    this.dots = [
+      new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 8), this.materialDot),
+      new THREE.Mesh(new THREE.SphereGeometry(0.11, 8, 8), this.materialDot),
+      new THREE.Mesh(new THREE.SphereGeometry(0.09, 8, 8), this.materialDot),
+    ];
+    this.dots[0].position.set(
+      1 * Math.random(),
+      1 * Math.random(),
+      1 * Math.random()
+    );
+    this.dots[1].position.set(
+      1 * Math.random(),
+      -1 * Math.random(),
+      -1 * Math.random()
+    );
+    this.dots[2].position.set(
+      -1 * Math.random(),
+      1 * Math.random(),
+      -1 * Math.random()
+    );
+    this.group.add(this.dots[0]);
+    this.group.add(this.dots[1]);
+    this.group.add(this.dots[2]);
   }
 
   static get randomColor() {
