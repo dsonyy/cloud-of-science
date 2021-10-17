@@ -2,7 +2,7 @@
 
 body {
   margin: 0;
-  background-color: #777;
+  background-color: #fff;
   font-family: "Roboto", sans-serif;
   font-size: small;
 }
@@ -11,6 +11,16 @@ body {
   background-color: #000;
   height: 100vh;
   width: 100vw;
+}
+
+#debug {
+  display: none;
+  position: fixed;
+  right: 5px;
+  top: 5px;
+
+  font-family: "Courier New", Courier, monospace;
+  font-size: medium;
 }
 
 header {

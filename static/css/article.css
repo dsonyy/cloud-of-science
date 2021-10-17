@@ -1,22 +1,65 @@
 #article {
-  color: white;
-  text-align: justify;
-
   position: fixed;
-  min-width: 300px;
-  width: 30vw;
-  height: calc(100% - 28px);
-  margin: 7px;
-  padding: 7px;
+  width: max(30%, 400px);
+  height: 100%;
+  padding: 16px;
 
-  background-color: #0d1622d9;
-  border-radius: 5px;
+  background-color: #ffffffd9;
+  color: #222;
+  border-left: black 2px solid;
+  border-right: black 2px solid;
+
+  overflow: auto;
 }
 
-.left {
-  left: 0;
-}
-
-.right {
+#article nav {
   right: 0;
+}
+
+#article p {
+  text-align: justify;
+  font-size: small;
+}
+
+#article.left {
+  right: 60vw;
+}
+
+#article.right {
+  left: 60vw;
+}
+
+@media screen and (max-width: 1100px) {
+  #article.left {
+    left: 0;
+    right: initial;
+  }
+
+  #article.right {
+    left: initial;
+    right: 0;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  #article {
+    width: calc(100% - 32px - 4px);
+    bottom: 0px;
+    height: calc(100% - 2px);
+    border-top: black 2px solid;
+  }
+}
+
+/* Custom scrollbar */
+#article::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+#article::-webkit-scrollbar-thumb {
+  background: #88888880;
+  border-radius: 4px;
+}
+#article::-webkit-scrollbar-thumb:hover {
+  background: #888888ff;
+  cursor: pointer;
 }
