@@ -26,7 +26,24 @@ export default class Connection {
   }
 
   show(activeNode) {
-    // TODO: working with real Nodes data
+    if (this.activeNode != null && activeNode.id == this.activeNode.id) return;
+    else if (this.activeNode != null && activeNode.id != this.activeNode.id)
+      this.hide();
+
+    this.activeNode = activeNode;
+
+    for (const node of this.nodes) {
+      if (
+        node.id != activeNode.id &&
+        node.color.r == activeNode.color.r &&
+        node.color.g == activeNode.color.g &&
+        node.color.b == activeNode.color.b
+      ) {
+        this.targets.push(node);
+      }
+    }
+
+    this.update();
   }
 
   showRandom(activeNode) {
