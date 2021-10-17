@@ -7,7 +7,7 @@ export const NodeOutlineRadius = NodeRadius + 0.015;
 const NodeGeometry = new THREE.SphereGeometry(NodeRadius, 40, 40);
 const NodeOutlineGeometry = new THREE.SphereGeometry(NodeOutlineRadius, 40, 40);
 const NodeOutlineMaterial = new THREE.MeshBasicMaterial({
-  color: 0x111111,
+  color: 0x0,
   side: THREE.BackSide,
 });
 
@@ -33,6 +33,7 @@ export default class Node {
     );
     this.hovered = false;
     this.clicked = false;
+    this.visited = false;
 
     // Bubble
     this.material = createGradientMaterial(5, this.color.getHex());
@@ -46,6 +47,7 @@ export default class Node {
     // Outline
     this.meshOutline = new THREE.Mesh(NodeOutlineGeometry, NodeOutlineMaterial);
     this.group.add(this.meshOutline);
+    this.meshOutline.scale.set(1.02, 1.02, 1.02);
 
     // Icon
     this.map = new THREE.TextureLoader().load(content.iconSrc);
@@ -58,12 +60,13 @@ export default class Node {
     // Title text
     this.text = new Text();
     this.text.text = this.title.toUpperCase();
-    this.text.fontSize = 0.2;
+    this.text.fontSize = 0.18;
     this.text.font = "static/fonts/arial.ttf";
     this.text.anchorX = "center";
     this.text.anchorY = 1 - this.text.fontSize;
     this.text.color = 0x0;
-    this.text.visible = false;
+    this.text.visible = true;
+    this.text.fillOpacity = 1;
     this.text.sync();
     this.group.add(this.text);
 
@@ -121,10 +124,10 @@ export default class Node {
 
     if (this.hovered) {
       this.material.color.offsetHSL(0, 0, 0.3);
-      this.text.visible = true;
+      this.text.fillOpacity = 1;
     } else {
       this.material.color.set(this.color);
-      this.text.visible = false;
+      if (this.visited) this.text.fillOpacity = 0.4;
     }
     return true;
   }
@@ -132,6 +135,8 @@ export default class Node {
   click(clicked) {
     if (this.clicked == clicked) return false;
     this.clicked = clicked;
+    this.visited = true;
+    this.meshOutline.scale.set(1, 1, 1);
     return true;
   }
 
